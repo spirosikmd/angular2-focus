@@ -38,13 +38,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
 var app_component_1 = require('./app.component');
-var index_1 = require('../index');
+var _1 = require('../');
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, index_1.FocusModule.forRoot()],
+            imports: [platform_browser_1.BrowserModule, _1.FocusModule.forRoot()],
             declarations: [app_component_1.AppComponent],
             bootstrap: [app_component_1.AppComponent]
         }), 
@@ -54,7 +54,7 @@ var AppModule = (function () {
 }());
 exports.AppModule = AppModule;
 
-},{"../index":4,"./app.component":1,"@angular/core":7,"@angular/platform-browser":9}],3:[function(require,module,exports){
+},{"../":4,"./app.component":1,"@angular/core":7,"@angular/platform-browser":9}],3:[function(require,module,exports){
 "use strict";
 require('core-js/es7/reflect');
 require('zone.js/dist/zone');
@@ -67,8 +67,10 @@ platform.bootstrapModule(app_module_1.AppModule);
 
 },{"./app.module":2,"@angular/core":7,"@angular/platform-browser-dynamic":8,"core-js/es7/reflect":10,"zone.js/dist/zone":109}],4:[function(require,module,exports){
 "use strict";
-var focus_module_1 = require('./src/focus.module');
-exports.FocusModule = focus_module_1.FocusModule;
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+__export(require('./src/focus.module'));
 
 },{"./src/focus.module":111}],5:[function(require,module,exports){
 (function (global){

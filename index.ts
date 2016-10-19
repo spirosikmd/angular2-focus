@@ -1,1 +1,1 @@
-export {FocusModule} from './src/focus.module';
+export * from './src/focus.module';
