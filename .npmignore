@@ -9,9 +9,5 @@ Thumbs.db
 # IDE generated files
 .idea
 
-# Ignored files
-*.ts
-!*.d.ts
-
 # Demo
 docs

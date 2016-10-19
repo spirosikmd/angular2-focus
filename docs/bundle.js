@@ -44,7 +44,7 @@ var AppModule = (function () {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, index_1.Focus],
+            imports: [platform_browser_1.BrowserModule, index_1.FocusModule.forRoot()],
             declarations: [app_component_1.AppComponent],
             bootstrap: [app_component_1.AppComponent]
         }), 
@@ -68,7 +68,7 @@ platform.bootstrapModule(app_module_1.AppModule);
 },{"./app.module":2,"@angular/core":7,"@angular/platform-browser-dynamic":8,"core-js/es7/reflect":10,"zone.js/dist/zone":109}],4:[function(require,module,exports){
 "use strict";
 var focus_module_1 = require('./src/focus.module');
-exports.Focus = focus_module_1.Focus;
+exports.FocusModule = focus_module_1.FocusModule;
 
 },{"./src/focus.module":111}],5:[function(require,module,exports){
 (function (global){
@@ -37624,18 +37624,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var focus_directive_1 = require('./focus.directive');
-var Focus = (function () {
-    function Focus() {
+var FocusModule = (function () {
+    function FocusModule() {
     }
-    Focus = __decorate([
+    FocusModule.forRoot = function () {
+        return {
+            ngModule: FocusModule
+        };
+    };
+    FocusModule = __decorate([
         core_1.NgModule({
             declarations: [focus_directive_1.FocusDirective],
             exports: [focus_directive_1.FocusDirective]
         }), 
         __metadata('design:paramtypes', [])
-    ], Focus);
-    return Focus;
+    ], FocusModule);
+    return FocusModule;
 }());
-exports.Focus = Focus;
+exports.FocusModule = FocusModule;
 
 },{"./focus.directive":110,"@angular/core":7}]},{},[3]);

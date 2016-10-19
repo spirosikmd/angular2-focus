@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
-import {Focus} from '../index';
+import {FocusModule} from '../index';
 @NgModule({
-  imports: [BrowserModule, Focus],
+  imports: [BrowserModule, FocusModule.forRoot()],
   declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
