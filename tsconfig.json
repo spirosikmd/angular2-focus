@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "moduleResolution": "node",
+    "declaration": true
+  },
+  "files": [
+    "index.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "angularCompilerOptions": {
+    "strictMetadataEmit": true,
+    "skipTemplateCodegen": true
+  }
+}
