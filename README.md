@@ -10,7 +10,7 @@ Angular2 directive that gives focus on an element depending on a given expressio
 
 ```typescript
 import {NgModule, Component} from '@angular/core';
-import {Focsu} from 'angular2-focus';
+import {FocsuModule} from 'angular2-focus';
 
 @Component({
   template: `
@@ -20,7 +20,7 @@ import {Focsu} from 'angular2-focus';
 class AppComponent { }
 
 @NgModule({
-  imports: [Focus],
+  imports: [FocsuModule.forRoot()],
   declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
