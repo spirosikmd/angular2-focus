@@ -29,15 +29,15 @@
     "@angular/platform-browser-dynamic": "^2.1.0",
     "@angular/platform-server": "^2.1.0",
     "@types/core-js": "^0.9.34",
-    "browserify": "^13.1.0",
+    "browserify": "^14.1.0",
     "concurrently": "^3.1.0",
     "core-js": "^2.4.1",
     "lite-server": "^2.2.2",
-    "rxjs": "5.0.0-beta.12",
-    "tsify": "^2.0.2",
+    "rxjs": "5.1.1",
+    "tsify": "^3.0.1",
     "typescript": "^2.0.3",
     "watchify": "^3.7.0",
-    "zone.js": "^0.6.25"
+    "zone.js": "^0.7.7"
   },
   "typings": "./index.d.ts",
   "repository": {
