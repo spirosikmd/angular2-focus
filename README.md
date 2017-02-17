@@ -2,6 +2,11 @@
 
 Angular2 directive that gives focus on an element depending on a given expression.
 
+[![Build Status][build-badge]][build]
+[![version][version-badge]][package]
+[![PRs Welcome][prs-badge]](http://makeapullrequest.com)
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
+
 ## Install
 
 `npm install --save angular2-focus`
@@ -47,6 +52,18 @@ To compile the code run
 $ yarn start
 ```
 
+To test run
+
+```bash
+$ yarn test
+```
+
+And to lint run
+
+```bash
+$ yarn lint
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
@@ -58,3 +75,9 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification.
 Contributions of any kind welcome!
+
+[version-badge]: https://img.shields.io/npm/v/angular2-focus.svg?style=flat-square
+[package]: https://www.npmjs.com/package/angular2-focus
+[prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
+[build-badge]: https://img.shields.io/travis/spirosikmd/angular2-focus.svg?style=flat-square
+[build]: https://travis-ci.org/spirosikmd/angular2-focus.svg
