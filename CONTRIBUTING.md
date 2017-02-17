@@ -12,7 +12,11 @@ You're going to need [`git`](https://git-scm.com/) to get the project, and [`nod
 
 1. Fork and clone the repo
 2. Run `yarn` to install dependencies
-4. Create a branch for your PR
+3. Run `yarn test` for testing
+4. Run `yarn lint` for linting
+5. Run `yarn start` to compile
+6. Run `yarn docs` to test the directive using the example project
+7. Create a branch for your PR
 
 ## Add yourself as a contributor
 
