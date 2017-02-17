@@ -1,5 +1,7 @@
 # angular2-focus
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/spirosikmd/angular2-focus.svg)](https://greenkeeper.io/)
+
 Angular2 directive that gives focus on an element depending on a given expression.
 
 ## Install
