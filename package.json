@@ -1,14 +1,19 @@
 {
   "name": "angular2-focus",
-  "version": "1.0.3",
-  "description": "Angular2 directive that gives focus on an element depending on a given expression",
+  "version": "0.0.0-development",
+  "description": "Angular attribute directive that gives focus on an element depending on a given expression",
   "main": "index.js",
   "module": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "karma start",
+    "lint": "tslint -c tslint.json 'index.ts src/**/*.ts docs/**/*.ts'",
     "start": "ngc",
     "prepublish": "ngc",
-    "docs": "concurrently \"watchify docs/main.ts -p [ tsify ] -o docs/bundle.js\" \"lite-server\""
+    "docs": "concurrently \"watchify docs/main.ts -p [ tsify ] -o docs/bundle.js\" \"lite-server\"",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "commit": "git-cz",
+    "add-contributor": "all-contributors add",
+    "generate-contributors": "all-contributors generate"
   },
   "keywords": [
     "angular",
@@ -29,19 +34,39 @@
     "@angular/platform-browser-dynamic": "^2.1.0",
     "@angular/platform-server": "^2.1.0",
     "@types/core-js": "^0.9.34",
-    "browserify": "^13.1.0",
+    "@types/jasmine": "^2.5.43",
+    "all-contributors-cli": "^4.0.0",
+    "awesome-typescript-loader": "^3.0.4",
+    "browserify": "^14.1.0",
+    "commitizen": "^2.9.6",
     "concurrently": "^3.1.0",
     "core-js": "^2.4.1",
+    "cz-conventional-changelog": "^1.2.0",
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.4.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^2.0.2",
     "lite-server": "^2.2.2",
-    "rxjs": "5.0.0-beta.12",
-    "tsify": "^2.0.2",
+    "rxjs": "^5.1.1",
+    "semantic-release": "^6.3.2",
+    "tsify": "^3.0.1",
+    "tslint": "^4.4.2",
     "typescript": "^2.0.3",
+    "wallaby-webpack": "^0.0.33",
     "watchify": "^3.7.0",
-    "zone.js": "^0.6.25"
+    "webpack": "^2.2.1",
+    "zone.js": "^0.7.7"
   },
   "typings": "./index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/spirosikmd/angular2-focus"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
   }
 }
