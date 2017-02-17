@@ -11,11 +11,9 @@ require('zone.js/dist/jasmine-patch');
 require('zone.js/dist/async-test');
 require('zone.js/dist/fake-async-test');
 
-const appContext = require.context('../src', true, /\.spec\.ts/);
-
-appContext.keys().forEach(appContext);
-
 const testing = require('@angular/core/testing');
 const browser = require('@angular/platform-browser-dynamic/testing');
 
 testing.TestBed.initTestEnvironment(browser.BrowserDynamicTestingModule, browser.platformBrowserDynamicTesting());
+
+window.__karma__ && require('./karma-require');
