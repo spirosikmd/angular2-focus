@@ -43,7 +43,9 @@ aot
 
 # Generated compiled source files
 index.js
+index.js.map
 src/*.js
+src/*.js.map
 *.d.ts
 *.metadata.json
 
