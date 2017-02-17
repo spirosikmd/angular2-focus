@@ -1,0 +1,22 @@
+{
+  "projectName": "angular2-focus",
+  "projectOwner": "spirosikmd",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "spirosikmd",
+      "name": "Spyros Ioakeimidis",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1057324?v=3",
+      "profile": "http://www.spyros.io",
+      "contributions": [
+        "question",
+        "code",
+        "test"
+      ]
+    }
+  ]
+}

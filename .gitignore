@@ -42,7 +42,8 @@ jspm_packages
 aot
 
 # Generated compiled source files
-*.js
+index.js
+src/*.js
 *.d.ts
 *.metadata.json
 

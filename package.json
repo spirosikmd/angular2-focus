@@ -1,14 +1,18 @@
 {
   "name": "angular2-focus",
-  "version": "1.0.3",
-  "description": "Angular2 directive that gives focus on an element depending on a given expression",
+  "version": "0.0.0-development",
+  "description": "Angular attribute directive that gives focus on an element depending on a given expression",
   "main": "index.js",
   "module": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ngc",
     "prepublish": "ngc",
-    "docs": "concurrently \"watchify docs/main.ts -p [ tsify ] -o docs/bundle.js\" \"lite-server\""
+    "docs": "concurrently \"watchify docs/main.ts -p [ tsify ] -o docs/bundle.js\" \"lite-server\"",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "commit": "git-cz",
+    "add-contributor": "all-contributors add",
+    "generate-contributors": "all-contributors generate"
   },
   "keywords": [
     "angular",
@@ -29,19 +33,28 @@
     "@angular/platform-browser-dynamic": "^2.1.0",
     "@angular/platform-server": "^2.1.0",
     "@types/core-js": "^0.9.34",
-    "browserify": "^13.1.0",
+    "all-contributors-cli": "^4.0.0",
+    "browserify": "^14.1.0",
+    "commitizen": "^2.9.6",
     "concurrently": "^3.1.0",
     "core-js": "^2.4.1",
+    "cz-conventional-changelog": "^1.2.0",
     "lite-server": "^2.2.2",
-    "rxjs": "5.0.0-beta.12",
-    "tsify": "^2.0.2",
+    "rxjs": "^5.1.1",
+    "semantic-release": "^6.3.2",
+    "tsify": "^3.0.1",
     "typescript": "^2.0.3",
     "watchify": "^3.7.0",
-    "zone.js": "^0.6.25"
+    "zone.js": "^0.7.7"
   },
   "typings": "./index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/spirosikmd/angular2-focus"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
   }
 }
