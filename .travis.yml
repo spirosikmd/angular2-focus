@@ -4,6 +4,7 @@ cache: yarn
 branches:
   only:
     - master
+    - /^greenkeeper/.*$/
 notifications:
   email: false
 before_script:
