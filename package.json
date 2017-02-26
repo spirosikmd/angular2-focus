@@ -55,7 +55,7 @@
     "tsify": "^3.0.1",
     "tslint": "^4.4.2",
     "typescript": "^2.0.3",
-    "wallaby-webpack": "^0.0.33",
+    "wallaby-webpack": "^0.0.34",
     "watchify": "^3.7.0",
     "webpack": "^2.2.1",
     "zone.js": "^0.7.7"
