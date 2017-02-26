@@ -2777,15 +2777,9 @@ minimalistic-assert@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/minimalistic-assert/-/minimalistic-assert-1.0.0.tgz#702be2dda6b37f4836bcb3f5db56641b64a1d3d3"
 
-"minimatch@2 || 3", minimatch@^3.0.0, minimatch@^3.0.2:
+"minimatch@2 || 3", minimatch@3.0.3, minimatch@^3.0.0, minimatch@^3.0.2:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.3.tgz#2a4e4090b96b2db06a9d7df01055a62a77c9b774"
-  dependencies:
-    brace-expansion "^1.0.0"
-
-minimatch@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-2.0.1.tgz#6c3760b45f66ed1cd5803143ee8d372488f02c37"
   dependencies:
     brace-expansion "^1.0.0"
 
@@ -4478,13 +4472,13 @@ walk@^2.3.9:
   dependencies:
     foreachasync "^3.0.0"
 
-wallaby-webpack@^0.0.33:
-  version "0.0.33"
-  resolved "https://registry.yarnpkg.com/wallaby-webpack/-/wallaby-webpack-0.0.33.tgz#ee69c8da179603e244a6c5869e7acc58b7b38d6a"
+wallaby-webpack@^0.0.34:
+  version "0.0.34"
+  resolved "https://registry.yarnpkg.com/wallaby-webpack/-/wallaby-webpack-0.0.34.tgz#3c5a839671488a628df03401e0acf4d49cc0904a"
   dependencies:
     graceful-fs "^4.1.3"
     lodash "^3.5.0"
-    minimatch "2.0.1"
+    minimatch "3.0.3"
 
 watchify@^3.7.0:
   version "3.9.0"
