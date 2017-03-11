@@ -1,7 +1,7 @@
 <div class="aligner">
     <div class="aligner-item aligner-item--fixed">
         <label>
-            <select focus="true">
+            <select [focus]="isFocused">
                 <option>gluttony</option>
                 <option>greed</option>
                 <option>sloth</option>
@@ -10,6 +10,9 @@
                 <option>pride</option>
                 <option>lust</option>
             </select>
+        </label>
+        <label>
+            <input type="text" [focus]="!isFocused">
         </label>
     </div>
 </div>
