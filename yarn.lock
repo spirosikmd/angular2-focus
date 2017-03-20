@@ -22,6 +22,10 @@
   version "2.4.7"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-2.4.7.tgz#8bed9a2d37e81342bd41d189df88aa3e02393cfb"
 
+"@angular/forms@^2.4.10":
+  version "2.4.10"
+  resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-2.4.10.tgz#062133aaade1f3b3c962f1593208c541b622fd06"
+
 "@angular/platform-browser-dynamic@^2.1.0":
   version "2.4.7"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-2.4.7.tgz#9632586f9ce596186be4c124c3ea0a4a74b27b46"

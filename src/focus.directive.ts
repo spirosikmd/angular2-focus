@@ -6,6 +6,7 @@ import {Directive, ElementRef, Input} from '@angular/core';
 export class FocusDirective {
   @Input() focus: boolean;
   private element: HTMLElement;
+  private hasFocused = false;
 
   constructor ($element: ElementRef) {
     this.element = $element.nativeElement;
@@ -16,8 +17,9 @@ export class FocusDirective {
   }
 
   giveFocus () {
-    if (this.focus) {
+    if (this.focus && !this.hasFocused) {
       this.element.focus();
+      this.hasFocused = true;
     }
   }
 }
