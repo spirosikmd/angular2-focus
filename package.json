@@ -29,7 +29,7 @@
   "devDependencies": {
     "@angular/common": "^2.1.0",
     "@angular/compiler": "^2.1.0",
-    "@angular/compiler-cli": "^2.1.0",
+    "@angular/compiler-cli": "^2.4.9",
     "@angular/forms": "^2.4.10",
     "@angular/platform-browser": "^2.1.0",
     "@angular/platform-browser-dynamic": "^2.1.0",

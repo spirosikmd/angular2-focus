@@ -6,9 +6,9 @@
   version "2.4.7"
   resolved "https://registry.yarnpkg.com/@angular/common/-/common-2.4.7.tgz#9316daf90e353e67187d2e0afec5521c2001bd4b"
 
-"@angular/compiler-cli@^2.1.0":
-  version "2.4.7"
-  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-2.4.7.tgz#15768141816903636593f430ff9a808d98a2a762"
+"@angular/compiler-cli@^2.4.9":
+  version "2.4.10"
+  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-2.4.10.tgz#c21143bfaab45231c8d2eaa82456bed3d39f91a3"
   dependencies:
     "@angular/tsc-wrapped" "0.5.2"
     minimist "^1.2.0"
