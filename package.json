@@ -35,7 +35,7 @@
     "@angular/platform-browser-dynamic": "^2.1.0",
     "@angular/platform-server": "^2.1.0",
     "@types/core-js": "^0.9.34",
-    "@types/jasmine": "^2.5.43",
+    "@types/jasmine": "^2.5.46",
     "all-contributors-cli": "^4.0.0",
     "awesome-typescript-loader": "^3.0.7",
     "browserify": "^14.1.0",
