@@ -1,15 +1,17 @@
 <div class="aligner">
     <div class="aligner-item aligner-item--fixed">
-        <label>
-            <select focus="true">
-                <option>gluttony</option>
-                <option>greed</option>
-                <option>sloth</option>
-                <option>envy</option>
-                <option>wrath</option>
-                <option>pride</option>
-                <option>lust</option>
-            </select>
-        </label>
+        <form [formGroup]="form">
+            <label>
+                <select [focus]="isFocused" formControlName="sin">
+                    <option *ngFor="let sin of sins">{{sin}}</option>
+                </select>
+            </label>
+            <label>
+                Name
+                <input type="text" [focus]="!isFocused" formControlName="name">
+            </label>
+        </form>
+
+        <div>Form value: {{ form.value | json }}</div>
     </div>
 </div>
