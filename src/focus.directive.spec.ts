@@ -23,5 +23,11 @@ describe('focus', function () {
       this.directive.giveFocus();
       expect(this.elementRef.nativeElement.focus).toHaveBeenCalled();
     });
+
+    it('does not call focus on element if has been given focus already', function () {
+      this.directive.hasFocused = true;
+      this.directive.giveFocus();
+      expect(this.elementRef.nativeElement.focus).not.toHaveBeenCalled();
+    });
   });
 });

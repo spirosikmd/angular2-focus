@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app',
@@ -6,4 +7,10 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
   isFocused = true;
+  sins = ['gluttony', 'greed', 'sloth', 'envy', 'wrath', 'pride', 'lust'];
+
+  form = new FormGroup({
+    sin: new FormControl(),
+    name: new FormControl()
+  });
 }
