@@ -11,7 +11,7 @@ var forms_1 = require("@angular/forms");
 var AppComponent = (function () {
     function AppComponent() {
         this.isFocused = true;
-        this.sins = ['gluttony', 'greed', 'sloth', 'envy', 'wrath', 'pride',];
+        this.sins = ['gluttony', 'greed', 'sloth', 'envy', 'wrath', 'pride', 'lust'];
         this.form = new forms_1.FormGroup({
             sin: new forms_1.FormControl(),
             name: new forms_1.FormControl()
