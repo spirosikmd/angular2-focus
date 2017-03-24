@@ -80,7 +80,7 @@
     conventional-changelog "0.0.17"
     github-url-from-git "^1.4.0"
 
-"@types/core-js@^0.9.34":
+"@types/core-js@^0.9.39":
   version "0.9.39"
   resolved "https://registry.yarnpkg.com/@types/core-js/-/core-js-0.9.39.tgz#9b3d9869c2b7de02d372d32d6c6d9f5db3178c65"
 
