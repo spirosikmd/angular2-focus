@@ -27,7 +27,7 @@
     "@angular/core": "^2.1.0"
   },
   "devDependencies": {
-    "@angular/common": "^2.1.0",
+    "@angular/common": "^4.0.0",
     "@angular/compiler": "^2.1.0",
     "@angular/compiler-cli": "^2.4.9",
     "@angular/forms": "^2.4.10",
