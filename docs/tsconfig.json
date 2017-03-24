@@ -1,16 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es5",
     "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
+    "target": "es5",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "removeComments": false,
-    "noImplicitAny": false
+    "sourceMap": true,
+    "inlineSources": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "lib": ["es2017", "dom"]
   },
   "files": [
-    "./demo/main.ts"
+    "./main.ts",
+    "./app.component.ts",
+    "./app.module.ts"
   ],
   "exclude": [
     "node_modules"
