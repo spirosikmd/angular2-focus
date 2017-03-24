@@ -24,7 +24,7 @@
   "author": "Spyros Ioakeimidis <spyrosikmd@gmail.com> (http://www.spyros.io)",
   "license": "MIT",
   "dependencies": {
-    "@angular/core": "^2.1.0"
+    "@angular/core": "^4.0.0"
   },
   "devDependencies": {
     "@angular/common": "^2.1.0",
