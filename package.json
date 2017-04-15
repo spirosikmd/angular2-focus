@@ -36,7 +36,7 @@
     "@angular/platform-server": "^4.0.0",
     "@types/core-js": "^0.9.39",
     "@types/jasmine": "^2.5.46",
-    "all-contributors-cli": "^4.0.1",
+    "all-contributors-cli": "^4.3.0",
     "awesome-typescript-loader": "^3.1.2",
     "browserify": "^14.3.0",
     "commitizen": "^2.9.6",
