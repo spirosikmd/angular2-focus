@@ -1,5 +1,6 @@
-<div class="aligner">
-    <div class="aligner-item aligner-item--fixed">
+<div>
+    <div>
+        <h1>Using angumar forms</h1>
         <form [formGroup]="form">
             <label>
                 <select [focus]="isFocused" formControlName="sin">
@@ -13,5 +14,29 @@
         </form>
 
         <div>Form value: {{ form.value | json }}</div>
+    </div>
+
+    <div>
+        <h1>Using bootstrap modal</h1>
+
+        <ng-template #content let-c="close" let-d="dismiss">
+            <div>
+                <h4>Modal title</h4>
+                <button type="button" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div>
+                <label>
+                    Is it focused?
+                    <input type="text" [focus]="true">
+                </label>
+            </div>
+            <div>
+                <button type="button" (click)="c('Close click')">Close</button>
+            </div>
+        </ng-template>
+
+        <button (click)="open(content)">Launch modal</button>
     </div>
 </div>
