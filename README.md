@@ -33,7 +33,8 @@ class AppComponent { }
 export class AppModule { }
 ```
 
-Check the [docs](docs) for a complete example.
+Check the [docs](docs) for examples using `@angular/forms` and other third party libraries such as
+`@ng-bootstrap/ng-bootstrap`, to focus elements when e.g. using a modal.
 
 ## Contributors
 
