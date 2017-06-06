@@ -13,7 +13,8 @@
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "commit": "git-cz",
     "add-contributor": "all-contributors add",
-    "generate-contributors": "all-contributors generate"
+    "generate-contributors": "all-contributors generate",
+    "precommit": "lint-staged"
   },
   "keywords": [
     "angular",
@@ -44,14 +45,17 @@
     "concurrently": "^3.4.0",
     "core-js": "^2.4.1",
     "cz-conventional-changelog": "^2.0.0",
+    "husky": "^0.13.4",
     "jasmine-core": "^2.6.1",
     "karma": "^1.7.0",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^2.0.3",
+    "lint-staged": "^3.6.0",
     "lite-server": "^2.3.0",
     "null-loader": "^0.1.1",
+    "prettier": "^1.4.2",
     "rxjs": "^5.4.0",
     "semantic-release": "^6.3.2",
     "tsify": "^3.0.1",
@@ -71,5 +75,11 @@
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
     }
+  },
+  "lint-staged": {
+    "*.js": [
+      "--single-quote --list-different --write \"{src,docs}/**/*.ts\"",
+      "git add"
+    ]
   }
 }
