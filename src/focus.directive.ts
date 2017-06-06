@@ -1,4 +1,4 @@
-import {Directive, ElementRef, Input} from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
 
 @Directive({
   selector: '[focus]'
@@ -8,15 +8,15 @@ export class FocusDirective {
   private element: HTMLElement;
   private hasFocused = false;
 
-  constructor ($element: ElementRef) {
+  constructor($element: ElementRef) {
     this.element = $element.nativeElement;
   }
 
-  ngAfterContentChecked () {
+  ngAfterContentChecked() {
     this.giveFocus();
   }
 
-  giveFocus () {
+  giveFocus() {
     if (this.focus && !this.hasFocused) {
       this.element.focus();
       this.hasFocused = true;
