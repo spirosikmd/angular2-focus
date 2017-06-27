@@ -63,7 +63,7 @@
     "typescript": "^2.3.2",
     "wallaby-webpack": "^0.0.38",
     "watchify": "^3.7.0",
-    "webpack": "^2.5.1",
+    "webpack": "^3.0.0",
     "zone.js": "^0.8.10"
   },
   "typings": "./index.d.ts",
