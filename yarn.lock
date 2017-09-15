@@ -5110,9 +5110,9 @@ walk@^2.3.9:
   dependencies:
     foreachasync "^3.0.0"
 
-wallaby-webpack@^0.0.39:
-  version "0.0.39"
-  resolved "https://registry.yarnpkg.com/wallaby-webpack/-/wallaby-webpack-0.0.39.tgz#cfed9a126d4861c27761f9d25ad37652170fe58f"
+wallaby-webpack@^0.0.40:
+  version "0.0.40"
+  resolved "https://registry.yarnpkg.com/wallaby-webpack/-/wallaby-webpack-0.0.40.tgz#3ddfdf45d8cae954d85448af1997dabb3705f92a"
   dependencies:
     graceful-fs "^4.1.3"
     lodash "^3.5.0"
