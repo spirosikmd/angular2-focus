@@ -57,7 +57,7 @@
     "null-loader": "^0.1.1",
     "prettier": "^1.4.2",
     "rxjs": "^5.4.0",
-    "semantic-release": "^7.0.1",
+    "semantic-release": "^8.0.0",
     "tsify": "^3.0.1",
     "tslint": "^5.0.0",
     "typescript": "^2.3.2",
