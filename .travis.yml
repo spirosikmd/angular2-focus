@@ -7,8 +7,6 @@ branches:
     - /^greenkeeper/.*$/
 notifications:
   email: false
-before_script:
-  - npm prune
 script:
   - yarn lint
   - yarn test

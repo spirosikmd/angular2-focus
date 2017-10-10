@@ -13,7 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
-var AppComponent = (function () {
+var AppComponent = /** @class */ (function () {
     function AppComponent(modalService) {
         this.modalService = modalService;
         this.isFocused = true;
@@ -30,15 +30,15 @@ var AppComponent = (function () {
             console.log("Dismissed " + reason);
         });
     };
+    AppComponent = __decorate([
+        core_1.Component({
+            selector: 'app',
+            templateUrl: 'app.html'
+        }),
+        __metadata("design:paramtypes", [ng_bootstrap_1.NgbModal])
+    ], AppComponent);
     return AppComponent;
 }());
-AppComponent = __decorate([
-    core_1.Component({
-        selector: 'app',
-        templateUrl: 'app.html'
-    }),
-    __metadata("design:paramtypes", [ng_bootstrap_1.NgbModal])
-], AppComponent);
 exports.AppComponent = AppComponent;
 
 },{"@angular/core":7,"@angular/forms":8,"@ng-bootstrap/ng-bootstrap":11}],2:[function(require,module,exports){
@@ -56,23 +56,23 @@ var app_component_1 = require("./app.component");
 var _1 = require("../");
 var forms_1 = require("@angular/forms");
 var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
-var AppModule = (function () {
+var AppModule = /** @class */ (function () {
     function AppModule() {
     }
+    AppModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                platform_browser_1.BrowserModule,
+                _1.FocusModule.forRoot(),
+                forms_1.ReactiveFormsModule,
+                ng_bootstrap_1.NgbModule.forRoot()
+            ],
+            declarations: [app_component_1.AppComponent],
+            bootstrap: [app_component_1.AppComponent]
+        })
+    ], AppModule);
     return AppModule;
 }());
-AppModule = __decorate([
-    core_1.NgModule({
-        imports: [
-            platform_browser_1.BrowserModule,
-            _1.FocusModule.forRoot(),
-            forms_1.ReactiveFormsModule,
-            ng_bootstrap_1.NgbModule.forRoot()
-        ],
-        declarations: [app_component_1.AppComponent],
-        bootstrap: [app_component_1.AppComponent]
-    })
-], AppModule);
 exports.AppModule = AppModule;
 
 },{"../":4,"./app.component":1,"@angular/core":7,"@angular/forms":8,"@angular/platform-browser":10,"@ng-bootstrap/ng-bootstrap":11}],3:[function(require,module,exports){
@@ -87,7 +87,7 @@ core_1.enableProdMode();
 var platform = platform_browser_dynamic_1.platformBrowserDynamic();
 platform.bootstrapModule(app_module_1.AppModule);
 
-},{"./app.module":2,"@angular/core":7,"@angular/platform-browser-dynamic":9,"core-js/es7/reflect":12,"zone.js/dist/zone":136}],4:[function(require,module,exports){
+},{"./app.module":2,"@angular/core":7,"@angular/platform-browser-dynamic":9,"core-js/es7/reflect":12,"zone.js/dist/zone":139}],4:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -95,9 +95,9 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./src/focus.module"));
 
-},{"./src/focus.module":138}],5:[function(require,module,exports){
+},{"./src/focus.module":141}],5:[function(require,module,exports){
 /**
- * @license Angular v4.4.1
+ * @license Angular v4.4.4
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -134,7 +134,7 @@ function __extends(d, b) {
 }
 
 /**
- * @license Angular v4.4.1
+ * @license Angular v4.4.4
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -4100,7 +4100,7 @@ function isPlatformWorkerUi(platformId) {
 /**
  * \@stable
  */
-var VERSION = new _angular_core.Version('4.4.1');
+var VERSION = new _angular_core.Version('4.4.4');
 
 exports.NgLocaleLocalization = NgLocaleLocalization;
 exports.NgLocalization = NgLocalization;
@@ -4160,7 +4160,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 },{"@angular/core":7}],6:[function(require,module,exports){
 /**
- * @license Angular v4.4.1
+ * @license Angular v4.4.4
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -4197,7 +4197,7 @@ function __extends(d, b) {
 }
 
 /**
- * @license Angular v4.4.1
+ * @license Angular v4.4.4
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -4216,7 +4216,7 @@ function __extends(d, b) {
 /**
  * \@stable
  */
-var VERSION = new _angular_core.Version('4.4.1');
+var VERSION = new _angular_core.Version('4.4.4');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -15369,6 +15369,11 @@ function createTokenForExternalReference(reflector, reference) {
  */
 var PRESERVE_WS_ATTR_NAME = 'ngPreserveWhitespaces';
 var SKIP_WS_TRIM_TAGS = new Set(['pre', 'template', 'textarea', 'script', 'style']);
+// Equivalent to \s with \u00a0 (non-breaking space) excluded.
+// Based on https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+var WS_CHARS = ' \f\n\r\t\v\u1680\u180e\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff';
+var NO_WS_REGEXP = new RegExp("[^" + WS_CHARS + "]");
+var WS_REPLACE_REGEXP = new RegExp("[" + WS_CHARS + "]{2,}", 'g');
 /**
  * @param {?} attrs
  * @return {?}
@@ -15432,9 +15437,9 @@ var WhitespaceVisitor = (function () {
      * @return {?}
      */
     WhitespaceVisitor.prototype.visitText = function (text, context) {
-        var /** @type {?} */ isBlank = text.value.trim().length === 0;
-        if (!isBlank) {
-            return new Text(replaceNgsp(text.value).replace(/\s\s+/g, ' '), text.sourceSpan);
+        var /** @type {?} */ isNotBlank = text.value.match(NO_WS_REGEXP);
+        if (isNotBlank) {
+            return new Text(replaceNgsp(text.value).replace(WS_REPLACE_REGEXP, ' '), text.sourceSpan);
         }
         return null;
     };
@@ -23302,7 +23307,7 @@ var EmitterVisitorContext = (function () {
     EmitterVisitorContext.prototype.spanOf = function (line, column) {
         var /** @type {?} */ emittedLine = this._lines[line - this._preambleLineCount];
         if (emittedLine) {
-            var /** @type {?} */ columnsLeft = column - emittedLine.indent;
+            var /** @type {?} */ columnsLeft = column - _createIndent(emittedLine.indent).length;
             for (var /** @type {?} */ partIndex = 0; partIndex < emittedLine.parts.length; partIndex++) {
                 var /** @type {?} */ part = emittedLine.parts[partIndex];
                 if (part.length > columnsLeft) {
@@ -29056,7 +29061,9 @@ var StaticReflector = (function () {
                         var item = _a[_i];
                         // Check for a spread expression
                         if (item && item.__symbolic === 'spread') {
-                            var /** @type {?} */ spreadArray = simplify(item.expression);
+                            // We call with references as 0 because we require the actual value and cannot
+                            // tolerate a reference here.
+                            var /** @type {?} */ spreadArray = simplifyInContext(context, item.expression, depth, 0);
                             if (Array.isArray(spreadArray)) {
                                 for (var _b = 0, spreadArray_1 = spreadArray; _b < spreadArray_1.length; _b++) {
                                     var spreadItem = spreadArray_1[_b];
@@ -29076,7 +29083,7 @@ var StaticReflector = (function () {
                 if (expression instanceof StaticSymbol) {
                     // Stop simplification at builtin symbols or if we are in a reference context
                     if (expression === self.injectionToken || expression === self.opaqueToken ||
-                        self.conversionMap.has(expression) || references > 0) {
+                        self.conversionMap.has(expression) || (references > 0 && !expression.members.length)) {
                         return expression;
                     }
                     else {
@@ -32197,7 +32204,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 },{"@angular/core":7}],7:[function(require,module,exports){
 (function (global){
 /**
- * @license Angular v4.4.1
+ * @license Angular v4.4.4
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -32234,7 +32241,7 @@ function __extends(d, b) {
 }
 
 /**
- * @license Angular v4.4.1
+ * @license Angular v4.4.4
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -33026,7 +33033,7 @@ var Version = (function () {
 /**
  * \@stable
  */
-var VERSION = new Version('4.4.1');
+var VERSION = new Version('4.4.4');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -44151,33 +44158,19 @@ function viewDef(flags, nodes, updateDirectives, updateRenderer) {
     var /** @type {?} */ viewRootNodeFlags = 0;
     var /** @type {?} */ viewMatchedQueries = 0;
     var /** @type {?} */ currentParent = null;
+    var /** @type {?} */ currentRenderParent = null;
     var /** @type {?} */ currentElementHasPublicProviders = false;
     var /** @type {?} */ currentElementHasPrivateProviders = false;
     var /** @type {?} */ lastRenderRootNode = null;
     for (var /** @type {?} */ i = 0; i < nodes.length; i++) {
-        while (currentParent && i > currentParent.index + currentParent.childCount) {
-            var /** @type {?} */ newParent = currentParent.parent;
-            if (newParent) {
-                newParent.childFlags |= ((currentParent.childFlags));
-                newParent.childMatchedQueries |= currentParent.childMatchedQueries;
-            }
-            currentParent = newParent;
-        }
         var /** @type {?} */ node = nodes[i];
         node.index = i;
         node.parent = currentParent;
         node.bindingIndex = viewBindingCount;
         node.outputIndex = viewDisposableCount;
-        // renderParent needs to account for ng-container!
-        var /** @type {?} */ currentRenderParent = void 0;
-        if (currentParent && currentParent.flags & 1 /* TypeElement */ &&
-            !((currentParent.element)).name) {
-            currentRenderParent = currentParent.renderParent;
-        }
-        else {
-            currentRenderParent = currentParent;
-        }
         node.renderParent = currentRenderParent;
+        viewNodeFlags |= node.flags;
+        viewMatchedQueries |= node.matchedQueryIds;
         if (node.element) {
             var /** @type {?} */ elDef = node.element;
             elDef.publicProviders =
@@ -44186,24 +44179,11 @@ function viewDef(flags, nodes, updateDirectives, updateRenderer) {
             // Note: We assume that all providers of an element are before any child element!
             currentElementHasPublicProviders = false;
             currentElementHasPrivateProviders = false;
-        }
-        validateNode(currentParent, node, nodes.length);
-        viewNodeFlags |= node.flags;
-        viewMatchedQueries |= node.matchedQueryIds;
-        if (node.element && node.element.template) {
-            viewMatchedQueries |= node.element.template.nodeMatchedQueries;
-        }
-        if (currentParent) {
-            currentParent.childFlags |= node.flags;
-            currentParent.directChildFlags |= node.flags;
-            currentParent.childMatchedQueries |= node.matchedQueryIds;
-            if (node.element && node.element.template) {
-                currentParent.childMatchedQueries |= node.element.template.nodeMatchedQueries;
+            if (node.element.template) {
+                viewMatchedQueries |= node.element.template.nodeMatchedQueries;
             }
         }
-        else {
-            viewRootNodeFlags |= node.flags;
-        }
+        validateNode(currentParent, node, nodes.length);
         viewBindingCount += node.bindings.length;
         viewDisposableCount += node.outputs.length;
         if (!currentRenderParent && (node.flags & 3 /* CatRenderNode */)) {
@@ -44227,7 +44207,7 @@ function viewDef(flags, nodes, updateDirectives, updateRenderer) {
                 if (!currentElementHasPrivateProviders) {
                     currentElementHasPrivateProviders = true; /** @type {?} */
                     ((((
-                    // Use protoyypical inheritance to not get O(n^2) complexity...
+                    // Use prototypical inheritance to not get O(n^2) complexity...
                     currentParent)).element)).allProviders =
                         Object.create(/** @type {?} */ ((((currentParent)).element)).publicProviders);
                 } /** @type {?} */
@@ -44237,17 +44217,45 @@ function viewDef(flags, nodes, updateDirectives, updateRenderer) {
                 ((((currentParent)).element)).componentProvider = node;
             }
         }
-        if (node.childCount) {
+        if (currentParent) {
+            currentParent.childFlags |= node.flags;
+            currentParent.directChildFlags |= node.flags;
+            currentParent.childMatchedQueries |= node.matchedQueryIds;
+            if (node.element && node.element.template) {
+                currentParent.childMatchedQueries |= node.element.template.nodeMatchedQueries;
+            }
+        }
+        else {
+            viewRootNodeFlags |= node.flags;
+        }
+        if (node.childCount > 0) {
             currentParent = node;
+            if (!isNgContainer(node)) {
+                currentRenderParent = node;
+            }
         }
-    }
-    while (currentParent) {
-        var /** @type {?} */ newParent = currentParent.parent;
-        if (newParent) {
-            newParent.childFlags |= currentParent.childFlags;
-            newParent.childMatchedQueries |= currentParent.childMatchedQueries;
+        else {
+            // When the current node has no children, check if it is the last children of its parent.
+            // When it is, propagate the flags up.
+            // The loop is required because an element could be the last transitive children of several
+            // elements. We loop to either the root or the highest opened element (= with remaining
+            // children)
+            while (currentParent && i === currentParent.index + currentParent.childCount) {
+                var /** @type {?} */ newParent = currentParent.parent;
+                if (newParent) {
+                    newParent.childFlags |= currentParent.childFlags;
+                    newParent.childMatchedQueries |= currentParent.childMatchedQueries;
+                }
+                currentParent = newParent;
+                // We also need to update the render parent & account for ng-container
+                if (currentParent && isNgContainer(currentParent)) {
+                    currentRenderParent = currentParent.renderParent;
+                }
+                else {
+                    currentRenderParent = currentParent;
+                }
+            }
         }
-        currentParent = newParent;
     }
     var /** @type {?} */ handleEvent = function (view, nodeIndex, eventName, event) { return ((((nodes[nodeIndex].element)).handleEvent))(view, eventName, event); };
     return {
@@ -44258,11 +44266,17 @@ function viewDef(flags, nodes, updateDirectives, updateRenderer) {
         nodeMatchedQueries: viewMatchedQueries, flags: flags,
         nodes: nodes,
         updateDirectives: updateDirectives || NOOP,
-        updateRenderer: updateRenderer || NOOP,
-        handleEvent: handleEvent || NOOP,
+        updateRenderer: updateRenderer || NOOP, handleEvent: handleEvent,
         bindingCount: viewBindingCount,
         outputCount: viewDisposableCount, lastRenderRootNode: lastRenderRootNode
     };
+}
+/**
+ * @param {?} node
+ * @return {?}
+ */
+function isNgContainer(node) {
+    return (node.flags & 1 /* TypeElement */) !== 0 && ((node.element)).name === null;
 }
 /**
  * @param {?} parent
@@ -47222,9 +47236,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"rxjs/Observable":95,"rxjs/Subject":98,"rxjs/observable/merge":112,"rxjs/operator/share":119}],8:[function(require,module,exports){
+},{"rxjs/Observable":96,"rxjs/Subject":99,"rxjs/observable/merge":113,"rxjs/operator/share":121}],8:[function(require,module,exports){
 /**
- * @license Angular v4.4.1
+ * @license Angular v4.4.4
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -47261,7 +47275,7 @@ function __extends(d, b) {
 }
 
 /**
- * @license Angular v4.4.1
+ * @license Angular v4.4.4
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -53181,7 +53195,7 @@ FormBuilder.ctorParameters = function () { return []; };
 /**
  * \@stable
  */
-var VERSION = new _angular_core.Version('4.4.1');
+var VERSION = new _angular_core.Version('4.4.4');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -53389,9 +53403,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 
-},{"@angular/core":7,"@angular/platform-browser":10,"rxjs/observable/forkJoin":109,"rxjs/observable/fromPromise":111,"rxjs/operator/map":115}],9:[function(require,module,exports){
+},{"@angular/core":7,"@angular/platform-browser":10,"rxjs/observable/forkJoin":110,"rxjs/observable/fromPromise":112,"rxjs/operator/map":117}],9:[function(require,module,exports){
 /**
- * @license Angular v4.4.1
+ * @license Angular v4.4.4
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -53428,7 +53442,7 @@ function __extends(d, b) {
 }
 
 /**
- * @license Angular v4.4.1
+ * @license Angular v4.4.4
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -53557,7 +53571,7 @@ var CachedResourceLoader = (function (_super) {
 /**
  * @stable
  */
-var VERSION = new _angular_core.Version('4.4.1');
+var VERSION = new _angular_core.Version('4.4.4');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -53587,7 +53601,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 },{"@angular/common":5,"@angular/compiler":6,"@angular/core":7,"@angular/platform-browser":10}],10:[function(require,module,exports){
 /**
- * @license Angular v4.4.1
+ * @license Angular v4.4.4
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -53624,7 +53638,7 @@ function __extends(d, b) {
 }
 
 /**
- * @license Angular v4.4.1
+ * @license Angular v4.4.4
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -58029,7 +58043,7 @@ var By = (function () {
 /**
  * \@stable
  */
-var VERSION = new _angular_core.Version('4.4.1');
+var VERSION = new _angular_core.Version('4.4.4');
 
 exports.BrowserModule = BrowserModule;
 exports.platformBrowser = platformBrowser;
@@ -58084,14 +58098,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
 },{"@angular/common":5,"@angular/core":7}],11:[function(require,module,exports){
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@angular/core"), require("@angular/common"), require("@angular/forms"), require("rxjs/observable/fromEvent"), require("rxjs/operator/do"), require("rxjs/operator/let"));
+		module.exports = factory(require("@angular/core"), require("@angular/common"), require("@angular/forms"), require("rxjs/BehaviorSubject"), require("rxjs/Subject"), require("rxjs/observable/fromEvent"), require("rxjs/operator/do"), require("rxjs/operator/filter"), require("rxjs/operator/let"), require("rxjs/operator/switchMap"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@angular/core", "@angular/common", "@angular/forms", "rxjs/observable/fromEvent", "rxjs/operator/do", "rxjs/operator/let"], factory);
+		define(["@angular/core", "@angular/common", "@angular/forms", "rxjs/BehaviorSubject", "rxjs/Subject", "rxjs/observable/fromEvent", "rxjs/operator/do", "rxjs/operator/filter", "rxjs/operator/let", "rxjs/operator/switchMap"], factory);
 	else if(typeof exports === 'object')
-		exports["ngb"] = factory(require("@angular/core"), require("@angular/common"), require("@angular/forms"), require("rxjs/observable/fromEvent"), require("rxjs/operator/do"), require("rxjs/operator/let"));
+		exports["ngb"] = factory(require("@angular/core"), require("@angular/common"), require("@angular/forms"), require("rxjs/BehaviorSubject"), require("rxjs/Subject"), require("rxjs/observable/fromEvent"), require("rxjs/operator/do"), require("rxjs/operator/filter"), require("rxjs/operator/let"), require("rxjs/operator/switchMap"));
 	else
-		root["ngb"] = factory(root["ng"]["core"], root["ng"]["common"], root["ng"]["forms"], root["Rx"], root["Rx"], root["Rx"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_73__, __WEBPACK_EXTERNAL_MODULE_74__, __WEBPACK_EXTERNAL_MODULE_75__) {
+		root["ngb"] = factory(root["ng"]["core"], root["ng"]["common"], root["ng"]["forms"], root["Rx"], root["Rx"], root["Rx"], root["Rx"], root["Rx"], root["Rx"], root["Rx"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_77__, __WEBPACK_EXTERNAL_MODULE_78__, __WEBPACK_EXTERNAL_MODULE_79__, __WEBPACK_EXTERNAL_MODULE_80__, __WEBPACK_EXTERNAL_MODULE_81__, __WEBPACK_EXTERNAL_MODULE_82__, __WEBPACK_EXTERNAL_MODULE_83__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -58157,7 +58171,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 76);
+/******/ 	return __webpack_require__(__webpack_require__.s = 84);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -58246,7 +58260,7 @@ function fromJSDate(jsDate) {
     return new ngb_date_1.NgbDate(jsDate.getFullYear(), jsDate.getMonth() + 1, jsDate.getDate());
 }
 function toJSDate(date) {
-    var jsDate = new Date(date.year, date.month - 1, date.day);
+    var jsDate = new Date(date.year, date.month - 1, date.day, 12);
     // this is done avoid 30 -> 1930 conversion
     if (!isNaN(jsDate.getTime())) {
         jsDate.setFullYear(date.year);
@@ -58278,7 +58292,7 @@ var NgbCalendarGregorian = (function (_super) {
             case 'y':
                 return new ngb_date_1.NgbDate(date.year + number, 1, 1);
             case 'm':
-                jsDate = new Date(date.year, date.month + number - 1, 1);
+                jsDate = new Date(date.year, date.month + number - 1, 1, 12);
                 break;
             case 'd':
                 jsDate.setDate(jsDate.getDate() + number);
@@ -58380,6 +58394,7 @@ var NgbDate = (function () {
             return this.year > other.year;
         }
     };
+    NgbDate.prototype.toStruct = function () { return { year: this.year, month: this.month, day: this.day }; };
     NgbDate.prototype.toString = function () { return this.year + "-" + this.month + "-" + this.day; };
     return NgbDate;
 }());
@@ -58451,70 +58466,13 @@ exports.NgbDatepickerI18nDefault = NgbDatepickerI18nDefault;
 
 "use strict";
 
-var core_1 = __webpack_require__(0);
-var ContentRef = (function () {
-    function ContentRef(nodes, viewRef, componentRef) {
-        this.nodes = nodes;
-        this.viewRef = viewRef;
-        this.componentRef = componentRef;
-    }
-    return ContentRef;
-}());
-exports.ContentRef = ContentRef;
-var PopupService = (function () {
-    function PopupService(type, _injector, _viewContainerRef, _renderer, componentFactoryResolver) {
-        this._injector = _injector;
-        this._viewContainerRef = _viewContainerRef;
-        this._renderer = _renderer;
-        this._windowFactory = componentFactoryResolver.resolveComponentFactory(type);
-    }
-    PopupService.prototype.open = function (content, context) {
-        if (!this._windowRef) {
-            this._contentRef = this._getContentRef(content, context);
-            this._windowRef =
-                this._viewContainerRef.createComponent(this._windowFactory, 0, this._injector, this._contentRef.nodes);
-        }
-        return this._windowRef;
-    };
-    PopupService.prototype.close = function () {
-        if (this._windowRef) {
-            this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._windowRef.hostView));
-            this._windowRef = null;
-            if (this._contentRef.viewRef) {
-                this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._contentRef.viewRef));
-                this._contentRef = null;
-            }
-        }
-    };
-    PopupService.prototype._getContentRef = function (content, context) {
-        if (!content) {
-            return new ContentRef([]);
-        }
-        else if (content instanceof core_1.TemplateRef) {
-            var viewRef = this._viewContainerRef.createEmbeddedView(content, context);
-            return new ContentRef([viewRef.rootNodes], viewRef);
-        }
-        else {
-            return new ContentRef([[this._renderer.createText("" + content)]]);
-        }
-    };
-    return PopupService;
-}());
-exports.PopupService = PopupService;
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 // previous version:
 // https://github.com/angular-ui/bootstrap/blob/07c31d0731f7cb068a1932b8e01d2312b796b4ec/src/position/position.js
 var Positioning = (function () {
     function Positioning() {
     }
-    Positioning.prototype.getStyle = function (element, prop) { return window.getComputedStyle(element)[prop]; };
+    Positioning.prototype.getAllStyles = function (element) { return window.getComputedStyle(element); };
+    Positioning.prototype.getStyle = function (element, prop) { return this.getAllStyles(element)[prop]; };
     Positioning.prototype.isStaticPositioned = function (element) {
         return (this.getStyle(element, 'position') || 'static') === 'static';
     };
@@ -58580,51 +58538,54 @@ var Positioning = (function () {
     };
     Positioning.prototype.positionElements = function (hostElement, targetElement, placement, appendToBody) {
         var hostElPosition = appendToBody ? this.offset(hostElement, false) : this.position(hostElement, false);
-        var shiftWidth = {
-            left: hostElPosition.left,
-            center: hostElPosition.left + hostElPosition.width / 2 - targetElement.offsetWidth / 2,
-            right: hostElPosition.left + hostElPosition.width
-        };
-        var shiftHeight = {
-            top: hostElPosition.top,
-            center: hostElPosition.top + hostElPosition.height / 2 - targetElement.offsetHeight / 2,
-            bottom: hostElPosition.top + hostElPosition.height
-        };
+        var targetElStyles = this.getAllStyles(targetElement);
         var targetElBCR = targetElement.getBoundingClientRect();
         var placementPrimary = placement.split('-')[0] || 'top';
         var placementSecondary = placement.split('-')[1] || 'center';
         var targetElPosition = {
-            height: targetElBCR.height || targetElement.offsetHeight,
-            width: targetElBCR.width || targetElement.offsetWidth,
-            top: 0,
-            bottom: targetElBCR.height || targetElement.offsetHeight,
-            left: 0,
-            right: targetElBCR.width || targetElement.offsetWidth
+            'height': targetElBCR.height || targetElement.offsetHeight,
+            'width': targetElBCR.width || targetElement.offsetWidth,
+            'top': 0,
+            'bottom': targetElBCR.height || targetElement.offsetHeight,
+            'left': 0,
+            'right': targetElBCR.width || targetElement.offsetWidth
         };
         switch (placementPrimary) {
             case 'top':
-                targetElPosition.top = hostElPosition.top - targetElement.offsetHeight;
-                targetElPosition.bottom += hostElPosition.top - targetElement.offsetHeight;
-                targetElPosition.left = shiftWidth[placementSecondary];
-                targetElPosition.right += shiftWidth[placementSecondary];
+                targetElPosition.top =
+                    hostElPosition.top - (targetElement.offsetHeight + parseFloat(targetElStyles.marginBottom));
                 break;
             case 'bottom':
-                targetElPosition.top = shiftHeight[placementPrimary];
-                targetElPosition.bottom += shiftHeight[placementPrimary];
-                targetElPosition.left = shiftWidth[placementSecondary];
-                targetElPosition.right += shiftWidth[placementSecondary];
+                targetElPosition.top = hostElPosition.top + hostElPosition.height;
                 break;
             case 'left':
-                targetElPosition.top = shiftHeight[placementSecondary];
-                targetElPosition.bottom += shiftHeight[placementSecondary];
-                targetElPosition.left = hostElPosition.left - targetElement.offsetWidth;
-                targetElPosition.right += hostElPosition.left - targetElement.offsetWidth;
+                targetElPosition.left =
+                    hostElPosition.left - (targetElement.offsetWidth + parseFloat(targetElStyles.marginRight));
                 break;
             case 'right':
-                targetElPosition.top = shiftHeight[placementSecondary];
-                targetElPosition.bottom += shiftHeight[placementSecondary];
-                targetElPosition.left = shiftWidth[placementPrimary];
-                targetElPosition.right += shiftWidth[placementPrimary];
+                targetElPosition.left = hostElPosition.left + hostElPosition.width;
+                break;
+        }
+        switch (placementSecondary) {
+            case 'top':
+                targetElPosition.top = hostElPosition.top;
+                break;
+            case 'bottom':
+                targetElPosition.top = hostElPosition.top + hostElPosition.height - targetElement.offsetHeight;
+                break;
+            case 'left':
+                targetElPosition.left = hostElPosition.left;
+                break;
+            case 'right':
+                targetElPosition.left = hostElPosition.left + hostElPosition.width - targetElement.offsetWidth;
+                break;
+            case 'center':
+                if (placementPrimary === 'top' || placementPrimary === 'bottom') {
+                    targetElPosition.left = hostElPosition.left + hostElPosition.width / 2 - targetElement.offsetWidth / 2;
+                }
+                else {
+                    targetElPosition.top = hostElPosition.top + hostElPosition.height / 2 - targetElement.offsetHeight / 2;
+                }
                 break;
         }
         targetElPosition.top = Math.round(targetElPosition.top);
@@ -58633,20 +58594,130 @@ var Positioning = (function () {
         targetElPosition.right = Math.round(targetElPosition.right);
         return targetElPosition;
     };
+    // get the availble placements of the target element in the viewport dependeing on the host element
+    Positioning.prototype.getAvailablePlacements = function (hostElement, targetElement) {
+        var availablePlacements = [];
+        var hostElemClientRect = hostElement.getBoundingClientRect();
+        var targetElemClientRect = targetElement.getBoundingClientRect();
+        var html = document.documentElement;
+        // left: check if target width can be placed between host left and viewport start and also height of target is
+        // inside viewport
+        if (targetElemClientRect.width < hostElemClientRect.left) {
+            // check for left only
+            if ((hostElemClientRect.top + hostElemClientRect.height / 2 - targetElement.offsetHeight / 2) > 0) {
+                availablePlacements.splice(availablePlacements.length, 1, 'left');
+            }
+            // check for left-top and left-bottom
+            this.setSecondaryPlacementForLeftRight(hostElemClientRect, targetElemClientRect, 'left', availablePlacements);
+        }
+        // top: target height is less than host top
+        if (targetElemClientRect.height < hostElemClientRect.top) {
+            availablePlacements.splice(availablePlacements.length, 1, 'top');
+            this.setSecondaryPlacementForTopBottom(hostElemClientRect, targetElemClientRect, 'top', availablePlacements);
+        }
+        // right: check if target width can be placed between host right and viewport end and also height of target is
+        // inside viewport
+        if ((window.innerWidth || html.clientWidth) - hostElemClientRect.right > targetElemClientRect.width) {
+            // check for right only
+            if ((hostElemClientRect.top + hostElemClientRect.height / 2 - targetElement.offsetHeight / 2) > 0) {
+                availablePlacements.splice(availablePlacements.length, 1, 'right');
+            }
+            // check for right-top and right-bottom
+            this.setSecondaryPlacementForLeftRight(hostElemClientRect, targetElemClientRect, 'right', availablePlacements);
+        }
+        // bottom: check if there is enough space between host bottom and viewport end for target height
+        if ((window.innerHeight || html.clientHeight) - hostElemClientRect.bottom > targetElemClientRect.height) {
+            availablePlacements.splice(availablePlacements.length, 1, 'bottom');
+            this.setSecondaryPlacementForTopBottom(hostElemClientRect, targetElemClientRect, 'bottom', availablePlacements);
+        }
+        return availablePlacements;
+    };
+    /**
+     * check if secondary placement for left and right are available i.e. left-top, left-bottom, right-top, right-bottom
+     * primaryplacement: left|right
+     * availablePlacementArr: array in which available placemets to be set
+     */
+    Positioning.prototype.setSecondaryPlacementForLeftRight = function (hostElemClientRect, targetElemClientRect, primaryPlacement, availablePlacementArr) {
+        var html = document.documentElement;
+        // check for left-bottom
+        if (targetElemClientRect.height <= hostElemClientRect.bottom) {
+            availablePlacementArr.splice(availablePlacementArr.length, 1, primaryPlacement + '-bottom');
+        }
+        if ((window.innerHeight || html.clientHeight) - hostElemClientRect.top >= targetElemClientRect.height) {
+            availablePlacementArr.splice(availablePlacementArr.length, 1, primaryPlacement + '-top');
+        }
+    };
+    /**
+     * check if secondary placement for top and bottom are available i.e. top-left, top-right, bottom-left, bottom-right
+     * primaryplacement: top|bottom
+     * availablePlacementArr: array in which available placemets to be set
+     */
+    Positioning.prototype.setSecondaryPlacementForTopBottom = function (hostElemClientRect, targetElemClientRect, primaryPlacement, availablePlacementArr) {
+        var html = document.documentElement;
+        // check for left-bottom
+        if ((window.innerHeight || html.clientHeight) - hostElemClientRect.left >= targetElemClientRect.width) {
+            availablePlacementArr.splice(availablePlacementArr.length, 1, primaryPlacement + '-left');
+        }
+        if (targetElemClientRect.width <= hostElemClientRect.right) {
+            availablePlacementArr.splice(availablePlacementArr.length, 1, primaryPlacement + '-right');
+        }
+    };
     return Positioning;
 }());
 exports.Positioning = Positioning;
 var positionService = new Positioning();
+/*
+ * Accept the placement array and applies the appropriate placement dependent on the viewport.
+ * Returns the applied placement.
+ * In case of auto placement, placements are selected in order 'top', 'bottom', 'left', 'right'.
+ * */
 function positionElements(hostElement, targetElement, placement, appendToBody) {
-    var pos = positionService.positionElements(hostElement, targetElement, placement, appendToBody);
-    targetElement.style.top = pos.top + "px";
-    targetElement.style.left = pos.left + "px";
+    var placementVals = Array.isArray(placement) ? placement : [placement];
+    // replace auto placement with other placements
+    var hasAuto = placementVals.findIndex(function (val) { return val === 'auto'; });
+    if (hasAuto >= 0) {
+        ['top', 'right', 'bottom', 'left'].forEach(function (obj) {
+            if (placementVals.find(function (val) { return val.search('^' + obj + '|^' + obj + '-') !== -1; }) == null) {
+                placementVals.splice(hasAuto++, 1, obj);
+            }
+        });
+    }
+    // coordinates where to position
+    var topVal = 0, leftVal = 0;
+    var appliedPlacement;
+    // get available placements
+    var availablePlacements = positionService.getAvailablePlacements(hostElement, targetElement);
+    var _loop_1 = function (item, index) {
+        // check if passed placement is present in the available placement or otherwise apply the last placement in the
+        // passed placement list
+        if ((availablePlacements.find(function (val) { return val === item; }) != null) || (placementVals.length === index + 1)) {
+            appliedPlacement = item;
+            var pos = positionService.positionElements(hostElement, targetElement, item, appendToBody);
+            topVal = pos.top;
+            leftVal = pos.left;
+            return "break";
+        }
+    };
+    // iterate over all the passed placements
+    for (var _i = 0, _a = toItemIndexes(placementVals); _i < _a.length; _i++) {
+        var _b = _a[_i], item = _b.item, index = _b.index;
+        var state_1 = _loop_1(item, index);
+        if (state_1 === "break")
+            break;
+    }
+    targetElement.style.top = topVal + "px";
+    targetElement.style.left = leftVal + "px";
+    return appliedPlacement;
 }
 exports.positionElements = positionElements;
+// function to get index and item of an array
+function toItemIndexes(a) {
+    return a.map(function (item, index) { return ({ item: item, index: index }); });
+}
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58658,28 +58729,76 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(2);
-var accordion_1 = __webpack_require__(41);
-var accordion_config_1 = __webpack_require__(25);
-var accordion_2 = __webpack_require__(41);
-exports.NgbAccordion = accordion_2.NgbAccordion;
-exports.NgbPanel = accordion_2.NgbPanel;
-exports.NgbPanelTitle = accordion_2.NgbPanelTitle;
-exports.NgbPanelContent = accordion_2.NgbPanelContent;
-var accordion_config_2 = __webpack_require__(25);
-exports.NgbAccordionConfig = accordion_config_2.NgbAccordionConfig;
-var NGB_ACCORDION_DIRECTIVES = [accordion_1.NgbAccordion, accordion_1.NgbPanel, accordion_1.NgbPanelTitle, accordion_1.NgbPanelContent];
-var NgbAccordionModule = NgbAccordionModule_1 = (function () {
-    function NgbAccordionModule() {
+var NgbButtonLabel = (function () {
+    function NgbButtonLabel() {
     }
-    NgbAccordionModule.forRoot = function () { return { ngModule: NgbAccordionModule_1, providers: [accordion_config_1.NgbAccordionConfig] }; };
-    return NgbAccordionModule;
+    return NgbButtonLabel;
 }());
-NgbAccordionModule = NgbAccordionModule_1 = __decorate([
-    core_1.NgModule({ declarations: NGB_ACCORDION_DIRECTIVES, exports: NGB_ACCORDION_DIRECTIVES, imports: [common_1.CommonModule] })
-], NgbAccordionModule);
-exports.NgbAccordionModule = NgbAccordionModule;
-var NgbAccordionModule_1;
+NgbButtonLabel = __decorate([
+    core_1.Directive({
+        selector: '[ngbButtonLabel]',
+        host: { '[class.btn]': 'true', '[class.active]': 'active', '[class.disabled]': 'disabled', '[class.focus]': 'focused' }
+    })
+], NgbButtonLabel);
+exports.NgbButtonLabel = NgbButtonLabel;
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+var ContentRef = (function () {
+    function ContentRef(nodes, viewRef, componentRef) {
+        this.nodes = nodes;
+        this.viewRef = viewRef;
+        this.componentRef = componentRef;
+    }
+    return ContentRef;
+}());
+exports.ContentRef = ContentRef;
+var PopupService = (function () {
+    function PopupService(type, _injector, _viewContainerRef, _renderer, componentFactoryResolver) {
+        this._injector = _injector;
+        this._viewContainerRef = _viewContainerRef;
+        this._renderer = _renderer;
+        this._windowFactory = componentFactoryResolver.resolveComponentFactory(type);
+    }
+    PopupService.prototype.open = function (content, context) {
+        if (!this._windowRef) {
+            this._contentRef = this._getContentRef(content, context);
+            this._windowRef =
+                this._viewContainerRef.createComponent(this._windowFactory, 0, this._injector, this._contentRef.nodes);
+        }
+        return this._windowRef;
+    };
+    PopupService.prototype.close = function () {
+        if (this._windowRef) {
+            this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._windowRef.hostView));
+            this._windowRef = null;
+            if (this._contentRef.viewRef) {
+                this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._contentRef.viewRef));
+                this._contentRef = null;
+            }
+        }
+    };
+    PopupService.prototype._getContentRef = function (content, context) {
+        if (!content) {
+            return new ContentRef([]);
+        }
+        else if (content instanceof core_1.TemplateRef) {
+            var viewRef = this._viewContainerRef.createEmbeddedView(content, context);
+            return new ContentRef([viewRef.rootNodes], viewRef);
+        }
+        else {
+            return new ContentRef([[this._renderer.createText("" + content)]]);
+        }
+    };
+    return PopupService;
+}());
+exports.PopupService = PopupService;
 
 
 /***/ }),
@@ -58696,23 +58815,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(2);
-var alert_1 = __webpack_require__(42);
-var alert_config_1 = __webpack_require__(26);
-var alert_2 = __webpack_require__(42);
-exports.NgbAlert = alert_2.NgbAlert;
-var alert_config_2 = __webpack_require__(26);
-exports.NgbAlertConfig = alert_config_2.NgbAlertConfig;
-var NgbAlertModule = NgbAlertModule_1 = (function () {
-    function NgbAlertModule() {
+var accordion_1 = __webpack_require__(43);
+var accordion_config_1 = __webpack_require__(26);
+var accordion_2 = __webpack_require__(43);
+exports.NgbAccordion = accordion_2.NgbAccordion;
+exports.NgbPanel = accordion_2.NgbPanel;
+exports.NgbPanelTitle = accordion_2.NgbPanelTitle;
+exports.NgbPanelContent = accordion_2.NgbPanelContent;
+var accordion_config_2 = __webpack_require__(26);
+exports.NgbAccordionConfig = accordion_config_2.NgbAccordionConfig;
+var NGB_ACCORDION_DIRECTIVES = [accordion_1.NgbAccordion, accordion_1.NgbPanel, accordion_1.NgbPanelTitle, accordion_1.NgbPanelContent];
+var NgbAccordionModule = NgbAccordionModule_1 = (function () {
+    function NgbAccordionModule() {
     }
-    NgbAlertModule.forRoot = function () { return { ngModule: NgbAlertModule_1, providers: [alert_config_1.NgbAlertConfig] }; };
-    return NgbAlertModule;
+    NgbAccordionModule.forRoot = function () { return { ngModule: NgbAccordionModule_1, providers: [accordion_config_1.NgbAccordionConfig] }; };
+    return NgbAccordionModule;
 }());
-NgbAlertModule = NgbAlertModule_1 = __decorate([
-    core_1.NgModule({ declarations: [alert_1.NgbAlert], exports: [alert_1.NgbAlert], imports: [common_1.CommonModule], entryComponents: [alert_1.NgbAlert] })
-], NgbAlertModule);
-exports.NgbAlertModule = NgbAlertModule;
-var NgbAlertModule_1;
+NgbAccordionModule = NgbAccordionModule_1 = __decorate([
+    core_1.NgModule({ declarations: NGB_ACCORDION_DIRECTIVES, exports: NGB_ACCORDION_DIRECTIVES, imports: [common_1.CommonModule] })
+], NgbAccordionModule);
+exports.NgbAccordionModule = NgbAccordionModule;
+var NgbAccordionModule_1;
 
 
 /***/ }),
@@ -58728,23 +58851,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = __webpack_require__(0);
-var radio_1 = __webpack_require__(43);
-var radio_2 = __webpack_require__(43);
-exports.NgbRadio = radio_2.NgbRadio;
-exports.NgbActiveLabel = radio_2.NgbActiveLabel;
-exports.NgbRadioGroup = radio_2.NgbRadioGroup;
-var NGB_RADIO_DIRECTIVES = [radio_1.NgbRadio, radio_1.NgbActiveLabel, radio_1.NgbRadioGroup];
-var NgbButtonsModule = NgbButtonsModule_1 = (function () {
-    function NgbButtonsModule() {
+var common_1 = __webpack_require__(2);
+var alert_1 = __webpack_require__(44);
+var alert_config_1 = __webpack_require__(27);
+var alert_2 = __webpack_require__(44);
+exports.NgbAlert = alert_2.NgbAlert;
+var alert_config_2 = __webpack_require__(27);
+exports.NgbAlertConfig = alert_config_2.NgbAlertConfig;
+var NgbAlertModule = NgbAlertModule_1 = (function () {
+    function NgbAlertModule() {
     }
-    NgbButtonsModule.forRoot = function () { return { ngModule: NgbButtonsModule_1, providers: [] }; };
-    return NgbButtonsModule;
+    NgbAlertModule.forRoot = function () { return { ngModule: NgbAlertModule_1, providers: [alert_config_1.NgbAlertConfig] }; };
+    return NgbAlertModule;
 }());
-NgbButtonsModule = NgbButtonsModule_1 = __decorate([
-    core_1.NgModule({ declarations: NGB_RADIO_DIRECTIVES, exports: NGB_RADIO_DIRECTIVES })
-], NgbButtonsModule);
-exports.NgbButtonsModule = NgbButtonsModule;
-var NgbButtonsModule_1;
+NgbAlertModule = NgbAlertModule_1 = __decorate([
+    core_1.NgModule({ declarations: [alert_1.NgbAlert], exports: [alert_1.NgbAlert], imports: [common_1.CommonModule], entryComponents: [alert_1.NgbAlert] })
+], NgbAlertModule);
+exports.NgbAlertModule = NgbAlertModule;
+var NgbAlertModule_1;
 
 
 /***/ }),
@@ -58760,25 +58884,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(2);
-var carousel_1 = __webpack_require__(44);
-var carousel_config_1 = __webpack_require__(27);
-var carousel_2 = __webpack_require__(44);
-exports.NgbCarousel = carousel_2.NgbCarousel;
-exports.NgbSlide = carousel_2.NgbSlide;
-var carousel_config_2 = __webpack_require__(27);
-exports.NgbCarouselConfig = carousel_config_2.NgbCarouselConfig;
-var NgbCarouselModule = NgbCarouselModule_1 = (function () {
-    function NgbCarouselModule() {
+var label_1 = __webpack_require__(8);
+var checkbox_1 = __webpack_require__(45);
+var radio_1 = __webpack_require__(46);
+var label_2 = __webpack_require__(8);
+exports.NgbButtonLabel = label_2.NgbButtonLabel;
+var checkbox_2 = __webpack_require__(45);
+exports.NgbCheckBox = checkbox_2.NgbCheckBox;
+var radio_2 = __webpack_require__(46);
+exports.NgbRadio = radio_2.NgbRadio;
+exports.NgbRadioGroup = radio_2.NgbRadioGroup;
+var NGB_BUTTON_DIRECTIVES = [label_1.NgbButtonLabel, checkbox_1.NgbCheckBox, radio_1.NgbRadioGroup, radio_1.NgbRadio];
+var NgbButtonsModule = NgbButtonsModule_1 = (function () {
+    function NgbButtonsModule() {
     }
-    NgbCarouselModule.forRoot = function () { return { ngModule: NgbCarouselModule_1, providers: [carousel_config_1.NgbCarouselConfig] }; };
-    return NgbCarouselModule;
+    NgbButtonsModule.forRoot = function () { return { ngModule: NgbButtonsModule_1, providers: [] }; };
+    return NgbButtonsModule;
 }());
-NgbCarouselModule = NgbCarouselModule_1 = __decorate([
-    core_1.NgModule({ declarations: carousel_1.NGB_CAROUSEL_DIRECTIVES, exports: carousel_1.NGB_CAROUSEL_DIRECTIVES, imports: [common_1.CommonModule] })
-], NgbCarouselModule);
-exports.NgbCarouselModule = NgbCarouselModule;
-var NgbCarouselModule_1;
+NgbButtonsModule = NgbButtonsModule_1 = __decorate([
+    core_1.NgModule({ declarations: NGB_BUTTON_DIRECTIVES, exports: NGB_BUTTON_DIRECTIVES })
+], NgbButtonsModule);
+exports.NgbButtonsModule = NgbButtonsModule;
+var NgbButtonsModule_1;
 
 
 /***/ }),
@@ -58794,20 +58921,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = __webpack_require__(0);
-var collapse_1 = __webpack_require__(45);
-var collapse_2 = __webpack_require__(45);
-exports.NgbCollapse = collapse_2.NgbCollapse;
-var NgbCollapseModule = NgbCollapseModule_1 = (function () {
-    function NgbCollapseModule() {
+var common_1 = __webpack_require__(2);
+var carousel_1 = __webpack_require__(47);
+var carousel_config_1 = __webpack_require__(28);
+var carousel_2 = __webpack_require__(47);
+exports.NgbCarousel = carousel_2.NgbCarousel;
+exports.NgbSlide = carousel_2.NgbSlide;
+var carousel_config_2 = __webpack_require__(28);
+exports.NgbCarouselConfig = carousel_config_2.NgbCarouselConfig;
+var NgbCarouselModule = NgbCarouselModule_1 = (function () {
+    function NgbCarouselModule() {
     }
-    NgbCollapseModule.forRoot = function () { return { ngModule: NgbCollapseModule_1, providers: [] }; };
-    return NgbCollapseModule;
+    NgbCarouselModule.forRoot = function () { return { ngModule: NgbCarouselModule_1, providers: [carousel_config_1.NgbCarouselConfig] }; };
+    return NgbCarouselModule;
 }());
-NgbCollapseModule = NgbCollapseModule_1 = __decorate([
-    core_1.NgModule({ declarations: [collapse_1.NgbCollapse], exports: [collapse_1.NgbCollapse] })
-], NgbCollapseModule);
-exports.NgbCollapseModule = NgbCollapseModule;
-var NgbCollapseModule_1;
+NgbCarouselModule = NgbCarouselModule_1 = __decorate([
+    core_1.NgModule({ declarations: carousel_1.NGB_CAROUSEL_DIRECTIVES, exports: carousel_1.NGB_CAROUSEL_DIRECTIVES, imports: [common_1.CommonModule] })
+], NgbCarouselModule);
+exports.NgbCarouselModule = NgbCarouselModule;
+var NgbCarouselModule_1;
 
 
 /***/ }),
@@ -58823,39 +58955,68 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = __webpack_require__(0);
+var collapse_1 = __webpack_require__(48);
+var collapse_2 = __webpack_require__(48);
+exports.NgbCollapse = collapse_2.NgbCollapse;
+var NgbCollapseModule = NgbCollapseModule_1 = (function () {
+    function NgbCollapseModule() {
+    }
+    NgbCollapseModule.forRoot = function () { return { ngModule: NgbCollapseModule_1, providers: [] }; };
+    return NgbCollapseModule;
+}());
+NgbCollapseModule = NgbCollapseModule_1 = __decorate([
+    core_1.NgModule({ declarations: [collapse_1.NgbCollapse], exports: [collapse_1.NgbCollapse] })
+], NgbCollapseModule);
+exports.NgbCollapseModule = NgbCollapseModule;
+var NgbCollapseModule_1;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(2);
-var datepicker_1 = __webpack_require__(29);
-var datepicker_month_view_1 = __webpack_require__(48);
-var datepicker_navigation_1 = __webpack_require__(50);
-var datepicker_input_1 = __webpack_require__(47);
+var datepicker_1 = __webpack_require__(31);
+var datepicker_month_view_1 = __webpack_require__(51);
+var datepicker_navigation_1 = __webpack_require__(53);
+var datepicker_input_1 = __webpack_require__(50);
 var forms_1 = __webpack_require__(5);
-var datepicker_day_view_1 = __webpack_require__(46);
+var datepicker_day_view_1 = __webpack_require__(49);
 var datepicker_i18n_1 = __webpack_require__(6);
 var ngb_calendar_1 = __webpack_require__(3);
-var ngb_date_parser_formatter_1 = __webpack_require__(30);
-var datepicker_navigation_select_1 = __webpack_require__(49);
-var datepicker_config_1 = __webpack_require__(28);
-var datepicker_2 = __webpack_require__(29);
+var ngb_date_parser_formatter_1 = __webpack_require__(32);
+var datepicker_navigation_select_1 = __webpack_require__(52);
+var datepicker_config_1 = __webpack_require__(29);
+var datepicker_2 = __webpack_require__(31);
 exports.NgbDatepicker = datepicker_2.NgbDatepicker;
-var datepicker_input_2 = __webpack_require__(47);
+var datepicker_input_2 = __webpack_require__(50);
 exports.NgbInputDatepicker = datepicker_input_2.NgbInputDatepicker;
 var ngb_calendar_2 = __webpack_require__(3);
 exports.NgbCalendar = ngb_calendar_2.NgbCalendar;
-var ngb_calendar_islamic_civil_1 = __webpack_require__(71);
+var ngb_calendar_islamic_civil_1 = __webpack_require__(75);
 exports.NgbCalendarIslamicCivil = ngb_calendar_islamic_civil_1.NgbCalendarIslamicCivil;
-var datepicker_month_view_2 = __webpack_require__(48);
+var datepicker_month_view_2 = __webpack_require__(51);
 exports.NgbDatepickerMonthView = datepicker_month_view_2.NgbDatepickerMonthView;
-var datepicker_day_view_2 = __webpack_require__(46);
+var datepicker_day_view_2 = __webpack_require__(49);
 exports.NgbDatepickerDayView = datepicker_day_view_2.NgbDatepickerDayView;
-var datepicker_navigation_2 = __webpack_require__(50);
+var datepicker_navigation_2 = __webpack_require__(53);
 exports.NgbDatepickerNavigation = datepicker_navigation_2.NgbDatepickerNavigation;
-var datepicker_navigation_select_2 = __webpack_require__(49);
+var datepicker_navigation_select_2 = __webpack_require__(52);
 exports.NgbDatepickerNavigationSelect = datepicker_navigation_select_2.NgbDatepickerNavigationSelect;
-var datepicker_config_2 = __webpack_require__(28);
+var datepicker_config_2 = __webpack_require__(29);
 exports.NgbDatepickerConfig = datepicker_config_2.NgbDatepickerConfig;
 var datepicker_i18n_2 = __webpack_require__(6);
 exports.NgbDatepickerI18n = datepicker_i18n_2.NgbDatepickerI18n;
-var ngb_date_parser_formatter_2 = __webpack_require__(30);
+var ngb_date_parser_formatter_2 = __webpack_require__(32);
 exports.NgbDateParserFormatter = ngb_date_parser_formatter_2.NgbDateParserFormatter;
 var NgbDatepickerModule = NgbDatepickerModule_1 = (function () {
     function NgbDatepickerModule() {
@@ -58888,7 +59049,7 @@ var NgbDatepickerModule_1;
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58900,14 +59061,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = __webpack_require__(0);
-var dropdown_1 = __webpack_require__(53);
-var dropdown_config_1 = __webpack_require__(31);
-var dropdown_2 = __webpack_require__(53);
+var dropdown_1 = __webpack_require__(56);
+var dropdown_config_1 = __webpack_require__(33);
+var dropdown_2 = __webpack_require__(56);
 exports.NgbDropdown = dropdown_2.NgbDropdown;
 exports.NgbDropdownToggle = dropdown_2.NgbDropdownToggle;
-var dropdown_config_2 = __webpack_require__(31);
+exports.NgbDropdownMenu = dropdown_2.NgbDropdownMenu;
+var dropdown_config_2 = __webpack_require__(33);
 exports.NgbDropdownConfig = dropdown_config_2.NgbDropdownConfig;
-var NGB_DROPDOWN_DIRECTIVES = [dropdown_1.NgbDropdownToggle, dropdown_1.NgbDropdown];
+var NGB_DROPDOWN_DIRECTIVES = [dropdown_1.NgbDropdown, dropdown_1.NgbDropdownToggle, dropdown_1.NgbDropdownMenu];
 var NgbDropdownModule = NgbDropdownModule_1 = (function () {
     function NgbDropdownModule() {
     }
@@ -58922,7 +59084,7 @@ var NgbDropdownModule_1;
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58934,16 +59096,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = __webpack_require__(0);
-var modal_backdrop_1 = __webpack_require__(54);
-var modal_window_1 = __webpack_require__(58);
-var modal_stack_1 = __webpack_require__(57);
-var modal_1 = __webpack_require__(59);
-var modal_2 = __webpack_require__(59);
+var modal_backdrop_1 = __webpack_require__(57);
+var modal_window_1 = __webpack_require__(61);
+var modal_stack_1 = __webpack_require__(60);
+var modal_1 = __webpack_require__(62);
+var modal_2 = __webpack_require__(62);
 exports.NgbModal = modal_2.NgbModal;
-var modal_ref_1 = __webpack_require__(56);
+var modal_ref_1 = __webpack_require__(59);
 exports.NgbModalRef = modal_ref_1.NgbModalRef;
 exports.NgbActiveModal = modal_ref_1.NgbActiveModal;
-var modal_dismiss_reasons_1 = __webpack_require__(55);
+var modal_dismiss_reasons_1 = __webpack_require__(58);
 exports.ModalDismissReasons = modal_dismiss_reasons_1.ModalDismissReasons;
 var NgbModalModule = NgbModalModule_1 = (function () {
     function NgbModalModule() {
@@ -58963,7 +59125,7 @@ var NgbModalModule_1;
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58976,11 +59138,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(2);
-var pagination_1 = __webpack_require__(60);
-var pagination_config_1 = __webpack_require__(32);
-var pagination_2 = __webpack_require__(60);
+var pagination_1 = __webpack_require__(63);
+var pagination_config_1 = __webpack_require__(34);
+var pagination_2 = __webpack_require__(63);
 exports.NgbPagination = pagination_2.NgbPagination;
-var pagination_config_2 = __webpack_require__(32);
+var pagination_config_2 = __webpack_require__(34);
 exports.NgbPaginationConfig = pagination_config_2.NgbPaginationConfig;
 var NgbPaginationModule = NgbPaginationModule_1 = (function () {
     function NgbPaginationModule() {
@@ -58996,38 +59158,6 @@ var NgbPaginationModule_1;
 
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var core_1 = __webpack_require__(0);
-var popover_1 = __webpack_require__(61);
-var popover_config_1 = __webpack_require__(33);
-var popover_2 = __webpack_require__(61);
-exports.NgbPopover = popover_2.NgbPopover;
-var popover_config_2 = __webpack_require__(33);
-exports.NgbPopoverConfig = popover_config_2.NgbPopoverConfig;
-var NgbPopoverModule = NgbPopoverModule_1 = (function () {
-    function NgbPopoverModule() {
-    }
-    NgbPopoverModule.forRoot = function () { return { ngModule: NgbPopoverModule_1, providers: [popover_config_1.NgbPopoverConfig] }; };
-    return NgbPopoverModule;
-}());
-NgbPopoverModule = NgbPopoverModule_1 = __decorate([
-    core_1.NgModule({ declarations: [popover_1.NgbPopover, popover_1.NgbPopoverWindow], exports: [popover_1.NgbPopover], entryComponents: [popover_1.NgbPopoverWindow] })
-], NgbPopoverModule);
-exports.NgbPopoverModule = NgbPopoverModule;
-var NgbPopoverModule_1;
-
-
-/***/ }),
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -59040,24 +59170,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(2);
-var progressbar_1 = __webpack_require__(62);
-var progressbar_config_1 = __webpack_require__(34);
-var progressbar_2 = __webpack_require__(62);
-exports.NgbProgressbar = progressbar_2.NgbProgressbar;
-var progressbar_config_2 = __webpack_require__(34);
-exports.NgbProgressbarConfig = progressbar_config_2.NgbProgressbarConfig;
-var NgbProgressbarModule = NgbProgressbarModule_1 = (function () {
-    function NgbProgressbarModule() {
+var popover_1 = __webpack_require__(64);
+var popover_config_1 = __webpack_require__(35);
+var popover_2 = __webpack_require__(64);
+exports.NgbPopover = popover_2.NgbPopover;
+var popover_config_2 = __webpack_require__(35);
+exports.NgbPopoverConfig = popover_config_2.NgbPopoverConfig;
+var NgbPopoverModule = NgbPopoverModule_1 = (function () {
+    function NgbPopoverModule() {
     }
-    NgbProgressbarModule.forRoot = function () { return { ngModule: NgbProgressbarModule_1, providers: [progressbar_config_1.NgbProgressbarConfig] }; };
-    return NgbProgressbarModule;
+    NgbPopoverModule.forRoot = function () { return { ngModule: NgbPopoverModule_1, providers: [popover_config_1.NgbPopoverConfig] }; };
+    return NgbPopoverModule;
 }());
-NgbProgressbarModule = NgbProgressbarModule_1 = __decorate([
-    core_1.NgModule({ declarations: [progressbar_1.NgbProgressbar], exports: [progressbar_1.NgbProgressbar], imports: [common_1.CommonModule] })
-], NgbProgressbarModule);
-exports.NgbProgressbarModule = NgbProgressbarModule;
-var NgbProgressbarModule_1;
+NgbPopoverModule = NgbPopoverModule_1 = __decorate([
+    core_1.NgModule({ declarations: [popover_1.NgbPopover, popover_1.NgbPopoverWindow], exports: [popover_1.NgbPopover], entryComponents: [popover_1.NgbPopoverWindow] })
+], NgbPopoverModule);
+exports.NgbPopoverModule = NgbPopoverModule;
+var NgbPopoverModule_1;
 
 
 /***/ }),
@@ -59074,23 +59203,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(2);
-var rating_config_1 = __webpack_require__(35);
-var rating_1 = __webpack_require__(63);
-var rating_2 = __webpack_require__(63);
-exports.NgbRating = rating_2.NgbRating;
-var rating_config_2 = __webpack_require__(35);
-exports.NgbRatingConfig = rating_config_2.NgbRatingConfig;
-var NgbRatingModule = NgbRatingModule_1 = (function () {
-    function NgbRatingModule() {
+var progressbar_1 = __webpack_require__(65);
+var progressbar_config_1 = __webpack_require__(36);
+var progressbar_2 = __webpack_require__(65);
+exports.NgbProgressbar = progressbar_2.NgbProgressbar;
+var progressbar_config_2 = __webpack_require__(36);
+exports.NgbProgressbarConfig = progressbar_config_2.NgbProgressbarConfig;
+var NgbProgressbarModule = NgbProgressbarModule_1 = (function () {
+    function NgbProgressbarModule() {
     }
-    NgbRatingModule.forRoot = function () { return { ngModule: NgbRatingModule_1, providers: [rating_config_1.NgbRatingConfig] }; };
-    return NgbRatingModule;
+    NgbProgressbarModule.forRoot = function () { return { ngModule: NgbProgressbarModule_1, providers: [progressbar_config_1.NgbProgressbarConfig] }; };
+    return NgbProgressbarModule;
 }());
-NgbRatingModule = NgbRatingModule_1 = __decorate([
-    core_1.NgModule({ declarations: [rating_1.NgbRating], exports: [rating_1.NgbRating], imports: [common_1.CommonModule] })
-], NgbRatingModule);
-exports.NgbRatingModule = NgbRatingModule;
-var NgbRatingModule_1;
+NgbProgressbarModule = NgbProgressbarModule_1 = __decorate([
+    core_1.NgModule({ declarations: [progressbar_1.NgbProgressbar], exports: [progressbar_1.NgbProgressbar], imports: [common_1.CommonModule] })
+], NgbProgressbarModule);
+exports.NgbProgressbarModule = NgbProgressbarModule;
+var NgbProgressbarModule_1;
 
 
 /***/ }),
@@ -59107,27 +59236,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(2);
-var tabset_1 = __webpack_require__(64);
-var tabset_config_1 = __webpack_require__(36);
-var tabset_2 = __webpack_require__(64);
-exports.NgbTabset = tabset_2.NgbTabset;
-exports.NgbTab = tabset_2.NgbTab;
-exports.NgbTabContent = tabset_2.NgbTabContent;
-exports.NgbTabTitle = tabset_2.NgbTabTitle;
-var tabset_config_2 = __webpack_require__(36);
-exports.NgbTabsetConfig = tabset_config_2.NgbTabsetConfig;
-var NGB_TABSET_DIRECTIVES = [tabset_1.NgbTabset, tabset_1.NgbTab, tabset_1.NgbTabContent, tabset_1.NgbTabTitle];
-var NgbTabsetModule = NgbTabsetModule_1 = (function () {
-    function NgbTabsetModule() {
+var rating_config_1 = __webpack_require__(37);
+var rating_1 = __webpack_require__(66);
+var rating_2 = __webpack_require__(66);
+exports.NgbRating = rating_2.NgbRating;
+var rating_config_2 = __webpack_require__(37);
+exports.NgbRatingConfig = rating_config_2.NgbRatingConfig;
+var NgbRatingModule = NgbRatingModule_1 = (function () {
+    function NgbRatingModule() {
     }
-    NgbTabsetModule.forRoot = function () { return { ngModule: NgbTabsetModule_1, providers: [tabset_config_1.NgbTabsetConfig] }; };
-    return NgbTabsetModule;
+    NgbRatingModule.forRoot = function () { return { ngModule: NgbRatingModule_1, providers: [rating_config_1.NgbRatingConfig] }; };
+    return NgbRatingModule;
 }());
-NgbTabsetModule = NgbTabsetModule_1 = __decorate([
-    core_1.NgModule({ declarations: NGB_TABSET_DIRECTIVES, exports: NGB_TABSET_DIRECTIVES, imports: [common_1.CommonModule] })
-], NgbTabsetModule);
-exports.NgbTabsetModule = NgbTabsetModule;
-var NgbTabsetModule_1;
+NgbRatingModule = NgbRatingModule_1 = __decorate([
+    core_1.NgModule({ declarations: [rating_1.NgbRating], exports: [rating_1.NgbRating], imports: [common_1.CommonModule] })
+], NgbRatingModule);
+exports.NgbRatingModule = NgbRatingModule;
+var NgbRatingModule_1;
 
 
 /***/ }),
@@ -59144,23 +59269,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(2);
-var timepicker_1 = __webpack_require__(65);
-var timepicker_config_1 = __webpack_require__(37);
-var timepicker_2 = __webpack_require__(65);
-exports.NgbTimepicker = timepicker_2.NgbTimepicker;
-var timepicker_config_2 = __webpack_require__(37);
-exports.NgbTimepickerConfig = timepicker_config_2.NgbTimepickerConfig;
-var NgbTimepickerModule = NgbTimepickerModule_1 = (function () {
-    function NgbTimepickerModule() {
+var tabset_1 = __webpack_require__(67);
+var tabset_config_1 = __webpack_require__(38);
+var tabset_2 = __webpack_require__(67);
+exports.NgbTabset = tabset_2.NgbTabset;
+exports.NgbTab = tabset_2.NgbTab;
+exports.NgbTabContent = tabset_2.NgbTabContent;
+exports.NgbTabTitle = tabset_2.NgbTabTitle;
+var tabset_config_2 = __webpack_require__(38);
+exports.NgbTabsetConfig = tabset_config_2.NgbTabsetConfig;
+var NGB_TABSET_DIRECTIVES = [tabset_1.NgbTabset, tabset_1.NgbTab, tabset_1.NgbTabContent, tabset_1.NgbTabTitle];
+var NgbTabsetModule = NgbTabsetModule_1 = (function () {
+    function NgbTabsetModule() {
     }
-    NgbTimepickerModule.forRoot = function () { return { ngModule: NgbTimepickerModule_1, providers: [timepicker_config_1.NgbTimepickerConfig] }; };
-    return NgbTimepickerModule;
+    NgbTabsetModule.forRoot = function () { return { ngModule: NgbTabsetModule_1, providers: [tabset_config_1.NgbTabsetConfig] }; };
+    return NgbTabsetModule;
 }());
-NgbTimepickerModule = NgbTimepickerModule_1 = __decorate([
-    core_1.NgModule({ declarations: [timepicker_1.NgbTimepicker], exports: [timepicker_1.NgbTimepicker], imports: [common_1.CommonModule] })
-], NgbTimepickerModule);
-exports.NgbTimepickerModule = NgbTimepickerModule;
-var NgbTimepickerModule_1;
+NgbTabsetModule = NgbTabsetModule_1 = __decorate([
+    core_1.NgModule({ declarations: NGB_TABSET_DIRECTIVES, exports: NGB_TABSET_DIRECTIVES, imports: [common_1.CommonModule] })
+], NgbTabsetModule);
+exports.NgbTabsetModule = NgbTabsetModule;
+var NgbTabsetModule_1;
 
 
 /***/ }),
@@ -59176,23 +59305,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = __webpack_require__(0);
-var tooltip_1 = __webpack_require__(66);
-var tooltip_config_1 = __webpack_require__(38);
-var tooltip_config_2 = __webpack_require__(38);
-exports.NgbTooltipConfig = tooltip_config_2.NgbTooltipConfig;
-var tooltip_2 = __webpack_require__(66);
-exports.NgbTooltip = tooltip_2.NgbTooltip;
-var NgbTooltipModule = NgbTooltipModule_1 = (function () {
-    function NgbTooltipModule() {
+var common_1 = __webpack_require__(2);
+var timepicker_1 = __webpack_require__(68);
+var timepicker_config_1 = __webpack_require__(39);
+var timepicker_2 = __webpack_require__(68);
+exports.NgbTimepicker = timepicker_2.NgbTimepicker;
+var timepicker_config_2 = __webpack_require__(39);
+exports.NgbTimepickerConfig = timepicker_config_2.NgbTimepickerConfig;
+var NgbTimepickerModule = NgbTimepickerModule_1 = (function () {
+    function NgbTimepickerModule() {
     }
-    NgbTooltipModule.forRoot = function () { return { ngModule: NgbTooltipModule_1, providers: [tooltip_config_1.NgbTooltipConfig] }; };
-    return NgbTooltipModule;
+    NgbTimepickerModule.forRoot = function () { return { ngModule: NgbTimepickerModule_1, providers: [timepicker_config_1.NgbTimepickerConfig] }; };
+    return NgbTimepickerModule;
 }());
-NgbTooltipModule = NgbTooltipModule_1 = __decorate([
-    core_1.NgModule({ declarations: [tooltip_1.NgbTooltip, tooltip_1.NgbTooltipWindow], exports: [tooltip_1.NgbTooltip], entryComponents: [tooltip_1.NgbTooltipWindow] })
-], NgbTooltipModule);
-exports.NgbTooltipModule = NgbTooltipModule;
-var NgbTooltipModule_1;
+NgbTimepickerModule = NgbTimepickerModule_1 = __decorate([
+    core_1.NgModule({ declarations: [timepicker_1.NgbTimepicker], exports: [timepicker_1.NgbTimepicker], imports: [common_1.CommonModule] })
+], NgbTimepickerModule);
+exports.NgbTimepickerModule = NgbTimepickerModule;
+var NgbTimepickerModule_1;
 
 
 /***/ }),
@@ -59208,18 +59338,50 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = __webpack_require__(0);
+var tooltip_1 = __webpack_require__(69);
+var tooltip_config_1 = __webpack_require__(40);
+var tooltip_config_2 = __webpack_require__(40);
+exports.NgbTooltipConfig = tooltip_config_2.NgbTooltipConfig;
+var tooltip_2 = __webpack_require__(69);
+exports.NgbTooltip = tooltip_2.NgbTooltip;
+var NgbTooltipModule = NgbTooltipModule_1 = (function () {
+    function NgbTooltipModule() {
+    }
+    NgbTooltipModule.forRoot = function () { return { ngModule: NgbTooltipModule_1, providers: [tooltip_config_1.NgbTooltipConfig] }; };
+    return NgbTooltipModule;
+}());
+NgbTooltipModule = NgbTooltipModule_1 = __decorate([
+    core_1.NgModule({ declarations: [tooltip_1.NgbTooltip, tooltip_1.NgbTooltipWindow], exports: [tooltip_1.NgbTooltip], entryComponents: [tooltip_1.NgbTooltipWindow] })
+], NgbTooltipModule);
+exports.NgbTooltipModule = NgbTooltipModule;
+var NgbTooltipModule_1;
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(2);
-var highlight_1 = __webpack_require__(67);
-var typeahead_window_1 = __webpack_require__(40);
-var typeahead_1 = __webpack_require__(68);
-var typeahead_config_1 = __webpack_require__(39);
-var highlight_2 = __webpack_require__(67);
+var highlight_1 = __webpack_require__(70);
+var typeahead_window_1 = __webpack_require__(42);
+var typeahead_1 = __webpack_require__(71);
+var typeahead_config_1 = __webpack_require__(41);
+var highlight_2 = __webpack_require__(70);
 exports.NgbHighlight = highlight_2.NgbHighlight;
-var typeahead_window_2 = __webpack_require__(40);
+var typeahead_window_2 = __webpack_require__(42);
 exports.NgbTypeaheadWindow = typeahead_window_2.NgbTypeaheadWindow;
-var typeahead_config_2 = __webpack_require__(39);
+var typeahead_config_2 = __webpack_require__(41);
 exports.NgbTypeaheadConfig = typeahead_config_2.NgbTypeaheadConfig;
-var typeahead_2 = __webpack_require__(68);
+var typeahead_2 = __webpack_require__(71);
 exports.NgbTypeahead = typeahead_2.NgbTypeahead;
 var NgbTypeaheadModule = NgbTypeaheadModule_1 = (function () {
     function NgbTypeaheadModule() {
@@ -59230,7 +59392,7 @@ var NgbTypeaheadModule = NgbTypeaheadModule_1 = (function () {
 NgbTypeaheadModule = NgbTypeaheadModule_1 = __decorate([
     core_1.NgModule({
         declarations: [typeahead_1.NgbTypeahead, highlight_1.NgbHighlight, typeahead_window_1.NgbTypeaheadWindow],
-        exports: [typeahead_1.NgbTypeahead],
+        exports: [typeahead_1.NgbTypeahead, highlight_1.NgbHighlight],
         imports: [common_1.CommonModule],
         entryComponents: [typeahead_window_1.NgbTypeaheadWindow]
     })
@@ -59240,7 +59402,7 @@ var NgbTypeaheadModule_1;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59270,7 +59432,7 @@ exports.NgbAccordionConfig = NgbAccordionConfig;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59301,7 +59463,7 @@ exports.NgbAlertConfig = NgbAlertConfig;
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59333,7 +59495,7 @@ exports.NgbCarouselConfig = NgbCarouselConfig;
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59368,7 +59530,218 @@ exports.NgbDatepickerConfig = NgbDatepickerConfig;
 
 
 /***/ }),
-/* 29 */
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var ngb_calendar_1 = __webpack_require__(3);
+var ngb_date_1 = __webpack_require__(4);
+var core_1 = __webpack_require__(0);
+var util_1 = __webpack_require__(1);
+var Subject_1 = __webpack_require__(78);
+var datepicker_tools_1 = __webpack_require__(54);
+var filter_1 = __webpack_require__(81);
+var NgbDatepickerService = (function () {
+    function NgbDatepickerService(_calendar) {
+        this._calendar = _calendar;
+        this._model$ = new Subject_1.Subject();
+        this._state = { disabled: false, displayMonths: 1, firstDayOfWeek: 1, focusVisible: false, months: [], selectedDate: null };
+    }
+    Object.defineProperty(NgbDatepickerService.prototype, "model$", {
+        get: function () { return filter_1.filter.call(this._model$.asObservable(), function (model) { return model.months.length > 0; }); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgbDatepickerService.prototype, "disabled", {
+        set: function (disabled) {
+            if (this._state.disabled !== disabled) {
+                this._nextState({ disabled: disabled });
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgbDatepickerService.prototype, "displayMonths", {
+        set: function (months) {
+            if (util_1.isInteger(months) && months > 0 && this._state.displayMonths !== months) {
+                this._nextState({ displayMonths: months });
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgbDatepickerService.prototype, "firstDayOfWeek", {
+        set: function (firstDayOfWeek) {
+            if (util_1.isInteger(firstDayOfWeek) && firstDayOfWeek >= 0 && this._state.firstDayOfWeek !== firstDayOfWeek) {
+                this._nextState({ firstDayOfWeek: firstDayOfWeek });
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgbDatepickerService.prototype, "focusVisible", {
+        set: function (focusVisible) {
+            if (this._state.focusVisible !== focusVisible && !this._state.disabled) {
+                this._nextState({ focusVisible: focusVisible });
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgbDatepickerService.prototype, "maxDate", {
+        set: function (date) {
+            if (date === undefined || this._calendar.isValid(date) && datepicker_tools_1.isChangedDate(this._state.maxDate, date)) {
+                this._nextState({ maxDate: date });
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgbDatepickerService.prototype, "markDisabled", {
+        set: function (markDisabled) {
+            if (this._state.markDisabled !== markDisabled) {
+                this._nextState({ markDisabled: markDisabled });
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgbDatepickerService.prototype, "minDate", {
+        set: function (date) {
+            if (date === undefined || this._calendar.isValid(date) && datepicker_tools_1.isChangedDate(this._state.minDate, date)) {
+                this._nextState({ minDate: date });
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    NgbDatepickerService.prototype.focus = function (date) {
+        if (!this._state.disabled && this._calendar.isValid(date) && datepicker_tools_1.isChangedDate(this._state.focusDate, date)) {
+            this._nextState({ focusDate: date });
+        }
+    };
+    NgbDatepickerService.prototype.focusMove = function (period, number) {
+        this.focus(this._calendar.getNext(this._state.focusDate, period, number));
+    };
+    NgbDatepickerService.prototype.focusSelect = function () {
+        if (datepicker_tools_1.isDateSelectable(this._state.months, this._state.focusDate)) {
+            this.select(this._state.focusDate);
+        }
+    };
+    NgbDatepickerService.prototype.open = function (date) {
+        if (!this._state.disabled && this._calendar.isValid(date)) {
+            this._nextState({ firstDate: date });
+        }
+    };
+    NgbDatepickerService.prototype.select = function (date) {
+        var validDate = this.toValidDate(date, null);
+        if (!this._state.disabled && datepicker_tools_1.isChangedDate(this._state.selectedDate, validDate)) {
+            this._nextState({ selectedDate: validDate });
+        }
+    };
+    NgbDatepickerService.prototype.toValidDate = function (date, defaultValue) {
+        var ngbDate = ngb_date_1.NgbDate.from(date);
+        if (defaultValue === undefined) {
+            defaultValue = this._calendar.getToday();
+        }
+        return this._calendar.isValid(ngbDate) ? ngbDate : defaultValue;
+    };
+    NgbDatepickerService.prototype._nextState = function (patch) {
+        var newState = this._updateState(patch);
+        this._patchContexts(newState);
+        this._state = newState;
+        this._model$.next(this._state);
+    };
+    NgbDatepickerService.prototype._patchContexts = function (state) {
+        state.months.forEach(function (month) {
+            month.weeks.forEach(function (week) {
+                week.days.forEach(function (day) {
+                    // patch focus flag
+                    if (state.focusDate) {
+                        day.context.focused = state.focusDate.equals(day.date) && state.focusVisible;
+                    }
+                    // override context disabled
+                    if (state.disabled === true) {
+                        day.context.disabled = true;
+                    }
+                    // patch selection flag
+                    if (state.selectedDate !== undefined) {
+                        day.context.selected = state.selectedDate !== null && state.selectedDate.equals(day.date);
+                    }
+                });
+            });
+        });
+    };
+    NgbDatepickerService.prototype._updateState = function (patch) {
+        // patching fields
+        var state = Object.assign({}, this._state, patch);
+        var startDate = state.firstDate;
+        // min/max dates changed
+        if ('minDate' in patch || 'maxDate' in patch) {
+            datepicker_tools_1.checkMinBeforeMax(state.minDate, state.maxDate);
+            state.focusDate = datepicker_tools_1.checkDateInRange(state.focusDate, state.minDate, state.maxDate);
+            state.firstDate = datepicker_tools_1.checkDateInRange(state.firstDate, state.minDate, state.maxDate);
+            startDate = state.focusDate;
+        }
+        // disabled
+        if ('disabled' in patch) {
+            state.focusVisible = false;
+        }
+        // focus date changed
+        if ('focusDate' in patch) {
+            state.focusDate = datepicker_tools_1.checkDateInRange(state.focusDate, state.minDate, state.maxDate);
+            startDate = state.focusDate;
+            // nothing to rebuild if only focus changed and it is still visible
+            if (state.months.length !== 0 && !state.focusDate.before(state.firstDate) &&
+                !state.focusDate.after(state.lastDate)) {
+                return state;
+            }
+        }
+        // first date changed
+        if ('firstDate' in patch) {
+            state.firstDate = datepicker_tools_1.checkDateInRange(state.firstDate, state.minDate, state.maxDate);
+            startDate = state.firstDate;
+        }
+        // rebuilding months
+        if (startDate) {
+            var forceRebuild = 'firstDayOfWeek' in patch || 'markDisabled' in patch || 'minDate' in patch ||
+                'maxDate' in patch || 'disabled' in patch;
+            var months = datepicker_tools_1.buildMonths(this._calendar, state.months, startDate, state.minDate, state.maxDate, state.displayMonths, state.firstDayOfWeek, state.markDisabled, forceRebuild);
+            // updating months and boundary dates
+            state.months = months;
+            state.firstDate = months.length > 0 ? months[0].firstDate : undefined;
+            state.lastDate = months.length > 0 ? months[months.length - 1].lastDate : undefined;
+            // adjusting focus after months were built
+            if ('firstDate' in patch) {
+                if (state.focusDate === undefined || state.focusDate.before(state.firstDate) ||
+                    state.focusDate.after(state.lastDate)) {
+                    state.focusDate = startDate;
+                }
+            }
+        }
+        return state;
+    };
+    return NgbDatepickerService;
+}());
+NgbDatepickerService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [ngb_calendar_1.NgbCalendar])
+], NgbDatepickerService);
+exports.NgbDatepickerService = NgbDatepickerService;
+
+
+/***/ }),
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59386,11 +59759,13 @@ var core_1 = __webpack_require__(0);
 var forms_1 = __webpack_require__(5);
 var ngb_calendar_1 = __webpack_require__(3);
 var ngb_date_1 = __webpack_require__(4);
-var datepicker_service_1 = __webpack_require__(51);
-var datepicker_view_model_1 = __webpack_require__(52);
+var datepicker_service_1 = __webpack_require__(30);
+var datepicker_keymap_service_1 = __webpack_require__(73);
+var datepicker_view_model_1 = __webpack_require__(55);
 var util_1 = __webpack_require__(1);
-var datepicker_config_1 = __webpack_require__(28);
+var datepicker_config_1 = __webpack_require__(29);
 var datepicker_i18n_1 = __webpack_require__(6);
+var datepicker_tools_1 = __webpack_require__(54);
 var NGB_DATEPICKER_VALUE_ACCESSOR = {
     provide: forms_1.NG_VALUE_ACCESSOR,
     useExisting: core_1.forwardRef(function () { return NgbDatepicker; }),
@@ -59400,17 +59775,19 @@ var NGB_DATEPICKER_VALUE_ACCESSOR = {
  * A lightweight and highly configurable datepicker directive
  */
 var NgbDatepicker = (function () {
-    function NgbDatepicker(_service, _calendar, i18n, config) {
+    function NgbDatepicker(_keyMapService, _service, _calendar, i18n, config, _cd, _elementRef) {
+        var _this = this;
+        this._keyMapService = _keyMapService;
         this._service = _service;
         this._calendar = _calendar;
         this.i18n = i18n;
-        this.months = [];
+        this._cd = _cd;
+        this._elementRef = _elementRef;
         /**
          * An event fired when navigation happens and currently displayed month changes.
          * See NgbDatepickerNavigateEvent for the payload info.
          */
         this.navigate = new core_1.EventEmitter();
-        this.disabled = false;
         this.onChange = function (_) { };
         this.onTouched = function () { };
         this.dayTemplate = config.dayTemplate;
@@ -59424,7 +59801,32 @@ var NgbDatepicker = (function () {
         this.showWeekdays = config.showWeekdays;
         this.showWeekNumbers = config.showWeekNumbers;
         this.startDate = config.startDate;
+        this._subscription = _service.model$.subscribe(function (model) {
+            var newDate = model.firstDate;
+            var oldDate = _this.model ? _this.model.firstDate : null;
+            var newSelectedDate = model.selectedDate;
+            var oldSelectedDate = _this.model ? _this.model.selectedDate : null;
+            _this.model = model;
+            // handling selection change
+            if (datepicker_tools_1.isChangedDate(newSelectedDate, oldSelectedDate)) {
+                _this.onTouched();
+                _this.onChange(newSelectedDate ? { year: newSelectedDate.year, month: newSelectedDate.month, day: newSelectedDate.day } :
+                    null);
+            }
+            // emitting navigation event if the first month changes
+            if (!newDate.equals(oldDate)) {
+                _this.navigate.emit({
+                    current: oldDate ? { year: oldDate.year, month: oldDate.month } : null,
+                    next: { year: newDate.year, month: newDate.month }
+                });
+            }
+            _cd.markForCheck();
+        });
     }
+    /**
+     * Manually focus the datepicker
+     */
+    NgbDatepicker.prototype.focus = function () { this._elementRef.nativeElement.focus(); };
     NgbDatepicker.prototype.getHeaderHeight = function () {
         var h = this.showWeekdays ? 6.25 : 4.25;
         return this.displayMonths === 1 || this.navigation !== 'select' ? h - 2 : h;
@@ -59440,108 +59842,59 @@ var NgbDatepicker = (function () {
      * Use 'startDate' input as an alternative
      */
     NgbDatepicker.prototype.navigateTo = function (date) {
-        this._setViewWithinLimits(this._service.toValidDate(date));
-        this._updateData();
+        this._service.open(date ? new ngb_date_1.NgbDate(date.year, date.month, 1) : this._calendar.getToday());
     };
+    NgbDatepicker.prototype.ngOnDestroy = function () { this._subscription.unsubscribe(); };
     NgbDatepicker.prototype.ngOnInit = function () {
-        this._setDates();
-        this.navigateTo(this._date);
+        if (this.model === undefined) {
+            this._service.displayMonths = util_1.toInteger(this.displayMonths);
+            this._service.markDisabled = this.markDisabled;
+            this._service.firstDayOfWeek = this.firstDayOfWeek;
+            this._setDates();
+        }
     };
     NgbDatepicker.prototype.ngOnChanges = function (changes) {
-        this._setDates();
-        this._setViewWithinLimits(this._date);
         if (changes['displayMonths']) {
-            this.displayMonths = util_1.toInteger(this.displayMonths);
+            this._service.displayMonths = util_1.toInteger(this.displayMonths);
         }
-        // we have to force rebuild all months only if any of these inputs changes
-        if (['startDate', 'minDate', 'maxDate', 'navigation', 'firstDayOfWeek', 'markDisabled', 'displayMonths'].some(function (input) { return !!changes[input]; })) {
-            this._updateData(true);
+        if (changes['markDisabled']) {
+            this._service.markDisabled = this.markDisabled;
         }
+        if (changes['firstDayOfWeek']) {
+            this._service.firstDayOfWeek = this.firstDayOfWeek;
+        }
+        this._setDates();
     };
     NgbDatepicker.prototype.onDateSelect = function (date) {
-        this._setViewWithinLimits(date);
-        this.onTouched();
+        this._service.focus(date);
         this.writeValue(date);
-        this.onChange({ year: date.year, month: date.month, day: date.day });
-        // switch current month
-        if (this._date.month !== this.months[0].number && this.displayMonths === 1) {
-            this._updateData();
-        }
     };
-    NgbDatepicker.prototype.onNavigateDateSelect = function (date) {
-        this._setViewWithinLimits(date);
-        this._updateData();
-    };
+    NgbDatepicker.prototype.onKeyDown = function (event) { this._keyMapService.processKey(event); };
+    NgbDatepicker.prototype.onNavigateDateSelect = function (date) { this._service.open(date); };
     NgbDatepicker.prototype.onNavigateEvent = function (event) {
         switch (event) {
             case datepicker_view_model_1.NavigationEvent.PREV:
-                this._setViewWithinLimits(this._calendar.getPrev(this.months[0].firstDate, 'm'));
+                this._service.open(this._calendar.getPrev(this.model.firstDate, 'm', 1));
                 break;
             case datepicker_view_model_1.NavigationEvent.NEXT:
-                this._setViewWithinLimits(this._calendar.getNext(this.months[0].firstDate, 'm'));
+                this._service.open(this._calendar.getNext(this.model.firstDate, 'm', 1));
                 break;
         }
-        this._updateData();
     };
     NgbDatepicker.prototype.registerOnChange = function (fn) { this.onChange = fn; };
     NgbDatepicker.prototype.registerOnTouched = function (fn) { this.onTouched = fn; };
-    NgbDatepicker.prototype.writeValue = function (value) { this.model = this._service.toValidDate(value, null); };
-    NgbDatepicker.prototype.setDisabledState = function (isDisabled) { this.disabled = isDisabled; };
+    NgbDatepicker.prototype.setDisabledState = function (isDisabled) { this._service.disabled = isDisabled; };
+    NgbDatepicker.prototype.showFocus = function (focusVisible) { this._service.focusVisible = focusVisible; };
+    NgbDatepicker.prototype.writeValue = function (value) { this._service.select(value); };
     NgbDatepicker.prototype._setDates = function () {
-        this._maxDate = ngb_date_1.NgbDate.from(this.maxDate);
-        this._minDate = ngb_date_1.NgbDate.from(this.minDate);
-        this._date = this._service.toValidDate(this.startDate);
-        if (!this._calendar.isValid(this._minDate)) {
-            this._minDate = this._calendar.getPrev(this._date, 'y', 10);
-            this.minDate = { year: this._minDate.year, month: this._minDate.month, day: this._minDate.day };
-        }
-        if (!this._calendar.isValid(this._maxDate)) {
-            this._maxDate = this._calendar.getNext(this._date, 'y', 11);
-            this._maxDate = this._calendar.getPrev(this._maxDate);
-            this.maxDate = { year: this._maxDate.year, month: this._maxDate.month, day: this._maxDate.day };
-        }
-        if (this._minDate && this._maxDate && this._maxDate.before(this._minDate)) {
-            throw new Error("'maxDate' " + this._maxDate + " should be greater than 'minDate' " + this._minDate);
-        }
-    };
-    NgbDatepicker.prototype._setViewWithinLimits = function (date) {
-        if (this._minDate && date.before(this._minDate)) {
-            this._date = new ngb_date_1.NgbDate(this._minDate.year, this._minDate.month, 1);
-        }
-        else if (this._maxDate && date.after(this._maxDate)) {
-            this._date = new ngb_date_1.NgbDate(this._maxDate.year, this._maxDate.month, 1);
-        }
-        else {
-            this._date = new ngb_date_1.NgbDate(date.year, date.month, 1);
-        }
-    };
-    NgbDatepicker.prototype._updateData = function (force) {
-        if (force === void 0) { force = false; }
-        var newMonths = [];
-        var _loop_1 = function (i) {
-            var newDate_1 = this_1._calendar.getNext(this_1._date, 'm', i);
-            var index = this_1.months.findIndex(function (month) { return month.firstDate.equals(newDate_1); });
-            if (force || index === -1) {
-                newMonths.push(this_1._service.generateMonthViewModel(newDate_1, this_1._minDate, this_1._maxDate, util_1.toInteger(this_1.firstDayOfWeek), this_1.markDisabled));
-            }
-            else {
-                newMonths.push(this_1.months[index]);
-            }
-        };
-        var this_1 = this;
-        for (var i = 0; i < this.displayMonths; i++) {
-            _loop_1(i);
-        }
-        var newDate = newMonths[0].firstDate;
-        var oldDate = this.months[0] ? this.months[0].firstDate : null;
-        this.months = newMonths;
-        // emitting navigation event if the first month changes
-        if (!newDate.equals(oldDate)) {
-            this.navigate.emit({
-                current: oldDate ? { year: oldDate.year, month: oldDate.month } : null,
-                next: { year: newDate.year, month: newDate.month }
-            });
-        }
+        var startDate = this._service.toValidDate(this.startDate, this._calendar.getToday());
+        var minDate = this._service.toValidDate(this.minDate, this._calendar.getPrev(startDate, 'y', 10));
+        var maxDate = this._service.toValidDate(this.maxDate, this._calendar.getPrev(this._calendar.getNext(startDate, 'y', 11)));
+        this.minDate = { year: minDate.year, month: minDate.month, day: minDate.day };
+        this.maxDate = { year: maxDate.year, month: maxDate.month, day: maxDate.day };
+        this._service.minDate = minDate;
+        this._service.maxDate = maxDate;
+        this.navigateTo(startDate);
     };
     return NgbDatepicker;
 }());
@@ -59564,11 +59917,11 @@ __decorate([
 __decorate([
     core_1.Input(),
     __metadata("design:type", Object)
-], NgbDatepicker.prototype, "minDate", void 0);
+], NgbDatepicker.prototype, "maxDate", void 0);
 __decorate([
     core_1.Input(),
     __metadata("design:type", Object)
-], NgbDatepicker.prototype, "maxDate", void 0);
+], NgbDatepicker.prototype, "minDate", void 0);
 __decorate([
     core_1.Input(),
     __metadata("design:type", String)
@@ -59597,19 +59950,28 @@ NgbDatepicker = __decorate([
     core_1.Component({
         exportAs: 'ngbDatepicker',
         selector: 'ngb-datepicker',
-        host: { 'class': 'd-inline-block rounded' },
-        styles: ["\n    :host {\n      border: 1px solid rgba(0, 0, 0, 0.125);\n    }\n    .ngb-dp-header {\n      border-bottom: 1px solid rgba(0, 0, 0, 0.125);\n    }\n    .ngb-dp-month {\n      pointer-events: none;\n    }\n    ngb-datepicker-month-view {\n      pointer-events: auto;\n    }\n    .ngb-dp-month:first-child {\n      margin-left: 0 !important;\n    }    \n    .ngb-dp-month-name {\n      font-size: larger;\n      height: 2rem;\n      line-height: 2rem;\n    }    \n  "],
-        template: "\n    <ng-template #dt let-date=\"date\" let-currentMonth=\"currentMonth\" let-selected=\"selected\" let-disabled=\"disabled\">\n       <div ngbDatepickerDayView [date]=\"date\" [currentMonth]=\"currentMonth\" [selected]=\"selected\" [disabled]=\"disabled\"></div>\n    </ng-template>\n    \n    <div class=\"ngb-dp-header bg-faded pt-1 rounded-top\" [style.height.rem]=\"getHeaderHeight()\" \n      [style.marginBottom.rem]=\"-getHeaderMargin()\">\n      <ngb-datepicker-navigation *ngIf=\"navigation !== 'none'\"\n        [date]=\"months[0]?.firstDate\"\n        [minDate]=\"_minDate\"\n        [maxDate]=\"_maxDate\"\n        [months]=\"months.length\"\n        [disabled]=\"disabled\"\n        [showWeekNumbers]=\"showWeekNumbers\"\n        [showSelect]=\"navigation === 'select'\"\n        (navigate)=\"onNavigateEvent($event)\"\n        (select)=\"onNavigateDateSelect($event)\">\n      </ngb-datepicker-navigation>\n    </div>\n\n    <div class=\"ngb-dp-months d-flex px-1 pb-1\">\n      <ng-template ngFor let-month [ngForOf]=\"months\" let-i=\"index\">\n        <div class=\"ngb-dp-month d-block ml-3\">            \n          <div *ngIf=\"navigation !== 'select' || displayMonths > 1\" class=\"ngb-dp-month-name text-center\">\n            {{ i18n.getMonthFullName(month.number) }} {{ month.year }}\n          </div>\n          <ngb-datepicker-month-view\n            [month]=\"month\"\n            [selectedDate]=\"model\"\n            [dayTemplate]=\"dayTemplate || dt\"\n            [showWeekdays]=\"showWeekdays\"\n            [showWeekNumbers]=\"showWeekNumbers\"\n            [disabled]=\"disabled\"\n            [outsideDays]=\"displayMonths === 1 ? outsideDays : 'hidden'\"\n            (select)=\"onDateSelect($event)\">\n          </ngb-datepicker-month-view>\n        </div>\n      </ng-template>\n    </div>\n  ",
-        providers: [NGB_DATEPICKER_VALUE_ACCESSOR, datepicker_service_1.NgbDatepickerService]
+        changeDetection: core_1.ChangeDetectionStrategy.OnPush,
+        host: {
+            'class': 'd-inline-block rounded',
+            'tabindex': '0',
+            '[attr.tabindex]': 'model.disabled ? undefined : "0"',
+            '(blur)': 'showFocus(false)',
+            '(focus)': 'showFocus(true)',
+            '(keydown)': 'onKeyDown($event)'
+        },
+        styles: ["\n    :host {\n      border: 1px solid rgba(0, 0, 0, 0.125);\n    }\n    .ngb-dp-header {\n      border-bottom: 1px solid rgba(0, 0, 0, 0.125);\n    }\n    .ngb-dp-month {\n      pointer-events: none;\n    }\n    ngb-datepicker-month-view {\n      pointer-events: auto;\n    }\n    .ngb-dp-month:first-child {\n      margin-left: 0 !important;\n    }\n    .ngb-dp-month-name {\n      font-size: larger;\n      height: 2rem;\n      line-height: 2rem;\n    }\n  "],
+        template: "\n    <ng-template #dt let-date=\"date\" let-currentMonth=\"currentMonth\" let-selected=\"selected\" let-disabled=\"disabled\" let-focused=\"focused\">\n      <div ngbDatepickerDayView\n        [date]=\"date\"\n        [currentMonth]=\"currentMonth\"\n        [selected]=\"selected\"\n        [disabled]=\"disabled\"\n        [focused]=\"focused\">\n      </div>\n    </ng-template>\n\n    <div class=\"ngb-dp-header bg-light pt-1 rounded-top\" [style.height.rem]=\"getHeaderHeight()\"\n         [style.marginBottom.rem]=\"-getHeaderMargin()\">\n      <ngb-datepicker-navigation *ngIf=\"navigation !== 'none'\"\n        [date]=\"model.firstDate\"\n        [minDate]=\"model.minDate\"\n        [maxDate]=\"model.maxDate\"\n        [months]=\"model.months.length\"\n        [disabled]=\"model.disabled\"\n        [showWeekNumbers]=\"showWeekNumbers\"\n        [showSelect]=\"navigation === 'select'\"\n        (navigate)=\"onNavigateEvent($event)\"\n        (select)=\"onNavigateDateSelect($event)\">\n      </ngb-datepicker-navigation>\n    </div>\n\n    <div class=\"ngb-dp-months d-flex px-1 pb-1\">\n      <ng-template ngFor let-month [ngForOf]=\"model.months\" let-i=\"index\">\n        <div class=\"ngb-dp-month d-block ml-3\">\n          <div *ngIf=\"navigation !== 'select' || displayMonths > 1\" class=\"ngb-dp-month-name text-center\">\n            {{ i18n.getMonthFullName(month.number) }} {{ month.year }}\n          </div>\n          <ngb-datepicker-month-view\n            [month]=\"month\"\n            [dayTemplate]=\"dayTemplate || dt\"\n            [showWeekdays]=\"showWeekdays\"\n            [showWeekNumbers]=\"showWeekNumbers\"\n            [outsideDays]=\"(displayMonths === 1 ? outsideDays : 'hidden')\"\n            (select)=\"onDateSelect($event)\">\n          </ngb-datepicker-month-view>\n        </div>\n      </ng-template>\n    </div>\n  ",
+        providers: [NGB_DATEPICKER_VALUE_ACCESSOR, datepicker_service_1.NgbDatepickerService, datepicker_keymap_service_1.NgbDatepickerKeyMapService]
     }),
-    __metadata("design:paramtypes", [datepicker_service_1.NgbDatepickerService, ngb_calendar_1.NgbCalendar, datepicker_i18n_1.NgbDatepickerI18n,
-        datepicker_config_1.NgbDatepickerConfig])
+    __metadata("design:paramtypes", [datepicker_keymap_service_1.NgbDatepickerKeyMapService, datepicker_service_1.NgbDatepickerService,
+        ngb_calendar_1.NgbCalendar, datepicker_i18n_1.NgbDatepickerI18n, datepicker_config_1.NgbDatepickerConfig,
+        core_1.ChangeDetectorRef, core_1.ElementRef])
 ], NgbDatepicker);
 exports.NgbDatepicker = NgbDatepicker;
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59662,7 +60024,7 @@ exports.NgbDateISOParserFormatter = NgbDateISOParserFormatter;
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59681,8 +60043,8 @@ var core_1 = __webpack_require__(0);
  */
 var NgbDropdownConfig = (function () {
     function NgbDropdownConfig() {
-        this.up = false;
         this.autoClose = true;
+        this.placement = 'bottom-left';
     }
     return NgbDropdownConfig;
 }());
@@ -59693,7 +60055,7 @@ exports.NgbDropdownConfig = NgbDropdownConfig;
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59729,7 +60091,7 @@ exports.NgbPaginationConfig = NgbPaginationConfig;
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59760,7 +60122,7 @@ exports.NgbPopoverConfig = NgbPopoverConfig;
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59793,7 +60155,7 @@ exports.NgbProgressbarConfig = NgbProgressbarConfig;
 
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59825,7 +60187,7 @@ exports.NgbRatingConfig = NgbRatingConfig;
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59845,6 +60207,7 @@ var core_1 = __webpack_require__(0);
 var NgbTabsetConfig = (function () {
     function NgbTabsetConfig() {
         this.justify = 'start';
+        this.orientation = 'horizontal';
         this.type = 'tabs';
     }
     return NgbTabsetConfig;
@@ -59856,7 +60219,7 @@ exports.NgbTabsetConfig = NgbTabsetConfig;
 
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59894,7 +60257,7 @@ exports.NgbTimepickerConfig = NgbTimepickerConfig;
 
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59925,7 +60288,7 @@ exports.NgbTooltipConfig = NgbTooltipConfig;
 
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59947,6 +60310,7 @@ var NgbTypeaheadConfig = (function () {
         this.editable = true;
         this.focusFirst = true;
         this.showHint = false;
+        this.placement = 'bottom-left';
     }
     return NgbTypeaheadConfig;
 }());
@@ -59957,7 +60321,7 @@ exports.NgbTypeaheadConfig = NgbTypeaheadConfig;
 
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60064,14 +60428,14 @@ NgbTypeaheadWindow = __decorate([
         selector: 'ngb-typeahead-window',
         exportAs: 'ngbTypeaheadWindow',
         host: { 'class': 'dropdown-menu', 'style': 'display: block', 'role': 'listbox', '[id]': 'id' },
-        template: "\n    <ng-template #rt let-result=\"result\" let-term=\"term\" let-formatter=\"formatter\">\n      <ngb-highlight [result]=\"formatter(result)\" [term]=\"term\"></ngb-highlight>\n    </ng-template>\n    <ng-template ngFor [ngForOf]=\"results\" let-result let-idx=\"index\">\n      <button type=\"button\" class=\"dropdown-item\" role=\"option\"\n        [id]=\"id + '-' + idx\"\n        [class.active]=\"idx === activeIdx\"\n        (mouseenter)=\"markActive(idx)\"\n        (click)=\"select(result)\">\n          <ng-template [ngTemplateOutlet]=\"resultTemplate || rt\"\n          [ngOutletContext]=\"{result: result, term: term, formatter: formatter}\"></ng-template>\n      </button>\n    </ng-template>\n  "
+        template: "\n    <ng-template #rt let-result=\"result\" let-term=\"term\" let-formatter=\"formatter\">\n      <ngb-highlight [result]=\"formatter(result)\" [term]=\"term\"></ngb-highlight>\n    </ng-template>\n    <ng-template ngFor [ngForOf]=\"results\" let-result let-idx=\"index\">\n      <button type=\"button\" class=\"dropdown-item\" role=\"option\"\n        [id]=\"id + '-' + idx\"\n        [class.active]=\"idx === activeIdx\"\n        (mouseenter)=\"markActive(idx)\"\n        (click)=\"select(result)\">\n          <ng-template [ngTemplateOutlet]=\"resultTemplate || rt\"\n          [ngTemplateOutletContext]=\"{result: result, term: term, formatter: formatter}\"></ng-template>\n      </button>\n    </ng-template>\n  "
     })
 ], NgbTypeaheadWindow);
 exports.NgbTypeaheadWindow = NgbTypeaheadWindow;
 
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60087,7 +60451,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = __webpack_require__(0);
 var util_1 = __webpack_require__(1);
-var accordion_config_1 = __webpack_require__(25);
+var accordion_config_1 = __webpack_require__(26);
 var nextId = 0;
 /**
  * This directive should be used to wrap accordion panel titles that need to contain HTML markup or other directives.
@@ -60133,6 +60497,10 @@ var NgbPanel = (function () {
          *  If not provided, it will be auto-generated.
          */
         this.id = "ngb-panel-" + nextId++;
+        /**
+         * A flag telling if the panel is currently open
+         */
+        this.isOpen = false;
     }
     return NgbPanel;
 }());
@@ -60171,17 +60539,13 @@ exports.NgbPanel = NgbPanel;
 var NgbAccordion = (function () {
     function NgbAccordion(config) {
         /**
-         * A map that stores each panel state
-         */
-        this._states = new Map();
-        /**
-         * A map that stores references to all panels
-         */
-        this._panelRefs = new Map();
-        /**
          * An array or comma separated strings of panel identifiers that should be opened
          */
         this.activeIds = [];
+        /**
+         * Whether the closed panels should be hidden without destroying them
+         */
+        this.destroyOnHide = true;
         /**
          * A panel change event fired right before the panel toggle happens. See NgbPanelChangeEvent for payload details
          */
@@ -60193,13 +60557,12 @@ var NgbAccordion = (function () {
      * Programmatically toggle a panel with a given id.
      */
     NgbAccordion.prototype.toggle = function (panelId) {
-        var panel = this._panelRefs.get(panelId);
+        var panel = this.panels.find(function (p) { return p.id === panelId; });
         if (panel && !panel.disabled) {
-            var nextState = !this._states.get(panelId);
             var defaultPrevented_1 = false;
-            this.panelChange.emit({ panelId: panelId, nextState: nextState, preventDefault: function () { defaultPrevented_1 = true; } });
+            this.panelChange.emit({ panelId: panelId, nextState: !panel.isOpen, preventDefault: function () { defaultPrevented_1 = true; } });
             if (!defaultPrevented_1) {
-                this._states.set(panelId, nextState);
+                panel.isOpen = !panel.isOpen;
                 if (this.closeOtherPanels) {
                     this._closeOthers(panelId);
                 }
@@ -60208,42 +60571,28 @@ var NgbAccordion = (function () {
         }
     };
     NgbAccordion.prototype.ngAfterContentChecked = function () {
+        var _this = this;
         // active id updates
         if (util_1.isString(this.activeIds)) {
             this.activeIds = this.activeIds.split(/\s*,\s*/);
         }
-        this._updateStates();
+        // update panels open states
+        this.panels.forEach(function (panel) { return panel.isOpen = !panel.disabled && _this.activeIds.indexOf(panel.id) > -1; });
         // closeOthers updates
         if (this.activeIds.length > 1 && this.closeOtherPanels) {
             this._closeOthers(this.activeIds[0]);
             this._updateActiveIds();
         }
     };
-    /**
-     * @internal
-     */
-    NgbAccordion.prototype.isOpen = function (panelId) { return this._states.get(panelId); };
     NgbAccordion.prototype._closeOthers = function (panelId) {
-        var _this = this;
-        this._states.forEach(function (state, id) {
-            if (id !== panelId) {
-                _this._states.set(id, false);
+        this.panels.forEach(function (panel) {
+            if (panel.id !== panelId) {
+                panel.isOpen = false;
             }
         });
     };
     NgbAccordion.prototype._updateActiveIds = function () {
-        var _this = this;
-        this.activeIds =
-            this.panels.toArray().filter(function (panel) { return _this.isOpen(panel.id) && !panel.disabled; }).map(function (panel) { return panel.id; });
-    };
-    NgbAccordion.prototype._updateStates = function () {
-        var _this = this;
-        this._states.clear();
-        this._panelRefs.clear();
-        this.panels.toArray().forEach(function (panel) {
-            _this._states.set(panel.id, _this.activeIds.indexOf(panel.id) > -1 && !panel.disabled);
-            _this._panelRefs.set(panel.id, panel);
-        });
+        this.activeIds = this.panels.filter(function (panel) { return panel.isOpen && !panel.disabled; }).map(function (panel) { return panel.id; });
     };
     return NgbAccordion;
 }());
@@ -60261,6 +60610,10 @@ __decorate([
 ], NgbAccordion.prototype, "closeOtherPanels", void 0);
 __decorate([
     core_1.Input(),
+    __metadata("design:type", Boolean)
+], NgbAccordion.prototype, "destroyOnHide", void 0);
+__decorate([
+    core_1.Input(),
     __metadata("design:type", String)
 ], NgbAccordion.prototype, "type", void 0);
 __decorate([
@@ -60272,7 +60625,7 @@ NgbAccordion = __decorate([
         selector: 'ngb-accordion',
         exportAs: 'ngbAccordion',
         host: { 'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels' },
-        template: "\n  <div class=\"card\">\n    <ng-template ngFor let-panel [ngForOf]=\"panels\">\n      <div role=\"tab\" id=\"{{panel.id}}-header\"\n        [class]=\"'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')\" [class.active]=\"isOpen(panel.id)\">\n        <a href (click)=\"!!toggle(panel.id)\" [class.text-muted]=\"panel.disabled\" [attr.tabindex]=\"(panel.disabled ? '-1' : null)\"\n          [attr.aria-expanded]=\"isOpen(panel.id)\" [attr.aria-controls]=\"(isOpen(panel.id) ? panel.id : null)\"\n          [attr.aria-disabled]=\"panel.disabled\">\n          {{panel.title}}<ng-template [ngTemplateOutlet]=\"panel.titleTpl?.templateRef\"></ng-template>\n        </a>\n      </div>\n      <div id=\"{{panel.id}}\" role=\"tabpanel\" [attr.aria-labelledby]=\"panel.id + '-header'\" class=\"card-block\" *ngIf=\"isOpen(panel.id)\">\n        <ng-template [ngTemplateOutlet]=\"panel.contentTpl.templateRef\"></ng-template>\n      </div>\n    </ng-template>\n  </div>\n"
+        template: "\n    <ng-template ngFor let-panel [ngForOf]=\"panels\">\n      <div class=\"card\">\n        <div role=\"tab\" id=\"{{panel.id}}-header\"\n          [class]=\"'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')\" [class.active]=\"panel.isOpen\">\n          <a href (click)=\"!!toggle(panel.id)\" [class.text-muted]=\"panel.disabled\" [attr.tabindex]=\"(panel.disabled ? '-1' : null)\"\n            [attr.aria-expanded]=\"panel.isOpen\" [attr.aria-controls]=\"(panel.isOpen ? panel.id : null)\"\n            [attr.aria-disabled]=\"panel.disabled\">\n            {{panel.title}}<ng-template [ngTemplateOutlet]=\"panel.titleTpl?.templateRef\"></ng-template>\n          </a>\n        </div>\n        <div id=\"{{panel.id}}\" role=\"tabpanel\" [attr.aria-labelledby]=\"panel.id + '-header'\" \n             class=\"card-body {{panel.isOpen ? 'show' : null}}\" *ngIf=\"!destroyOnHide || panel.isOpen\">\n             <ng-template [ngTemplateOutlet]=\"panel.contentTpl.templateRef\"></ng-template>\n        </div>\n      </div>\n    </ng-template>\n  "
     }),
     __metadata("design:paramtypes", [accordion_config_1.NgbAccordionConfig])
 ], NgbAccordion);
@@ -60280,7 +60633,7 @@ exports.NgbAccordion = NgbAccordion;
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60295,7 +60648,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var alert_config_1 = __webpack_require__(26);
+var alert_config_1 = __webpack_require__(27);
 /**
  * Alerts can be used to provide feedback messages.
  */
@@ -60335,7 +60688,7 @@ exports.NgbAlert = NgbAlert;
 
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60349,16 +60702,118 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
+var core_1 = __webpack_require__(0);
+var forms_1 = __webpack_require__(5);
+var label_1 = __webpack_require__(8);
+var NGB_CHECKBOX_VALUE_ACCESSOR = {
+    provide: forms_1.NG_VALUE_ACCESSOR,
+    useExisting: core_1.forwardRef(function () { return NgbCheckBox; }),
+    multi: true
+};
+/**
+ * Easily create Bootstrap-style checkbox buttons. A value of a checked button is bound to a variable
+ * specified via ngModel.
+ */
+var NgbCheckBox = (function () {
+    function NgbCheckBox(_label) {
+        this._label = _label;
+        /**
+         * A flag indicating if a given checkbox button is disabled.
+         */
+        this.disabled = false;
+        /**
+         * Value to be propagated as model when the checkbox is checked.
+         */
+        this.valueChecked = true;
+        /**
+         * Value to be propagated as model when the checkbox is unchecked.
+         */
+        this.valueUnChecked = false;
+        this.onChange = function (_) { };
+        this.onTouched = function () { };
+    }
+    Object.defineProperty(NgbCheckBox.prototype, "focused", {
+        set: function (isFocused) {
+            this._label.focused = isFocused;
+            if (!isFocused) {
+                this.onTouched();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    NgbCheckBox.prototype.onInputChange = function ($event) {
+        var modelToPropagate = $event.target.checked ? this.valueChecked : this.valueUnChecked;
+        this.onChange(modelToPropagate);
+        this.onTouched();
+        this.writeValue(modelToPropagate);
+    };
+    NgbCheckBox.prototype.registerOnChange = function (fn) { this.onChange = fn; };
+    NgbCheckBox.prototype.registerOnTouched = function (fn) { this.onTouched = fn; };
+    NgbCheckBox.prototype.setDisabledState = function (isDisabled) {
+        this.disabled = isDisabled;
+        this._label.disabled = isDisabled;
+    };
+    NgbCheckBox.prototype.writeValue = function (value) {
+        this.checked = value === this.valueChecked;
+        this._label.active = this.checked;
+    };
+    return NgbCheckBox;
+}());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], NgbCheckBox.prototype, "disabled", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], NgbCheckBox.prototype, "valueChecked", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], NgbCheckBox.prototype, "valueUnChecked", void 0);
+NgbCheckBox = __decorate([
+    core_1.Directive({
+        selector: '[ngbButton][type=checkbox]',
+        host: {
+            'autocomplete': 'off',
+            '[checked]': 'checked',
+            '[disabled]': 'disabled',
+            '(change)': 'onInputChange($event)',
+            '(focus)': 'focused = true',
+            '(blur)': 'focused = false'
+        },
+        providers: [NGB_CHECKBOX_VALUE_ACCESSOR]
+    }),
+    __metadata("design:paramtypes", [label_1.NgbButtonLabel])
+], NgbCheckBox);
+exports.NgbCheckBox = NgbCheckBox;
+
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
 var forms_1 = __webpack_require__(5);
+var label_1 = __webpack_require__(8);
 var NGB_RADIO_VALUE_ACCESSOR = {
     provide: forms_1.NG_VALUE_ACCESSOR,
     useExisting: core_1.forwardRef(function () { return NgbRadioGroup; }),
     multi: true
 };
+var nextId = 0;
 /**
  * Easily create Bootstrap-style radio buttons. A value of a selected button is bound to a variable
  * specified via ngModel.
@@ -60367,6 +60822,11 @@ var NgbRadioGroup = (function () {
     function NgbRadioGroup() {
         this._radios = new Set();
         this._value = null;
+        /**
+         * The name of the group. Unless enclosed inputs specify a name, this name is used as the name of the
+         * enclosed inputs. If not specified, a name is generated automatically.
+         */
+        this.name = "ngb-radio-" + nextId++;
         this.onChange = function (_) { };
         this.onTouched = function () { };
     }
@@ -60400,62 +60860,18 @@ var NgbRadioGroup = (function () {
     NgbRadioGroup.prototype._updateRadiosDisabled = function () { this._radios.forEach(function (radio) { return radio.updateDisabled(); }); };
     return NgbRadioGroup;
 }());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], NgbRadioGroup.prototype, "name", void 0);
 NgbRadioGroup = __decorate([
     core_1.Directive({
         selector: '[ngbRadioGroup]',
-        host: { 'data-toggle': 'buttons', 'class': 'btn-group', 'role': 'group' },
+        host: { 'data-toggle': 'buttons', 'role': 'group' },
         providers: [NGB_RADIO_VALUE_ACCESSOR]
     })
 ], NgbRadioGroup);
 exports.NgbRadioGroup = NgbRadioGroup;
-var NgbActiveLabel = (function () {
-    function NgbActiveLabel(_renderer, _elRef) {
-        this._renderer = _renderer;
-        this._elRef = _elRef;
-    }
-    Object.defineProperty(NgbActiveLabel.prototype, "active", {
-        set: function (isActive) {
-            if (isActive) {
-                this._renderer.addClass(this._elRef.nativeElement, 'active');
-            }
-            else {
-                this._renderer.removeClass(this._elRef.nativeElement, 'active');
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(NgbActiveLabel.prototype, "disabled", {
-        set: function (isDisabled) {
-            if (isDisabled) {
-                this._renderer.addClass(this._elRef.nativeElement, 'disabled');
-            }
-            else {
-                this._renderer.removeClass(this._elRef.nativeElement, 'disabled');
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(NgbActiveLabel.prototype, "focused", {
-        set: function (isFocused) {
-            if (isFocused) {
-                this._renderer.addClass(this._elRef.nativeElement, 'focus');
-            }
-            else {
-                this._renderer.removeClass(this._elRef.nativeElement, 'focus');
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return NgbActiveLabel;
-}());
-NgbActiveLabel = __decorate([
-    core_1.Directive({ selector: 'label.btn' }),
-    __metadata("design:paramtypes", [core_1.Renderer2, core_1.ElementRef])
-], NgbActiveLabel);
-exports.NgbActiveLabel = NgbActiveLabel;
 /**
  * Marks an input of type "radio" as part of the NgbRadioGroup.
  */
@@ -60466,39 +60882,24 @@ var NgbRadio = (function () {
         this._renderer = _renderer;
         this._element = _element;
         this._value = null;
-        if (this._group) {
-            this._group.register(this);
-        }
+        this._group.register(this);
     }
     Object.defineProperty(NgbRadio.prototype, "value", {
         get: function () { return this._value; },
         /**
          * You can specify model value of a given radio by binding to the value property.
-        */
+         */
         set: function (value) {
             this._value = value;
             var stringValue = value ? value.toString() : '';
             this._renderer.setProperty(this._element.nativeElement, 'value', stringValue);
-            if (this._group) {
-                this._group.onRadioValueUpdate();
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(NgbRadio.prototype, "checked", {
-        get: function () { return this._checked; },
-        /**
-         * A flag indicating if a given radio button is checked.
-         */
-        set: function (value) {
-            this._checked = this._element.nativeElement.hasAttribute('checked') ? true : value;
+            this._group.onRadioValueUpdate();
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(NgbRadio.prototype, "disabled", {
-        get: function () { return (this._group && this._group.disabled) || this._disabled; },
+        get: function () { return this._group.disabled || this._disabled; },
         /**
          * A flag indicating if a given radio button is disabled.
          */
@@ -60518,38 +60919,34 @@ var NgbRadio = (function () {
         enumerable: true,
         configurable: true
     });
-    NgbRadio.prototype.ngOnDestroy = function () {
-        if (this._group) {
-            this._group.unregister(this);
-        }
-    };
-    NgbRadio.prototype.onChange = function () {
-        if (this._group) {
-            this._group.onRadioChange(this);
-        }
-    };
+    Object.defineProperty(NgbRadio.prototype, "checked", {
+        get: function () { return this._checked; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgbRadio.prototype, "nameAttr", {
+        get: function () { return this.name || this._group.name; },
+        enumerable: true,
+        configurable: true
+    });
+    NgbRadio.prototype.ngOnDestroy = function () { this._group.unregister(this); };
+    NgbRadio.prototype.onChange = function () { this._group.onRadioChange(this); };
     NgbRadio.prototype.updateValue = function (value) {
-        this._checked = (this.value === value && value !== null);
+        this._checked = this.value === value;
         this._label.active = this._checked;
     };
-    NgbRadio.prototype.updateDisabled = function () {
-        var disabled = (this._group && this._group.disabled) || this._disabled;
-        if (this._label) {
-            this._label.disabled = disabled;
-        }
-    };
+    NgbRadio.prototype.updateDisabled = function () { this._label.disabled = this.disabled; };
     return NgbRadio;
 }());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], NgbRadio.prototype, "name", void 0);
 __decorate([
     core_1.Input('value'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], NgbRadio.prototype, "value", null);
-__decorate([
-    core_1.Input('checked'),
-    __metadata("design:type", Boolean),
-    __metadata("design:paramtypes", [Boolean])
-], NgbRadio.prototype, "checked", null);
 __decorate([
     core_1.Input('disabled'),
     __metadata("design:type", Boolean),
@@ -60557,24 +60954,24 @@ __decorate([
 ], NgbRadio.prototype, "disabled", null);
 NgbRadio = __decorate([
     core_1.Directive({
-        selector: 'input[type=radio]',
+        selector: '[ngbButton][type=radio]',
         host: {
             '[checked]': 'checked',
             '[disabled]': 'disabled',
+            '[name]': 'nameAttr',
             '(change)': 'onChange()',
             '(focus)': 'focused = true',
             '(blur)': 'focused = false'
         }
     }),
-    __param(0, core_1.Optional()), __param(1, core_1.Optional()),
-    __metadata("design:paramtypes", [NgbRadioGroup, NgbActiveLabel,
-        core_1.Renderer2, core_1.ElementRef])
+    __metadata("design:paramtypes", [NgbRadioGroup, label_1.NgbButtonLabel, core_1.Renderer2,
+        core_1.ElementRef])
 ], NgbRadio);
 exports.NgbRadio = NgbRadio;
 
 
 /***/ }),
-/* 44 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60589,7 +60986,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var carousel_config_1 = __webpack_require__(27);
+var carousel_config_1 = __webpack_require__(28);
 var nextId = 0;
 /**
  * Represents an individual slide to be used within a carousel.
@@ -60619,6 +61016,11 @@ exports.NgbSlide = NgbSlide;
  */
 var NgbCarousel = (function () {
     function NgbCarousel(config) {
+        /**
+         * A carousel slide event fired when the slide transition is completed.
+         * See NgbSlideEvent for payload details
+         */
+        this.slide = new core_1.EventEmitter();
         this.interval = config.interval;
         this.wrap = config.wrap;
         this.keyboard = config.keyboard;
@@ -60628,12 +61030,17 @@ var NgbCarousel = (function () {
         this.activeId = activeSlide ? activeSlide.id : (this.slides.length ? this.slides.first.id : null);
     };
     NgbCarousel.prototype.ngOnInit = function () { this._startTimer(); };
+    NgbCarousel.prototype.ngOnChanges = function (changes) {
+        if ('interval' in changes && !changes['interval'].isFirstChange()) {
+            this._restartTimer();
+        }
+    };
     NgbCarousel.prototype.ngOnDestroy = function () { clearInterval(this._slideChangeInterval); };
     /**
      * Navigate to a slide with the specified identifier.
      */
     NgbCarousel.prototype.select = function (slideId) {
-        this.cycleToSelected(slideId);
+        this.cycleToSelected(slideId, this._getSlideEventDirection(this.activeId, slideId));
         this._restartTimer();
     };
     /**
@@ -60658,11 +61065,14 @@ var NgbCarousel = (function () {
      * Restarts cycling through the carousel slides from left to right.
      */
     NgbCarousel.prototype.cycle = function () { this._startTimer(); };
-    NgbCarousel.prototype.cycleToNext = function () { this.cycleToSelected(this._getNextSlide(this.activeId)); };
-    NgbCarousel.prototype.cycleToPrev = function () { this.cycleToSelected(this._getPrevSlide(this.activeId)); };
-    NgbCarousel.prototype.cycleToSelected = function (slideIdx) {
+    NgbCarousel.prototype.cycleToNext = function () { this.cycleToSelected(this._getNextSlide(this.activeId), NgbSlideEventDirection.LEFT); };
+    NgbCarousel.prototype.cycleToPrev = function () { this.cycleToSelected(this._getPrevSlide(this.activeId), NgbSlideEventDirection.RIGHT); };
+    NgbCarousel.prototype.cycleToSelected = function (slideIdx, direction) {
         var selectedSlide = this._getSlideById(slideIdx);
         if (selectedSlide) {
+            if (selectedSlide.id !== this.activeId) {
+                this.slide.emit({ prev: this.activeId, current: selectedSlide.id, direction: direction });
+            }
             this.activeId = selectedSlide.id;
         }
     };
@@ -60708,6 +61118,11 @@ var NgbCarousel = (function () {
         return isFirstSlide ? (this.wrap ? slideArr[slideArr.length - 1].id : slideArr[0].id) :
             slideArr[currentSlideIdx - 1].id;
     };
+    NgbCarousel.prototype._getSlideEventDirection = function (currentActiveSlideId, nextActiveSlideId) {
+        var currentActiveSlideIdx = this._getSlideIdxById(currentActiveSlideId);
+        var nextActiveSlideIdx = this._getSlideIdxById(nextActiveSlideId);
+        return currentActiveSlideIdx > nextActiveSlideIdx ? NgbSlideEventDirection.RIGHT : NgbSlideEventDirection.LEFT;
+    };
     return NgbCarousel;
 }());
 __decorate([
@@ -60730,6 +61145,10 @@ __decorate([
     core_1.Input(),
     __metadata("design:type", String)
 ], NgbCarousel.prototype, "activeId", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", Object)
+], NgbCarousel.prototype, "slide", void 0);
 NgbCarousel = __decorate([
     core_1.Component({
         selector: 'ngb-carousel',
@@ -60743,16 +61162,24 @@ NgbCarousel = __decorate([
             '(keydown.arrowLeft)': 'keyPrev()',
             '(keydown.arrowRight)': 'keyNext()'
         },
-        template: "\n    <ol class=\"carousel-indicators\">\n      <li *ngFor=\"let slide of slides\" [id]=\"slide.id\" [class.active]=\"slide.id === activeId\" (click)=\"cycleToSelected(slide.id)\"></li>\n    </ol>\n    <div class=\"carousel-inner\">\n      <div *ngFor=\"let slide of slides\" class=\"carousel-item\" [class.active]=\"slide.id === activeId\">\n        <ng-template [ngTemplateOutlet]=\"slide.tplRef\"></ng-template>\n      </div>\n    </div>\n    <a class=\"left carousel-control-prev\" role=\"button\" (click)=\"cycleToPrev()\">\n      <span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"></span>\n      <span class=\"sr-only\">Previous</span>\n    </a>\n    <a class=\"right carousel-control-next\" role=\"button\" (click)=\"cycleToNext()\">\n      <span class=\"carousel-control-next-icon\" aria-hidden=\"true\"></span>\n      <span class=\"sr-only\">Next</span>\n    </a>\n    "
+        template: "\n    <ol class=\"carousel-indicators\">\n      <li *ngFor=\"let slide of slides\" [id]=\"slide.id\" [class.active]=\"slide.id === activeId\" \n          (click)=\"cycleToSelected(slide.id, _getSlideEventDirection(activeId, slide.id))\"></li>\n    </ol>\n    <div class=\"carousel-inner\">\n      <div *ngFor=\"let slide of slides\" class=\"carousel-item\" [class.active]=\"slide.id === activeId\">\n        <ng-template [ngTemplateOutlet]=\"slide.tplRef\"></ng-template>\n      </div>\n    </div>\n    <a class=\"carousel-control-prev\" role=\"button\" (click)=\"cycleToPrev()\">\n      <span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"></span>\n      <span class=\"sr-only\">Previous</span>\n    </a>\n    <a class=\"carousel-control-next\" role=\"button\" (click)=\"cycleToNext()\">\n      <span class=\"carousel-control-next-icon\" aria-hidden=\"true\"></span>\n      <span class=\"sr-only\">Next</span>\n    </a>\n    "
     }),
     __metadata("design:paramtypes", [carousel_config_1.NgbCarouselConfig])
 ], NgbCarousel);
 exports.NgbCarousel = NgbCarousel;
+/**
+ * Enum to define the carousel slide event direction
+ */
+var NgbSlideEventDirection;
+(function (NgbSlideEventDirection) {
+    NgbSlideEventDirection[NgbSlideEventDirection["LEFT"] = 'left'] = "LEFT";
+    NgbSlideEventDirection[NgbSlideEventDirection["RIGHT"] = 'right'] = "RIGHT";
+})(NgbSlideEventDirection = exports.NgbSlideEventDirection || (exports.NgbSlideEventDirection = {}));
 exports.NGB_CAROUSEL_DIRECTIVES = [NgbCarousel, NgbSlide];
 
 
 /***/ }),
-/* 45 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60794,7 +61221,7 @@ exports.NgbCollapse = NgbCollapse;
 
 
 /***/ }),
-/* 46 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60830,17 +61257,23 @@ __decorate([
 __decorate([
     core_1.Input(),
     __metadata("design:type", Boolean)
+], NgbDatepickerDayView.prototype, "focused", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Boolean)
 ], NgbDatepickerDayView.prototype, "selected", void 0);
 NgbDatepickerDayView = __decorate([
     core_1.Component({
         selector: '[ngbDatepickerDayView]',
-        styles: ["\n    :host {\n      text-align: center;\n      width: 2rem;\n      height: 2rem;\n      line-height: 2rem;      \n      border-radius: 0.25rem;\n    }\n    :host.outside {\n      opacity: 0.5;\n    }\n  "],
+        changeDetection: core_1.ChangeDetectionStrategy.OnPush,
+        styles: ["\n    :host {\n      text-align: center;\n      width: 2rem;\n      height: 2rem;\n      line-height: 2rem;\n      border-radius: 0.25rem;\n      background: transparent;\n    }\n    :host.outside {\n      opacity: 0.5;\n    }\n  "],
         host: {
+            'class': 'btn-light',
             '[class.bg-primary]': 'selected',
             '[class.text-white]': 'selected',
             '[class.text-muted]': 'isMuted()',
             '[class.outside]': 'isMuted()',
-            '[class.btn-secondary]': '!disabled'
+            '[class.active]': 'focused'
         },
         template: "{{ date.day }}"
     })
@@ -60849,7 +61282,7 @@ exports.NgbDatepickerDayView = NgbDatepickerDayView;
 
 
 /***/ }),
-/* 47 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60866,11 +61299,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = __webpack_require__(0);
 var forms_1 = __webpack_require__(5);
 var ngb_date_1 = __webpack_require__(4);
-var datepicker_1 = __webpack_require__(29);
-var ngb_date_parser_formatter_1 = __webpack_require__(30);
-var positioning_1 = __webpack_require__(8);
+var datepicker_1 = __webpack_require__(31);
+var ngb_date_parser_formatter_1 = __webpack_require__(32);
+var positioning_1 = __webpack_require__(7);
 var ngb_calendar_1 = __webpack_require__(3);
-var datepicker_service_1 = __webpack_require__(51);
+var datepicker_service_1 = __webpack_require__(30);
 var NGB_DATEPICKER_VALUE_ACCESSOR = {
     provide: forms_1.NG_VALUE_ACCESSOR,
     useExisting: core_1.forwardRef(function () { return NgbInputDatepicker; }),
@@ -60897,6 +61330,13 @@ var NgbInputDatepicker = (function () {
         this._calendar = _calendar;
         this._cRef = null;
         /**
+            * Placement of a datepicker popup accepts:
+            *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
+            *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
+            * and array of above values.
+            */
+        this.placement = 'bottom-left';
+        /**
          * An event fired when navigation happens and currently displayed month changes.
          * See NgbDatepickerNavigateEvent for the payload info.
          */
@@ -60906,7 +61346,7 @@ var NgbInputDatepicker = (function () {
         this._validatorChange = function () { };
         this._zoneSubscription = ngZone.onStable.subscribe(function () {
             if (_this._cRef) {
-                positioning_1.positionElements(_this._elRef.nativeElement, _this._cRef.location.nativeElement, 'bottom-left');
+                positioning_1.positionElements(_this._elRef.nativeElement, _this._cRef.location.nativeElement, _this.placement);
             }
         });
     }
@@ -60940,10 +61380,13 @@ var NgbInputDatepicker = (function () {
         this._model = this._calendar.isValid(value) ? ngbDate : null;
         this._writeModelValue(this._model);
     };
-    NgbInputDatepicker.prototype.manualDateChange = function (value) {
+    NgbInputDatepicker.prototype.manualDateChange = function (value, updateView) {
+        if (updateView === void 0) { updateView = false; }
         this._model = this._service.toValidDate(this._parserFormatter.parse(value), null);
-        this._onChange(this._model ? { year: this._model.year, month: this._model.month, day: this._model.day } : value);
-        this._writeModelValue(this._model);
+        this._onChange(this._model ? this._model.toStruct() : (value === '' ? null : value));
+        if (updateView && this._model) {
+            this._writeModelValue(this._model);
+        }
     };
     NgbInputDatepicker.prototype.isOpen = function () { return !!this._cRef; };
     /**
@@ -60965,6 +61408,8 @@ var NgbInputDatepicker = (function () {
                 _this._onChange(selectedDate);
                 _this.close();
             });
+            // focus handling
+            this._cRef.instance.focus();
         }
     };
     /**
@@ -61070,6 +61515,10 @@ __decorate([
 ], NgbInputDatepicker.prototype, "outsideDays", void 0);
 __decorate([
     core_1.Input(),
+    __metadata("design:type", Object)
+], NgbInputDatepicker.prototype, "placement", void 0);
+__decorate([
+    core_1.Input(),
     __metadata("design:type", Boolean)
 ], NgbInputDatepicker.prototype, "showWeekdays", void 0);
 __decorate([
@@ -61088,7 +61537,12 @@ NgbInputDatepicker = __decorate([
     core_1.Directive({
         selector: 'input[ngbDatepicker]',
         exportAs: 'ngbDatepicker',
-        host: { '(change)': 'manualDateChange($event.target.value)', '(keyup.esc)': 'close()', '(blur)': 'onBlur()' },
+        host: {
+            '(input)': 'manualDateChange($event.target.value)',
+            '(change)': 'manualDateChange($event.target.value, true)',
+            '(keyup.esc)': 'close()',
+            '(blur)': 'onBlur()'
+        },
         providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR, datepicker_service_1.NgbDatepickerService]
     }),
     __metadata("design:paramtypes", [ngb_date_parser_formatter_1.NgbDateParserFormatter, core_1.ElementRef, core_1.ViewContainerRef,
@@ -61099,7 +61553,7 @@ exports.NgbInputDatepicker = NgbInputDatepicker;
 
 
 /***/ }),
-/* 48 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61122,12 +61576,10 @@ var NgbDatepickerMonthView = (function () {
         this.select = new core_1.EventEmitter();
     }
     NgbDatepickerMonthView.prototype.doSelect = function (day) {
-        if (!this.isDisabled(day) && !this.isHidden(day)) {
+        if (!day.context.disabled && !this.isHidden(day)) {
             this.select.emit(ngb_date_1.NgbDate.from(day.date));
         }
     };
-    NgbDatepickerMonthView.prototype.isDisabled = function (day) { return this.disabled || day.disabled; };
-    NgbDatepickerMonthView.prototype.isSelected = function (date) { return this.selectedDate && this.selectedDate.equals(date); };
     NgbDatepickerMonthView.prototype.isCollapsed = function (week) {
         return this.outsideDays === 'collapsed' && week.days[0].date.month !== this.month.number &&
             week.days[week.days.length - 1].date.month !== this.month.number;
@@ -61143,20 +61595,12 @@ __decorate([
 ], NgbDatepickerMonthView.prototype, "dayTemplate", void 0);
 __decorate([
     core_1.Input(),
-    __metadata("design:type", Boolean)
-], NgbDatepickerMonthView.prototype, "disabled", void 0);
-__decorate([
-    core_1.Input(),
     __metadata("design:type", Object)
 ], NgbDatepickerMonthView.prototype, "month", void 0);
 __decorate([
     core_1.Input(),
     __metadata("design:type", String)
 ], NgbDatepickerMonthView.prototype, "outsideDays", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", ngb_date_1.NgbDate)
-], NgbDatepickerMonthView.prototype, "selectedDate", void 0);
 __decorate([
     core_1.Input(),
     __metadata("design:type", Object)
@@ -61173,8 +61617,8 @@ NgbDatepickerMonthView = __decorate([
     core_1.Component({
         selector: 'ngb-datepicker-month-view',
         host: { 'class': 'd-block' },
-        styles: ["\n    .ngb-dp-weekday, .ngb-dp-week-number {\n      line-height: 2rem;\n    }\n    .ngb-dp-day, .ngb-dp-weekday, .ngb-dp-week-number {\n      width: 2rem;\n      height: 2rem;      \n    }\n    .ngb-dp-day {\n      cursor: pointer;\n    }\n    .ngb-dp-day.disabled, .ngb-dp-day.hidden {\n      cursor: default;\n    }\n  "],
-        template: "\n    <div *ngIf=\"showWeekdays\" class=\"ngb-dp-week d-flex\">\n      <div *ngIf=\"showWeekNumbers\" class=\"ngb-dp-weekday\"></div>\n      <div *ngFor=\"let w of month.weekdays\" class=\"ngb-dp-weekday small text-center text-info font-italic\">\n        {{ i18n.getWeekdayShortName(w) }}\n      </div>\n    </div>\n    <ng-template ngFor let-week [ngForOf]=\"month.weeks\">\n      <div *ngIf=\"!isCollapsed(week)\" class=\"ngb-dp-week d-flex\">\n        <div *ngIf=\"showWeekNumbers\" class=\"ngb-dp-week-number small text-center font-italic text-muted\">{{ week.number }}</div>\n        <div *ngFor=\"let day of week.days\" (click)=\"doSelect(day)\" class=\"ngb-dp-day\" [class.disabled]=\"isDisabled(day)\"\n         [class.hidden]=\"isHidden(day)\">\n          <ng-template [ngIf]=\"!isHidden(day)\">\n            <ng-template [ngTemplateOutlet]=\"dayTemplate\"\n            [ngOutletContext]=\"{date: {year: day.date.year, month: day.date.month, day: day.date.day},\n              currentMonth: month.number,\n              disabled: isDisabled(day),\n              selected: isSelected(day.date)}\">\n            </ng-template>\n          </ng-template>\n        </div>\n      </div>\n    </ng-template>\n  "
+        styles: ["\n    .ngb-dp-weekday, .ngb-dp-week-number {\n      line-height: 2rem;\n    }\n    .ngb-dp-day, .ngb-dp-weekday, .ngb-dp-week-number {\n      width: 2rem;\n      height: 2rem;\n    }\n    .ngb-dp-day {\n      cursor: pointer;\n    }\n    .ngb-dp-day.disabled, .ngb-dp-day.hidden {\n      cursor: default;\n    }\n  "],
+        template: "\n    <div *ngIf=\"showWeekdays\" class=\"ngb-dp-week d-flex\">\n      <div *ngIf=\"showWeekNumbers\" class=\"ngb-dp-weekday\"></div>\n      <div *ngFor=\"let w of month.weekdays\" class=\"ngb-dp-weekday small text-center text-info font-italic\">\n        {{ i18n.getWeekdayShortName(w) }}\n      </div>\n    </div>\n    <ng-template ngFor let-week [ngForOf]=\"month.weeks\">\n      <div *ngIf=\"!isCollapsed(week)\" class=\"ngb-dp-week d-flex\">\n        <div *ngIf=\"showWeekNumbers\" class=\"ngb-dp-week-number small text-center font-italic text-muted\">{{ week.number }}</div>\n        <div *ngFor=\"let day of week.days\" (click)=\"doSelect(day)\" class=\"ngb-dp-day\" [class.disabled]=\"day.context.disabled\"\n         [class.hidden]=\"isHidden(day)\">\n          <ng-template [ngIf]=\"!isHidden(day)\">\n            <ng-template [ngTemplateOutlet]=\"dayTemplate\" [ngTemplateOutletContext]=\"day.context\"></ng-template>\n          </ng-template>\n        </div>\n      </div>\n    </ng-template>\n  "
     }),
     __metadata("design:paramtypes", [datepicker_i18n_1.NgbDatepickerI18n])
 ], NgbDatepickerMonthView);
@@ -61182,7 +61626,7 @@ exports.NgbDatepickerMonthView = NgbDatepickerMonthView;
 
 
 /***/ }),
-/* 49 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61258,9 +61702,9 @@ __decorate([
 NgbDatepickerNavigationSelect = __decorate([
     core_1.Component({
         selector: 'ngb-datepicker-navigation-select',
+        changeDetection: core_1.ChangeDetectionStrategy.OnPush,
         styles: ["\n    select {\n      /* to align with btn-sm */\n      padding: 0.25rem 0.5rem;\n      font-size: 0.875rem;      \n      line-height: 1.25;\n      /* to cancel the custom height set by custom-select */\n      height: inherit;\n      width: 50%;\n    }\n  "],
-        template: "\n    <select [disabled]=\"disabled\" class=\"custom-select d-inline-block\" [value]=\"date?.month\" (change)=\"changeMonth($event.target.value)\">\n      <option *ngFor=\"let m of months\" [value]=\"m\">{{ i18n.getMonthShortName(m) }}</option>\n    </select>" +
-            "<select [disabled]=\"disabled\" class=\"custom-select d-inline-block\" [value]=\"date?.year\" (change)=\"changeYear($event.target.value)\">\n      <option *ngFor=\"let y of years\" [value]=\"y\">{{ y }}</option>\n    </select> \n  " // template needs to be formatted in a certain way so we don't add empty text nodes
+        template: "\n    <select\n      [disabled]=\"disabled\"\n      class=\"custom-select d-inline-block\"\n      [value]=\"date?.month\"\n      (change)=\"changeMonth($event.target.value)\"\n      tabindex=\"-1\">\n        <option *ngFor=\"let m of months\" [value]=\"m\">{{ i18n.getMonthShortName(m) }}</option>\n    </select><select\n      [disabled]=\"disabled\"\n      class=\"custom-select d-inline-block\"\n      [value]=\"date?.year\"\n      (change)=\"changeYear($event.target.value)\"\n      tabindex=\"-1\">\n        <option *ngFor=\"let y of years\" [value]=\"y\">{{ y }}</option>\n    </select> \n  "
     }),
     __metadata("design:paramtypes", [datepicker_i18n_1.NgbDatepickerI18n, ngb_calendar_1.NgbCalendar])
 ], NgbDatepickerNavigationSelect);
@@ -61268,7 +61712,7 @@ exports.NgbDatepickerNavigationSelect = NgbDatepickerNavigationSelect;
 
 
 /***/ }),
-/* 50 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61283,7 +61727,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var datepicker_view_model_1 = __webpack_require__(52);
+var datepicker_view_model_1 = __webpack_require__(55);
 var ngb_date_1 = __webpack_require__(4);
 var datepicker_i18n_1 = __webpack_require__(6);
 var ngb_calendar_1 = __webpack_require__(3);
@@ -61345,9 +61789,10 @@ __decorate([
 NgbDatepickerNavigation = __decorate([
     core_1.Component({
         selector: 'ngb-datepicker-navigation',
+        changeDetection: core_1.ChangeDetectionStrategy.OnPush,
         host: { 'class': 'd-flex justify-content-between', '[class.collapsed]': '!showSelect' },
         styles: ["\n    :host {\n      height: 2rem;\n      line-height: 1.85rem;\n    }\n    :host.collapsed {\n      margin-bottom: -2rem;        \n    }\n    .ngb-dp-navigation-chevron::before {\n      border-style: solid;\n      border-width: 0.2em 0.2em 0 0;\n      content: '';\n      display: inline-block;\n      height: 0.75em;\n      transform: rotate(-135deg);\n      -webkit-transform: rotate(-135deg);\n      -ms-transform: rotate(-135deg);\n      width: 0.75em;\n      margin: 0 0 0 0.5rem;\n    }    \n    .ngb-dp-navigation-chevron.right:before {\n      -webkit-transform: rotate(45deg);\n      -ms-transform: rotate(45deg);\n      transform: rotate(45deg);\n      margin: 0 0.5rem 0 0;\n    }\n    .btn-link {\n      cursor: pointer;\n      outline: 0;\n    }\n    .btn-link[disabled] {\n      cursor: not-allowed;\n      opacity: .65;\n    }    \n  "],
-        template: "\n    <button type=\"button\" class=\"btn-link\" (click)=\"!!doNavigate(navigation.PREV)\" [disabled]=\"prevDisabled()\">\n      <span class=\"ngb-dp-navigation-chevron\"></span>    \n    </button>\n    \n    <ngb-datepicker-navigation-select *ngIf=\"showSelect\" class=\"d-block\" [style.width.rem]=\"months * 9\"\n      [date]=\"date\"\n      [minDate]=\"minDate\"\n      [maxDate]=\"maxDate\"\n      [disabled] = \"disabled\"\n      (select)=\"selectDate($event)\">\n    </ngb-datepicker-navigation-select>\n    \n    <button type=\"button\" class=\"btn-link\" (click)=\"!!doNavigate(navigation.NEXT)\" [disabled]=\"nextDisabled()\">\n      <span class=\"ngb-dp-navigation-chevron right\"></span>\n    </button>\n  "
+        template: "\n    <button type=\"button\" class=\"btn-link\" (click)=\"!!doNavigate(navigation.PREV)\" [disabled]=\"prevDisabled()\" tabindex=\"-1\">\n      <span class=\"ngb-dp-navigation-chevron\"></span>    \n    </button>\n    \n    <ngb-datepicker-navigation-select *ngIf=\"showSelect\" class=\"d-block\" [style.width.rem]=\"months * 9\"\n      [date]=\"date\"\n      [minDate]=\"minDate\"\n      [maxDate]=\"maxDate\"\n      [disabled] = \"disabled\"\n      (select)=\"selectDate($event)\">\n    </ngb-datepicker-navigation-select>\n    \n    <button type=\"button\" class=\"btn-link\" (click)=\"!!doNavigate(navigation.NEXT)\" [disabled]=\"nextDisabled()\" tabindex=\"-1\">\n      <span class=\"ngb-dp-navigation-chevron right\"></span>\n    </button>\n  "
     }),
     __metadata("design:paramtypes", [datepicker_i18n_1.NgbDatepickerI18n, ngb_calendar_1.NgbCalendar])
 ], NgbDatepickerNavigation);
@@ -61355,90 +61800,135 @@ exports.NgbDatepickerNavigation = NgbDatepickerNavigation;
 
 
 /***/ }),
-/* 51 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var ngb_calendar_1 = __webpack_require__(3);
 var ngb_date_1 = __webpack_require__(4);
-var core_1 = __webpack_require__(0);
-var NgbDatepickerService = (function () {
-    function NgbDatepickerService(_calendar) {
-        this._calendar = _calendar;
+function isChangedDate(prev, next) {
+    return !dateComparator(prev, next);
+}
+exports.isChangedDate = isChangedDate;
+function dateComparator(prev, next) {
+    return (!prev && !next) || (!!prev && !!next && prev.equals(next));
+}
+exports.dateComparator = dateComparator;
+function checkMinBeforeMax(minDate, maxDate) {
+    if (maxDate && minDate && maxDate.before(minDate)) {
+        throw new Error("'maxDate' " + maxDate + " should be greater than 'minDate' " + minDate);
     }
-    NgbDatepickerService.prototype.generateMonthViewModel = function (date, minDate, maxDate, firstDayOfWeek, markDisabled) {
-        var month = { firstDate: null, number: date.month, year: date.year, weeks: [], weekdays: [] };
-        date = this._getFirstViewDate(date, firstDayOfWeek);
-        // month has weeks
-        for (var w = 0; w < this._calendar.getWeeksPerMonth(); w++) {
-            var days = [];
-            // week has days
-            for (var d = 0; d < this._calendar.getDaysPerWeek(); d++) {
-                if (w === 0) {
-                    month.weekdays.push(this._calendar.getWeekday(date));
-                }
-                var newDate = new ngb_date_1.NgbDate(date.year, date.month, date.day);
-                var disabled = (minDate && newDate.before(minDate)) || (maxDate && newDate.after(maxDate));
-                if (!disabled && markDisabled) {
-                    disabled = markDisabled(newDate, { month: month.number, year: month.year });
-                }
-                // saving first date of the month
-                if (month.firstDate === null && date.month === month.number) {
-                    month.firstDate = newDate;
-                }
-                days.push({ date: newDate, disabled: disabled });
-                date = this._calendar.getNext(date);
+}
+exports.checkMinBeforeMax = checkMinBeforeMax;
+function checkDateInRange(date, minDate, maxDate) {
+    if (date && minDate && date.before(minDate)) {
+        return ngb_date_1.NgbDate.from(minDate);
+    }
+    if (date && maxDate && date.after(maxDate)) {
+        return ngb_date_1.NgbDate.from(maxDate);
+    }
+    return date;
+}
+exports.checkDateInRange = checkDateInRange;
+function isDateSelectable(months, date) {
+    var selectable = false;
+    var month = months.find(function (curMonth) { return curMonth.year === date.year && curMonth.number === date.month; });
+    if (month) {
+        month.weeks.find(function (week) {
+            var day = week.days.find(function (day) { return date.equals(day.date); });
+            if (day && !day.context.disabled) {
+                selectable = true;
             }
-            month.weeks.push({ number: this._calendar.getWeekNumber(days.map(function (day) { return ngb_date_1.NgbDate.from(day.date); }), firstDayOfWeek), days: days });
+            return !!day;
+        });
+    }
+    return selectable;
+}
+exports.isDateSelectable = isDateSelectable;
+function buildMonths(calendar, months, date, minDate, maxDate, displayMonths, firstDayOfWeek, markDisabled, force) {
+    var newMonths = [];
+    var _loop_1 = function (i) {
+        var newDate = calendar.getNext(date, 'm', i);
+        var index = months.findIndex(function (month) { return month.firstDate.equals(newDate); });
+        if (force || index === -1) {
+            newMonths.push(buildMonth(calendar, newDate, minDate, maxDate, firstDayOfWeek, markDisabled));
         }
-        return month;
-    };
-    NgbDatepickerService.prototype.toValidDate = function (date, defaultValue) {
-        var ngbDate = ngb_date_1.NgbDate.from(date);
-        if (defaultValue === undefined) {
-            defaultValue = this._calendar.getToday();
+        else {
+            newMonths.push(months[index]);
         }
-        return this._calendar.isValid(ngbDate) ? ngbDate : defaultValue;
     };
-    NgbDatepickerService.prototype._getFirstViewDate = function (date, firstDayOfWeek) {
-        var _this = this;
-        var currentMonth = date.month;
-        var today = new ngb_date_1.NgbDate(date.year, date.month, date.day);
-        var yesterday = this._calendar.getPrev(today);
-        var firstDayOfCurrentMonthIsAlsoFirstDayOfWeek = function () { return today.month !== yesterday.month && firstDayOfWeek === _this._calendar.getWeekday(today); };
-        var reachedTheFirstDayOfTheLastWeekOfPreviousMonth = function () { return today.month !== currentMonth && firstDayOfWeek === _this._calendar.getWeekday(today); };
-        // going back in time
-        while (!reachedTheFirstDayOfTheLastWeekOfPreviousMonth() && !firstDayOfCurrentMonthIsAlsoFirstDayOfWeek()) {
-            today = new ngb_date_1.NgbDate(yesterday.year, yesterday.month, yesterday.day);
-            yesterday = this._calendar.getPrev(yesterday);
+    for (var i = 0; i < displayMonths; i++) {
+        _loop_1(i);
+    }
+    return newMonths;
+}
+exports.buildMonths = buildMonths;
+function buildMonth(calendar, date, minDate, maxDate, firstDayOfWeek, markDisabled) {
+    var month = { firstDate: null, lastDate: null, number: date.month, year: date.year, weeks: [], weekdays: [] };
+    date = getFirstViewDate(calendar, date, firstDayOfWeek);
+    // month has weeks
+    for (var week = 0; week < calendar.getWeeksPerMonth(); week++) {
+        var days = [];
+        // week has days
+        for (var day = 0; day < calendar.getDaysPerWeek(); day++) {
+            if (week === 0) {
+                month.weekdays.push(calendar.getWeekday(date));
+            }
+            var newDate = new ngb_date_1.NgbDate(date.year, date.month, date.day);
+            var nextDate = calendar.getNext(newDate);
+            // marking date as disabled
+            var disabled = !!((minDate && newDate.before(minDate)) || (maxDate && newDate.after(maxDate)));
+            if (!disabled && markDisabled) {
+                disabled = markDisabled(newDate, { month: month.number, year: month.year });
+            }
+            // saving first date of the month
+            if (month.firstDate === null && newDate.month === month.number) {
+                month.firstDate = newDate;
+            }
+            // saving last date of the month
+            if (newDate.month === month.number && nextDate.month !== month.number) {
+                month.lastDate = newDate;
+            }
+            days.push({
+                date: newDate,
+                context: {
+                    date: { year: newDate.year, month: newDate.month, day: newDate.day },
+                    currentMonth: month.number,
+                    disabled: disabled,
+                    focused: false,
+                    selected: false
+                }
+            });
+            date = nextDate;
         }
-        return today;
-    };
-    return NgbDatepickerService;
-}());
-NgbDatepickerService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [ngb_calendar_1.NgbCalendar])
-], NgbDatepickerService);
-exports.NgbDatepickerService = NgbDatepickerService;
+        month.weeks.push({ number: calendar.getWeekNumber(days.map(function (day) { return ngb_date_1.NgbDate.from(day.date); }), firstDayOfWeek), days: days });
+    }
+    return month;
+}
+exports.buildMonth = buildMonth;
+function getFirstViewDate(calendar, date, firstDayOfWeek) {
+    var currentMonth = date.month;
+    var today = new ngb_date_1.NgbDate(date.year, date.month, date.day);
+    var yesterday = calendar.getPrev(today);
+    var firstDayOfCurrentMonthIsAlsoFirstDayOfWeek = function () { return today.month !== yesterday.month && firstDayOfWeek === calendar.getWeekday(today); };
+    var reachedTheFirstDayOfTheLastWeekOfPreviousMonth = function () { return today.month !== currentMonth && firstDayOfWeek === calendar.getWeekday(today); };
+    // going back in time
+    while (!reachedTheFirstDayOfTheLastWeekOfPreviousMonth() && !firstDayOfCurrentMonthIsAlsoFirstDayOfWeek()) {
+        today = new ngb_date_1.NgbDate(yesterday.year, yesterday.month, yesterday.day);
+        yesterday = calendar.getPrev(yesterday);
+    }
+    return today;
+}
+exports.getFirstViewDate = getFirstViewDate;
 
 
 /***/ }),
-/* 52 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+// clang-format on
 var NavigationEvent;
 (function (NavigationEvent) {
     NavigationEvent[NavigationEvent["PREV"] = 0] = "PREV";
@@ -61447,7 +61937,7 @@ var NavigationEvent;
 
 
 /***/ }),
-/* 53 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61461,13 +61951,81 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var core_1 = __webpack_require__(0);
-var dropdown_config_1 = __webpack_require__(31);
+var dropdown_config_1 = __webpack_require__(33);
+var positioning_1 = __webpack_require__(7);
+/**
+ */
+var NgbDropdownMenu = (function () {
+    function NgbDropdownMenu(dropdown, _elementRef, _renderer) {
+        this.dropdown = dropdown;
+        this._elementRef = _elementRef;
+        this._renderer = _renderer;
+        this.placement = 'bottom';
+        this.isOpen = false;
+    }
+    NgbDropdownMenu.prototype.isEventFrom = function ($event) { return this._elementRef.nativeElement.contains($event.target); };
+    NgbDropdownMenu.prototype.position = function (triggerEl, placement) {
+        this.applyPlacement(positioning_1.positionElements(triggerEl, this._elementRef.nativeElement, placement));
+    };
+    NgbDropdownMenu.prototype.applyPlacement = function (_placement) {
+        // remove the current placement classes
+        this._renderer.removeClass(this._elementRef.nativeElement.parentElement, 'dropup');
+        this.placement = _placement;
+        /**
+         * apply the new placement
+         * change the class only in case of top to show up arrow
+         * or use defualt which is dropdown to show down arrow
+         */
+        if (_placement.search('^top') !== -1) {
+            this._renderer.addClass(this._elementRef.nativeElement.parentElement, 'dropup');
+        }
+    };
+    return NgbDropdownMenu;
+}());
+NgbDropdownMenu = __decorate([
+    core_1.Directive({ selector: '[ngbDropdownMenu]', host: { '[class.dropdown-menu]': 'true', '[class.show]': 'dropdown.isOpen()' } }),
+    __param(0, core_1.Inject(core_1.forwardRef(function () { return NgbDropdown; }))),
+    __metadata("design:paramtypes", [Object, core_1.ElementRef,
+        core_1.Renderer2])
+], NgbDropdownMenu);
+exports.NgbDropdownMenu = NgbDropdownMenu;
+/**
+ * Allows the dropdown to be toggled via click. This directive is optional.
+ */
+var NgbDropdownToggle = (function () {
+    function NgbDropdownToggle(dropdown, _elementRef) {
+        this.dropdown = dropdown;
+        this._elementRef = _elementRef;
+        this.anchorEl = _elementRef.nativeElement;
+    }
+    NgbDropdownToggle.prototype.toggleOpen = function () { this.dropdown.toggle(); };
+    NgbDropdownToggle.prototype.isEventFrom = function ($event) { return this._elementRef.nativeElement.contains($event.target); };
+    return NgbDropdownToggle;
+}());
+NgbDropdownToggle = __decorate([
+    core_1.Directive({
+        selector: '[ngbDropdownToggle]',
+        host: {
+            'class': 'dropdown-toggle',
+            'aria-haspopup': 'true',
+            '[attr.aria-expanded]': 'dropdown.isOpen()',
+            '(click)': 'toggleOpen()'
+        }
+    }),
+    __param(0, core_1.Inject(core_1.forwardRef(function () { return NgbDropdown; }))),
+    __metadata("design:paramtypes", [Object, core_1.ElementRef])
+], NgbDropdownToggle);
+exports.NgbDropdownToggle = NgbDropdownToggle;
 /**
  * Transforms a node into a dropdown.
  */
 var NgbDropdown = (function () {
-    function NgbDropdown(config) {
+    function NgbDropdown(config, ngZone) {
+        var _this = this;
         /**
          *  Defines whether or not the dropdown-menu is open initially.
          */
@@ -61477,9 +62035,15 @@ var NgbDropdown = (function () {
          *  Event's payload equals whether dropdown is open.
          */
         this.openChange = new core_1.EventEmitter();
-        this.up = config.up;
+        this.placement = config.placement;
         this.autoClose = config.autoClose;
+        this._zoneSubscription = ngZone.onStable.subscribe(function () { _this._positionMenu(); });
     }
+    NgbDropdown.prototype.ngOnInit = function () {
+        if (this._menu) {
+            this._menu.applyPlacement(Array.isArray(this.placement) ? (this.placement[0]) : this.placement);
+        }
+    };
     /**
      * Checks if the dropdown menu is open or not.
      */
@@ -61490,6 +62054,7 @@ var NgbDropdown = (function () {
     NgbDropdown.prototype.open = function () {
         if (!this._open) {
             this._open = true;
+            this._positionMenu();
             this.openChange.emit(true);
         }
     };
@@ -61513,9 +62078,17 @@ var NgbDropdown = (function () {
             this.open();
         }
     };
-    NgbDropdown.prototype.closeFromOutsideClick = function ($event) {
+    NgbDropdown.prototype.closeFromClick = function ($event) {
         if (this.autoClose && $event.button !== 2 && !this._isEventFromToggle($event)) {
-            this.close();
+            if (this.autoClose === true) {
+                this.close();
+            }
+            else if (this.autoClose === 'inside' && this._isEventFromMenu($event)) {
+                this.close();
+            }
+            else if (this.autoClose === 'outside' && !this._isEventFromMenu($event)) {
+                this.close();
+            }
         }
     };
     NgbDropdown.prototype.closeFromOutsideEsc = function () {
@@ -61523,29 +62096,36 @@ var NgbDropdown = (function () {
             this.close();
         }
     };
-    Object.defineProperty(NgbDropdown.prototype, "toggleElement", {
-        /**
-         * @internal
-         */
-        set: function (toggleElement) { this._toggleElement = toggleElement; },
-        enumerable: true,
-        configurable: true
-    });
-    NgbDropdown.prototype._isEventFromToggle = function ($event) { return !!this._toggleElement && this._toggleElement.contains($event.target); };
+    NgbDropdown.prototype.ngOnDestroy = function () { this._zoneSubscription.unsubscribe(); };
+    NgbDropdown.prototype._isEventFromToggle = function ($event) { return this._toggle ? this._toggle.isEventFrom($event) : false; };
+    NgbDropdown.prototype._isEventFromMenu = function ($event) { return this._menu ? this._menu.isEventFrom($event) : false; };
+    NgbDropdown.prototype._positionMenu = function () {
+        if (this.isOpen() && this._menu && this._toggle) {
+            this._menu.position(this._toggle.anchorEl, this.placement);
+        }
+    };
     return NgbDropdown;
 }());
 __decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], NgbDropdown.prototype, "up", void 0);
+    core_1.ContentChild(NgbDropdownMenu),
+    __metadata("design:type", NgbDropdownMenu)
+], NgbDropdown.prototype, "_menu", void 0);
+__decorate([
+    core_1.ContentChild(NgbDropdownToggle),
+    __metadata("design:type", NgbDropdownToggle)
+], NgbDropdown.prototype, "_toggle", void 0);
 __decorate([
     core_1.Input(),
-    __metadata("design:type", Boolean)
+    __metadata("design:type", Object)
 ], NgbDropdown.prototype, "autoClose", void 0);
 __decorate([
     core_1.Input('open'),
     __metadata("design:type", Object)
 ], NgbDropdown.prototype, "_open", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], NgbDropdown.prototype, "placement", void 0);
 __decorate([
     core_1.Output(),
     __metadata("design:type", Object)
@@ -61555,44 +62135,18 @@ NgbDropdown = __decorate([
         selector: '[ngbDropdown]',
         exportAs: 'ngbDropdown',
         host: {
-            '[class.dropdown]': '!up',
-            '[class.dropup]': 'up',
             '[class.show]': 'isOpen()',
             '(keyup.esc)': 'closeFromOutsideEsc()',
-            '(document:click)': 'closeFromOutsideClick($event)'
+            '(document:click)': 'closeFromClick($event)'
         }
     }),
-    __metadata("design:paramtypes", [dropdown_config_1.NgbDropdownConfig])
+    __metadata("design:paramtypes", [dropdown_config_1.NgbDropdownConfig, core_1.NgZone])
 ], NgbDropdown);
 exports.NgbDropdown = NgbDropdown;
-/**
- * Allows the dropdown to be toggled via click. This directive is optional.
- */
-var NgbDropdownToggle = (function () {
-    function NgbDropdownToggle(dropdown, elementRef) {
-        this.dropdown = dropdown;
-        dropdown.toggleElement = elementRef.nativeElement;
-    }
-    NgbDropdownToggle.prototype.toggleOpen = function () { this.dropdown.toggle(); };
-    return NgbDropdownToggle;
-}());
-NgbDropdownToggle = __decorate([
-    core_1.Directive({
-        selector: '[ngbDropdownToggle]',
-        host: {
-            'class': 'dropdown-toggle',
-            'aria-haspopup': 'true',
-            '[attr.aria-expanded]': 'dropdown.isOpen()',
-            '(click)': 'toggleOpen()'
-        }
-    }),
-    __metadata("design:paramtypes", [NgbDropdown, core_1.ElementRef])
-], NgbDropdownToggle);
-exports.NgbDropdownToggle = NgbDropdownToggle;
 
 
 /***/ }),
-/* 54 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61616,7 +62170,7 @@ exports.NgbModalBackdrop = NgbModalBackdrop;
 
 
 /***/ }),
-/* 55 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61629,22 +62183,11 @@ var ModalDismissReasons;
 
 
 /***/ }),
-/* 56 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var core_1 = __webpack_require__(0);
-var popup_1 = __webpack_require__(7);
 /**
  * A reference to an active (currently opened) modal. Instances of this class
  * can be injected into components passed as modal content.
@@ -61662,19 +62205,17 @@ var NgbActiveModal = (function () {
     NgbActiveModal.prototype.dismiss = function (reason) { };
     return NgbActiveModal;
 }());
-NgbActiveModal = __decorate([
-    core_1.Injectable()
-], NgbActiveModal);
 exports.NgbActiveModal = NgbActiveModal;
 /**
  * A reference to a newly opened modal.
  */
 var NgbModalRef = (function () {
-    function NgbModalRef(_windowCmptRef, _contentRef, _backdropCmptRef) {
+    function NgbModalRef(_windowCmptRef, _contentRef, _backdropCmptRef, _beforeDismiss) {
         var _this = this;
         this._windowCmptRef = _windowCmptRef;
         this._contentRef = _contentRef;
         this._backdropCmptRef = _backdropCmptRef;
+        this._beforeDismiss = _beforeDismiss;
         _windowCmptRef.instance.dismissEvent.subscribe(function (reason) { _this.dismiss(reason); });
         this.result = new Promise(function (resolve, reject) {
             _this._resolve = resolve;
@@ -61711,8 +62252,10 @@ var NgbModalRef = (function () {
      */
     NgbModalRef.prototype.dismiss = function (reason) {
         if (this._windowCmptRef) {
-            this._reject(reason);
-            this._removeModalElements();
+            if (!this._beforeDismiss || this._beforeDismiss() !== false) {
+                this._reject(reason);
+                this._removeModalElements();
+            }
         }
     };
     NgbModalRef.prototype._removeModalElements = function () {
@@ -61733,16 +62276,11 @@ var NgbModalRef = (function () {
     };
     return NgbModalRef;
 }());
-NgbModalRef = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [core_1.ComponentRef, popup_1.ContentRef,
-        core_1.ComponentRef])
-], NgbModalRef);
 exports.NgbModalRef = NgbModalRef;
 
 
 /***/ }),
-/* 57 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61757,11 +62295,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var popup_1 = __webpack_require__(7);
+var popup_1 = __webpack_require__(9);
 var util_1 = __webpack_require__(1);
-var modal_backdrop_1 = __webpack_require__(54);
-var modal_window_1 = __webpack_require__(58);
-var modal_ref_1 = __webpack_require__(56);
+var modal_backdrop_1 = __webpack_require__(57);
+var modal_window_1 = __webpack_require__(61);
+var modal_ref_1 = __webpack_require__(59);
 var NgbModalStack = (function () {
     function NgbModalStack(_applicationRef, _injector, _componentFactoryResolver) {
         this._applicationRef = _applicationRef;
@@ -61777,7 +62315,7 @@ var NgbModalStack = (function () {
             throw new Error("The specified modal container \"" + containerSelector + "\" was not found in the DOM.");
         }
         var activeModal = new modal_ref_1.NgbActiveModal();
-        var contentRef = this._getContentRef(moduleCFR, contentInjector, content, activeModal);
+        var contentRef = this._getContentRef(moduleCFR, options.injector || contentInjector, content, activeModal);
         var windowCmptRef;
         var backdropCmptRef;
         var ngbModalRef;
@@ -61789,7 +62327,7 @@ var NgbModalStack = (function () {
         windowCmptRef = this._windowFactory.create(this._injector, contentRef.nodes);
         this._applicationRef.attachView(windowCmptRef.hostView);
         containerEl.appendChild(windowCmptRef.location.nativeElement);
-        ngbModalRef = new modal_ref_1.NgbModalRef(windowCmptRef, contentRef, backdropCmptRef);
+        ngbModalRef = new modal_ref_1.NgbModalRef(windowCmptRef, contentRef, backdropCmptRef, options.beforeDismiss);
         activeModal.close = function (result) { ngbModalRef.close(result); };
         activeModal.dismiss = function (reason) { ngbModalRef.dismiss(reason); };
         this._applyWindowOptions(windowCmptRef.instance, options);
@@ -61833,7 +62371,7 @@ exports.NgbModalStack = NgbModalStack;
 
 
 /***/ }),
-/* 58 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61848,7 +62386,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var modal_dismiss_reasons_1 = __webpack_require__(55);
+var modal_dismiss_reasons_1 = __webpack_require__(58);
 var NgbModalWindow = (function () {
     function NgbModalWindow(_elRef, _renderer) {
         this._elRef = _elRef;
@@ -61878,14 +62416,18 @@ var NgbModalWindow = (function () {
         }
     };
     NgbModalWindow.prototype.ngOnDestroy = function () {
-        if (this._elWithFocus && document.body.contains(this._elWithFocus)) {
-            this._elWithFocus['focus'].apply(this._elWithFocus, []);
+        var body = document.body;
+        var elWithFocus = this._elWithFocus;
+        var elementToFocus;
+        if (elWithFocus && elWithFocus['focus'] && body.contains(elWithFocus)) {
+            elementToFocus = elWithFocus;
         }
         else {
-            document.body['focus'].apply(document.body, []);
+            elementToFocus = body;
         }
+        elementToFocus['focus'].apply(elementToFocus, []);
         this._elWithFocus = null;
-        this._renderer.removeClass(document.body, 'modal-open');
+        this._renderer.removeClass(body, 'modal-open');
     };
     return NgbModalWindow;
 }());
@@ -61928,7 +62470,7 @@ exports.NgbModalWindow = NgbModalWindow;
 
 
 /***/ }),
-/* 59 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61943,7 +62485,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var modal_stack_1 = __webpack_require__(57);
+var modal_stack_1 = __webpack_require__(60);
 /**
  * A service to open modal windows. Creating a modal is straightforward: create a template and pass it as an argument to
  * the "open" method!
@@ -61974,7 +62516,7 @@ exports.NgbModal = NgbModal;
 
 
 /***/ }),
-/* 60 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61990,7 +62532,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = __webpack_require__(0);
 var util_1 = __webpack_require__(1);
-var pagination_config_1 = __webpack_require__(32);
+var pagination_config_1 = __webpack_require__(34);
 /**
  * A directive that will take care of visualising a pagination bar and enable / disable buttons correctly!
  */
@@ -62175,7 +62717,7 @@ exports.NgbPagination = NgbPagination;
 
 
 /***/ }),
-/* 61 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62190,15 +62732,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var triggers_1 = __webpack_require__(69);
-var positioning_1 = __webpack_require__(8);
-var popup_1 = __webpack_require__(7);
-var popover_config_1 = __webpack_require__(33);
+var triggers_1 = __webpack_require__(72);
+var positioning_1 = __webpack_require__(7);
+var popup_1 = __webpack_require__(9);
+var popover_config_1 = __webpack_require__(35);
 var nextId = 0;
 var NgbPopoverWindow = (function () {
-    function NgbPopoverWindow() {
+    function NgbPopoverWindow(_element, _renderer) {
+        this._element = _element;
+        this._renderer = _renderer;
         this.placement = 'top';
     }
+    NgbPopoverWindow.prototype.applyPlacement = function (_placement) {
+        // remove the current placement classes
+        this._renderer.removeClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString().split('-')[0]);
+        this._renderer.removeClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString());
+        // set the new placement classes
+        this.placement = _placement;
+        // apply the new placement
+        this._renderer.addClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString().split('-')[0]);
+        this._renderer.addClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString());
+    };
     return NgbPopoverWindow;
 }());
 __decorate([
@@ -62217,9 +62771,15 @@ NgbPopoverWindow = __decorate([
     core_1.Component({
         selector: 'ngb-popover-window',
         changeDetection: core_1.ChangeDetectionStrategy.OnPush,
-        host: { '[class]': '"popover show popover-" + placement', 'role': 'tooltip', '[id]': 'id' },
-        template: "\n    <h3 class=\"popover-title\">{{title}}</h3><div class=\"popover-content\"><ng-content></ng-content></div>\n    "
-    })
+        host: {
+            '[class]': '"popover bs-popover-" + placement.split("-")[0]+" bs-popover-" + placement',
+            'role': 'tooltip',
+            '[id]': 'id'
+        },
+        template: "\n    <div class=\"arrow\"></div>\n    <h3 class=\"popover-header\">{{title}}</h3><div class=\"popover-body\"><ng-content></ng-content></div>",
+        styles: ["\n    :host.bs-popover-top .arrow, :host.bs-popover-bottom .arrow {\n      left: 50%;\n    }\n\n    :host.bs-popover-top-left .arrow, :host.bs-popover-bottom-left .arrow {\n      left: 2em;\n    }\n\n    :host.bs-popover-top-right .arrow, :host.bs-popover-bottom-right .arrow {\n      left: auto;\n      right: 2em;\n    }\n\n    :host.bs-popover-left .arrow, :host.bs-popover-right .arrow {\n      top: 50%;\n    }\n    \n    :host.bs-popover-left-top .arrow, :host.bs-popover-right-top .arrow {\n      top: 0.7em;\n    }\n\n    :host.bs-popover-left-bottom .arrow, :host.bs-popover-right-bottom .arrow {\n      top: auto;\n      bottom: 0.7em;\n    }\n  "]
+    }),
+    __metadata("design:paramtypes", [core_1.ElementRef, core_1.Renderer2])
 ], NgbPopoverWindow);
 exports.NgbPopoverWindow = NgbPopoverWindow;
 /**
@@ -62245,7 +62805,7 @@ var NgbPopover = (function () {
         this._popupService = new popup_1.PopupService(NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
         this._zoneSubscription = ngZone.onStable.subscribe(function () {
             if (_this._windowRef) {
-                positioning_1.positionElements(_this._elementRef.nativeElement, _this._windowRef.location.nativeElement, _this.placement, _this.container === 'body');
+                _this._windowRef.instance.applyPlacement(positioning_1.positionElements(_this._elementRef.nativeElement, _this._windowRef.location.nativeElement, _this.placement, _this.container === 'body'));
             }
         });
     }
@@ -62256,16 +62816,17 @@ var NgbPopover = (function () {
     NgbPopover.prototype.open = function (context) {
         if (!this._windowRef) {
             this._windowRef = this._popupService.open(this.ngbPopover, context);
-            this._windowRef.instance.placement = this.placement;
             this._windowRef.instance.title = this.popoverTitle;
             this._windowRef.instance.id = this._ngbPopoverWindowId;
             this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbPopoverWindowId);
             if (this.container === 'body') {
                 window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
             }
-            // we need to manually invoke change detection since events registered via
-            // Renderer::listen() are not picked up by change detection with the OnPush strategy
+            // apply styling to set basic css-classes on target element, before going for positioning
+            this._windowRef.changeDetectorRef.detectChanges();
             this._windowRef.changeDetectorRef.markForCheck();
+            // position popover along the element
+            this._windowRef.instance.applyPlacement(positioning_1.positionElements(this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement, this.container === 'body'));
             this.shown.emit();
         }
     };
@@ -62315,7 +62876,7 @@ __decorate([
 ], NgbPopover.prototype, "popoverTitle", void 0);
 __decorate([
     core_1.Input(),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], NgbPopover.prototype, "placement", void 0);
 __decorate([
     core_1.Input(),
@@ -62343,7 +62904,7 @@ exports.NgbPopover = NgbPopover;
 
 
 /***/ }),
-/* 62 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62359,7 +62920,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = __webpack_require__(0);
 var util_1 = __webpack_require__(1);
-var progressbar_config_1 = __webpack_require__(34);
+var progressbar_config_1 = __webpack_require__(36);
 /**
  * Directive that can be used to provide feedback on the progress of a workflow or an action.
  */
@@ -62415,7 +62976,7 @@ exports.NgbProgressbar = NgbProgressbar;
 
 
 /***/ }),
-/* 63 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62430,7 +62991,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var rating_config_1 = __webpack_require__(35);
+var rating_config_1 = __webpack_require__(37);
 var util_1 = __webpack_require__(1);
 var forms_1 = __webpack_require__(5);
 var Key;
@@ -62604,7 +63165,7 @@ NgbRating = __decorate([
             '(keydown)': 'handleKeyDown($event)',
             '(mouseleave)': 'reset()'
         },
-        template: "\n    <ng-template #t let-fill=\"fill\">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</ng-template>\n    <ng-template ngFor [ngForOf]=\"contexts\" let-index=\"index\">\n      <span class=\"sr-only\">({{ index < nextRate ? '*' : ' ' }})</span>\n      <span (mouseenter)=\"enter(index + 1)\" (click)=\"handleClick(index + 1)\" [style.cursor]=\"readonly || disabled ? 'default' : 'pointer'\">\n        <ng-template [ngTemplateOutlet]=\"starTemplate || t\" [ngOutletContext]=\"contexts[index]\"></ng-template>\n      </span>\n    </ng-template>\n  ",
+        template: "\n    <ng-template #t let-fill=\"fill\">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</ng-template>\n    <ng-template ngFor [ngForOf]=\"contexts\" let-index=\"index\">\n      <span class=\"sr-only\">({{ index < nextRate ? '*' : ' ' }})</span>\n      <span (mouseenter)=\"enter(index + 1)\" (click)=\"handleClick(index + 1)\" [style.cursor]=\"readonly || disabled ? 'default' : 'pointer'\">\n        <ng-template [ngTemplateOutlet]=\"starTemplate || t\" [ngTemplateOutletContext]=\"contexts[index]\"></ng-template>\n      </span>\n    </ng-template>\n  ",
         providers: [NGB_RATING_VALUE_ACCESSOR]
     }),
     __metadata("design:paramtypes", [rating_config_1.NgbRatingConfig, core_1.ChangeDetectorRef])
@@ -62613,7 +63174,7 @@ exports.NgbRating = NgbRating;
 
 
 /***/ }),
-/* 64 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62628,7 +63189,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var tabset_config_1 = __webpack_require__(36);
+var tabset_config_1 = __webpack_require__(38);
 var nextId = 0;
 /**
  * This directive should be used to wrap tab titles that need to contain HTML markup or other directives.
@@ -62713,7 +63274,25 @@ var NgbTabset = (function () {
         this.tabChange = new core_1.EventEmitter();
         this.type = config.type;
         this.justify = config.justify;
+        this.orientation = config.orientation;
     }
+    Object.defineProperty(NgbTabset.prototype, "justify", {
+        /**
+         * The horizontal alignment of the nav with flexbox utilities. Can be one of 'start', 'center', 'end', 'fill' or
+         * 'justified'
+         * The default value is 'start'.
+         */
+        set: function (className) {
+            if (className === 'fill' || className === 'justified') {
+                this.justifyClass = "nav-" + className;
+            }
+            else {
+                this.justifyClass = "justify-content-" + className;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Selects the tab with the given id and shows its associated pane.
      * Any other tab that was previously selected becomes unselected and its associated pane is hidden.
@@ -62753,8 +63332,13 @@ __decorate([
 ], NgbTabset.prototype, "destroyOnHide", void 0);
 __decorate([
     core_1.Input(),
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [String])
+], NgbTabset.prototype, "justify", null);
+__decorate([
+    core_1.Input(),
     __metadata("design:type", String)
-], NgbTabset.prototype, "justify", void 0);
+], NgbTabset.prototype, "orientation", void 0);
 __decorate([
     core_1.Input(),
     __metadata("design:type", String)
@@ -62767,7 +63351,7 @@ NgbTabset = __decorate([
     core_1.Component({
         selector: 'ngb-tabset',
         exportAs: 'ngbTabset',
-        template: "\n    <ul [class]=\"'nav nav-' + type + ' justify-content-' + justify\" role=\"tablist\">\n      <li class=\"nav-item\" *ngFor=\"let tab of tabs\">\n        <a [id]=\"tab.id\" class=\"nav-link\" [class.active]=\"tab.id === activeId\" [class.disabled]=\"tab.disabled\"\n          href (click)=\"!!select(tab.id)\" role=\"tab\" [attr.tabindex]=\"(tab.disabled ? '-1': undefined)\"\n          [attr.aria-controls]=\"(!destroyOnHide || tab.id === activeId ? tab.id + '-panel' : null)\"\n          [attr.aria-expanded]=\"tab.id === activeId\" [attr.aria-disabled]=\"tab.disabled\">\n          {{tab.title}}<ng-template [ngTemplateOutlet]=\"tab.titleTpl?.templateRef\"></ng-template>\n        </a>\n      </li>\n    </ul>\n    <div class=\"tab-content\">\n      <ng-template ngFor let-tab [ngForOf]=\"tabs\">\n        <div\n          class=\"tab-pane {{tab.id === activeId ? 'active' : null}}\"\n          *ngIf=\"!destroyOnHide || tab.id === activeId\"\n          role=\"tabpanel\"\n          [attr.aria-labelledby]=\"tab.id\" id=\"{{tab.id}}-panel\"\n          [attr.aria-expanded]=\"tab.id === activeId\">\n          <ng-template [ngTemplateOutlet]=\"tab.contentTpl.templateRef\"></ng-template>\n        </div>\n      </ng-template>\n    </div>\n  "
+        template: "\n    <ul [class]=\"'nav nav-' + type + (orientation == 'horizontal'?  ' ' + justifyClass : ' flex-column')\" role=\"tablist\">\n      <li class=\"nav-item\" *ngFor=\"let tab of tabs\">\n        <a [id]=\"tab.id\" class=\"nav-link\" [class.active]=\"tab.id === activeId\" [class.disabled]=\"tab.disabled\"\n          href (click)=\"!!select(tab.id)\" role=\"tab\" [attr.tabindex]=\"(tab.disabled ? '-1': undefined)\"\n          [attr.aria-controls]=\"(!destroyOnHide || tab.id === activeId ? tab.id + '-panel' : null)\"\n          [attr.aria-expanded]=\"tab.id === activeId\" [attr.aria-disabled]=\"tab.disabled\">\n          {{tab.title}}<ng-template [ngTemplateOutlet]=\"tab.titleTpl?.templateRef\"></ng-template>\n        </a>\n      </li>\n    </ul>\n    <div class=\"tab-content\">\n      <ng-template ngFor let-tab [ngForOf]=\"tabs\">\n        <div\n          class=\"tab-pane {{tab.id === activeId ? 'active' : null}}\"\n          *ngIf=\"!destroyOnHide || tab.id === activeId\"\n          role=\"tabpanel\"\n          [attr.aria-labelledby]=\"tab.id\" id=\"{{tab.id}}-panel\"\n          [attr.aria-expanded]=\"tab.id === activeId\">\n          <ng-template [ngTemplateOutlet]=\"tab.contentTpl.templateRef\"></ng-template>\n        </div>\n      </ng-template>\n    </div>\n  "
     }),
     __metadata("design:paramtypes", [tabset_config_1.NgbTabsetConfig])
 ], NgbTabset);
@@ -62775,7 +63359,7 @@ exports.NgbTabset = NgbTabset;
 
 
 /***/ }),
-/* 65 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62792,8 +63376,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = __webpack_require__(0);
 var forms_1 = __webpack_require__(5);
 var util_1 = __webpack_require__(1);
-var ngb_time_1 = __webpack_require__(72);
-var timepicker_config_1 = __webpack_require__(37);
+var ngb_time_1 = __webpack_require__(76);
+var timepicker_config_1 = __webpack_require__(39);
 var NGB_TIMEPICKER_VALUE_ACCESSOR = {
     provide: forms_1.NG_VALUE_ACCESSOR,
     useExisting: core_1.forwardRef(function () { return NgbTimepicker; }),
@@ -62838,7 +63422,14 @@ var NgbTimepicker = (function () {
         this.propagateModelChange();
     };
     NgbTimepicker.prototype.updateHour = function (newVal) {
-        this.model.updateHour(util_1.toInteger(newVal));
+        var isPM = this.model.hour >= 12;
+        var enteredHour = util_1.toInteger(newVal);
+        if (this.meridian && (isPM && enteredHour < 12 || !isPM && enteredHour === 12)) {
+            this.model.updateHour(enteredHour + 12);
+        }
+        else {
+            this.model.updateHour(enteredHour);
+        }
         this.propagateModelChange();
     };
     NgbTimepicker.prototype.updateMinute = function (newVal) {
@@ -62926,7 +63517,7 @@ NgbTimepicker = __decorate([
     core_1.Component({
         selector: 'ngb-timepicker',
         styles: ["\n    .ngb-tp {\n      display: flex;\n      align-items: center;\n    }\n\n    .ngb-tp-hour, .ngb-tp-minute, .ngb-tp-second, .ngb-tp-meridian {\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n      justify-content: space-around;\n    }\n\n    .ngb-tp-spacer {\n      width: 1em;\n      text-align: center;\n    }\n\n    .chevron::before {\n      border-style: solid;\n      border-width: 0.29em 0.29em 0 0;\n      content: '';\n      display: inline-block;\n      height: 0.69em;\n      left: 0.05em;\n      position: relative;\n      top: 0.15em;\n      transform: rotate(-45deg);\n      -webkit-transform: rotate(-45deg);\n      -ms-transform: rotate(-45deg);\n      vertical-align: middle;\n      width: 0.71em;\n    }\n\n    .chevron.bottom:before {\n      top: -.3em;\n      -webkit-transform: rotate(135deg);\n      -ms-transform: rotate(135deg);\n      transform: rotate(135deg);\n    }\n\n    .btn-link {\n      outline: 0;\n    }\n\n    .btn-link.disabled {\n      cursor: not-allowed;\n      opacity: .65;\n    }\n\n    input {\n      text-align: center;\n      display: inline-block;\n      width: auto;\n    }\n  "],
-        template: "\n    <fieldset [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n      <div class=\"ngb-tp\">\n        <div class=\"ngb-tp-hour\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeHour(hourStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron\"></span>\n            <span class=\"sr-only\">Increment hours</span>\n          </button>\n          <input type=\"text\" class=\"form-control\" [ngClass]=\"setFormControlSize()\" maxlength=\"2\" size=\"2\" placeholder=\"HH\"\n            [value]=\"formatHour(model?.hour)\" (change)=\"updateHour($event.target.value)\"\n            [readonly]=\"readonlyInputs\" [disabled]=\"disabled\" aria-label=\"Hours\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeHour(-hourStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron bottom\"></span>\n            <span class=\"sr-only\">Decrement hours</span>\n          </button>\n        </div>\n        <div class=\"ngb-tp-spacer\">:</div>\n        <div class=\"ngb-tp-minute\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeMinute(minuteStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron\"></span>\n            <span class=\"sr-only\">Increment minutes</span>\n          </button>\n          <input type=\"text\" class=\"form-control\" [ngClass]=\"setFormControlSize()\" maxlength=\"2\" size=\"2\" placeholder=\"MM\"\n            [value]=\"formatMinSec(model?.minute)\" (change)=\"updateMinute($event.target.value)\"\n            [readonly]=\"readonlyInputs\" [disabled]=\"disabled\" aria-label=\"Minutes\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeMinute(-minuteStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron bottom\"></span>\n            <span class=\"sr-only\">Decrement minutes</span>\n          </button>\n        </div>\n        <div *ngIf=\"seconds\" class=\"ngb-tp-spacer\">:</div>\n        <div *ngIf=\"seconds\" class=\"ngb-tp-second\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeSecond(secondStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron\"></span>\n            <span class=\"sr-only\">Increment seconds</span>\n          </button>\n          <input type=\"text\" class=\"form-control\" [ngClass]=\"setFormControlSize()\" maxlength=\"2\" size=\"2\" placeholder=\"SS\"\n            [value]=\"formatMinSec(model?.second)\" (change)=\"updateSecond($event.target.value)\"\n            [readonly]=\"readonlyInputs\" [disabled]=\"disabled\" aria-label=\"Seconds\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeSecond(-secondStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron bottom\"></span>\n            <span class=\"sr-only\">Decrement seconds</span>\n          </button>\n        </div>\n        <div *ngIf=\"meridian\" class=\"ngb-tp-spacer\"></div>\n        <div *ngIf=\"meridian\" class=\"ngb-tp-meridian\">\n          <button type=\"button\" class=\"btn btn-outline-primary\" [ngClass]=\"setButtonSize()\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\"\n            (click)=\"toggleMeridian()\">{{model.hour >= 12 ? 'PM' : 'AM'}}</button>\n        </div>\n      </div>\n    </fieldset>\n  ",
+        template: "\n    <fieldset [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n      <div class=\"ngb-tp\">\n        <div class=\"ngb-tp-hour\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeHour(hourStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron\"></span>\n            <span class=\"sr-only\">Increment hours</span>\n          </button>\n          <input type=\"text\" class=\"form-control\" [ngClass]=\"setFormControlSize()\" maxlength=\"2\" size=\"2\" placeholder=\"HH\"\n            [value]=\"formatHour(model?.hour)\" (change)=\"updateHour($event.target.value)\"\n            [readonly]=\"readonlyInputs\" [disabled]=\"disabled\" aria-label=\"Hours\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeHour(-hourStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron bottom\"></span>\n            <span class=\"sr-only\">Decrement hours</span>\n          </button>\n        </div>\n        <div class=\"ngb-tp-spacer\">:</div>\n        <div class=\"ngb-tp-minute\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeMinute(minuteStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron\"></span>\n            <span class=\"sr-only\">Increment minutes</span>\n          </button>\n          <input type=\"text\" class=\"form-control\" [ngClass]=\"setFormControlSize()\" maxlength=\"2\" size=\"2\" placeholder=\"MM\"\n            [value]=\"formatMinSec(model?.minute)\" (change)=\"updateMinute($event.target.value)\"\n            [readonly]=\"readonlyInputs\" [disabled]=\"disabled\" aria-label=\"Minutes\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeMinute(-minuteStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron bottom\"></span>\n            <span class=\"sr-only\">Decrement minutes</span>\n          </button>\n        </div>\n        <div *ngIf=\"seconds\" class=\"ngb-tp-spacer\">:</div>\n        <div *ngIf=\"seconds\" class=\"ngb-tp-second\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeSecond(secondStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron\"></span>\n            <span class=\"sr-only\">Increment seconds</span>\n          </button>\n          <input type=\"text\" class=\"form-control\" [ngClass]=\"setFormControlSize()\" maxlength=\"2\" size=\"2\" placeholder=\"SS\"\n            [value]=\"formatMinSec(model?.second)\" (change)=\"updateSecond($event.target.value)\"\n            [readonly]=\"readonlyInputs\" [disabled]=\"disabled\" aria-label=\"Seconds\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeSecond(-secondStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron bottom\"></span>\n            <span class=\"sr-only\">Decrement seconds</span>\n          </button>\n        </div>\n        <div *ngIf=\"meridian\" class=\"ngb-tp-spacer\"></div>\n        <div *ngIf=\"meridian\" class=\"ngb-tp-meridian\">\n          <button type=\"button\" class=\"btn btn-outline-primary\" [ngClass]=\"setButtonSize()\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\"\n            (click)=\"toggleMeridian()\">{{model?.hour >= 12 ? 'PM' : 'AM'}}</button>\n        </div>\n      </div>\n    </fieldset>\n  ",
         providers: [NGB_TIMEPICKER_VALUE_ACCESSOR]
     }),
     __metadata("design:paramtypes", [timepicker_config_1.NgbTimepickerConfig])
@@ -62935,7 +63526,7 @@ exports.NgbTimepicker = NgbTimepicker;
 
 
 /***/ }),
-/* 66 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62950,15 +63541,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var triggers_1 = __webpack_require__(69);
-var positioning_1 = __webpack_require__(8);
-var popup_1 = __webpack_require__(7);
-var tooltip_config_1 = __webpack_require__(38);
+var triggers_1 = __webpack_require__(72);
+var positioning_1 = __webpack_require__(7);
+var popup_1 = __webpack_require__(9);
+var tooltip_config_1 = __webpack_require__(40);
 var nextId = 0;
 var NgbTooltipWindow = (function () {
-    function NgbTooltipWindow() {
+    function NgbTooltipWindow(_element, _renderer) {
+        this._element = _element;
+        this._renderer = _renderer;
         this.placement = 'top';
     }
+    NgbTooltipWindow.prototype.applyPlacement = function (_placement) {
+        // remove the current placement classes
+        this._renderer.removeClass(this._element.nativeElement, 'bs-tooltip-' + this.placement.toString().split('-')[0]);
+        this._renderer.removeClass(this._element.nativeElement, 'bs-tooltip-' + this.placement.toString());
+        // set the new placement classes
+        this.placement = _placement;
+        // apply the new placement
+        this._renderer.addClass(this._element.nativeElement, 'bs-tooltip-' + this.placement.toString().split('-')[0]);
+        this._renderer.addClass(this._element.nativeElement, 'bs-tooltip-' + this.placement.toString());
+    };
     return NgbTooltipWindow;
 }());
 __decorate([
@@ -62973,9 +63576,15 @@ NgbTooltipWindow = __decorate([
     core_1.Component({
         selector: 'ngb-tooltip-window',
         changeDetection: core_1.ChangeDetectionStrategy.OnPush,
-        host: { '[class]': '"tooltip show tooltip-" + placement', 'role': 'tooltip', '[id]': 'id' },
-        template: "\n    <div class=\"tooltip-inner\"><ng-content></ng-content></div>\n    "
-    })
+        host: {
+            '[class]': '"tooltip show bs-tooltip-" + placement.split("-")[0]+" bs-tooltip-" + placement',
+            'role': 'tooltip',
+            '[id]': 'id'
+        },
+        template: "<div class=\"arrow\"></div><div class=\"tooltip-inner\"><ng-content></ng-content></div>",
+        styles: ["\n    :host.bs-tooltip-top .arrow, :host.bs-tooltip-bottom .arrow {\n      left: 50%;\n    }\n\n    :host.bs-tooltip-top-left .arrow, :host.bs-tooltip-bottom-left .arrow {\n      left: 1em;\n    }\n\n    :host.bs-tooltip-top-right .arrow, :host.bs-tooltip-bottom-right .arrow {\n      left: auto;\n      right: 1em;\n    }\n\n    :host.bs-tooltip-left .arrow, :host.bs-tooltip-right .arrow {\n      top: 50%;\n    }\n    \n    :host.bs-tooltip-left-top .arrow, :host.bs-tooltip-right-top .arrow {\n      top: 0.7em;\n    }\n\n    :host.bs-tooltip-left-bottom .arrow, :host.bs-tooltip-right-bottom .arrow {\n      top: auto;\n      bottom: 0.7em;\n    }\n  "]
+    }),
+    __metadata("design:paramtypes", [core_1.ElementRef, core_1.Renderer2])
 ], NgbTooltipWindow);
 exports.NgbTooltipWindow = NgbTooltipWindow;
 /**
@@ -63001,7 +63610,7 @@ var NgbTooltip = (function () {
         this._popupService = new popup_1.PopupService(NgbTooltipWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
         this._zoneSubscription = ngZone.onStable.subscribe(function () {
             if (_this._windowRef) {
-                positioning_1.positionElements(_this._elementRef.nativeElement, _this._windowRef.location.nativeElement, _this.placement, _this.container === 'body');
+                _this._windowRef.instance.applyPlacement(positioning_1.positionElements(_this._elementRef.nativeElement, _this._windowRef.location.nativeElement, _this.placement, _this.container === 'body'));
             }
         });
     }
@@ -63026,15 +63635,17 @@ var NgbTooltip = (function () {
     NgbTooltip.prototype.open = function (context) {
         if (!this._windowRef && this._ngbTooltip) {
             this._windowRef = this._popupService.open(this._ngbTooltip, context);
-            this._windowRef.instance.placement = this.placement;
             this._windowRef.instance.id = this._ngbTooltipWindowId;
             this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbTooltipWindowId);
             if (this.container === 'body') {
                 window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
             }
-            // we need to manually invoke change detection since events registered via
-            // Renderer::listen() - to be determined if this is a bug in the Angular itself
+            this._windowRef.instance.placement = Array.isArray(this.placement) ? this.placement[0] : this.placement;
+            // apply styling to set basic css-classes on target element, before going for positioning
+            this._windowRef.changeDetectorRef.detectChanges();
             this._windowRef.changeDetectorRef.markForCheck();
+            // position tooltip along the element
+            this._windowRef.instance.applyPlacement(positioning_1.positionElements(this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement, this.container === 'body'));
             this.shown.emit();
         }
     };
@@ -63076,7 +63687,7 @@ var NgbTooltip = (function () {
 }());
 __decorate([
     core_1.Input(),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], NgbTooltip.prototype, "placement", void 0);
 __decorate([
     core_1.Input(),
@@ -63109,7 +63720,7 @@ exports.NgbTooltip = NgbTooltip;
 
 
 /***/ }),
-/* 67 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63173,7 +63784,7 @@ exports.NgbHighlight = NgbHighlight;
 
 
 /***/ }),
-/* 68 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63189,14 +63800,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = __webpack_require__(0);
 var forms_1 = __webpack_require__(5);
-var let_1 = __webpack_require__(75);
-var do_1 = __webpack_require__(74);
-var fromEvent_1 = __webpack_require__(73);
-var positioning_1 = __webpack_require__(8);
-var typeahead_window_1 = __webpack_require__(40);
-var popup_1 = __webpack_require__(7);
+var BehaviorSubject_1 = __webpack_require__(77);
+var let_1 = __webpack_require__(82);
+var do_1 = __webpack_require__(80);
+var switchMap_1 = __webpack_require__(83);
+var fromEvent_1 = __webpack_require__(79);
+var positioning_1 = __webpack_require__(7);
+var typeahead_window_1 = __webpack_require__(42);
+var popup_1 = __webpack_require__(9);
 var util_1 = __webpack_require__(1);
-var typeahead_config_1 = __webpack_require__(39);
+var typeahead_config_1 = __webpack_require__(41);
 var Key;
 (function (Key) {
     Key[Key["Tab"] = 9] = "Tab";
@@ -63221,6 +63834,12 @@ var NgbTypeahead = (function () {
         this._viewContainerRef = _viewContainerRef;
         this._renderer = _renderer;
         this._injector = _injector;
+        /** Placement of a typeahead accepts:
+         *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
+         *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
+         * and array of above values.
+        */
+        this.placement = 'bottom-left';
         /**
          * An event emitted when a match is selected. Event payload is of type NgbTypeaheadSelectItemEvent.
          */
@@ -63228,14 +63847,17 @@ var NgbTypeahead = (function () {
         this.popupId = "ngb-typeahead-" + nextWindowId++;
         this._onTouched = function () { };
         this._onChange = function (_) { };
+        this.container = config.container;
         this.editable = config.editable;
         this.focusFirst = config.focusFirst;
         this.showHint = config.showHint;
+        this.placement = config.placement;
         this._valueChanges = fromEvent_1.fromEvent(_elementRef.nativeElement, 'input', function ($event) { return $event.target.value; });
+        this._resubscribeTypeahead = new BehaviorSubject_1.BehaviorSubject(null);
         this._popupService = new popup_1.PopupService(typeahead_window_1.NgbTypeaheadWindow, _injector, _viewContainerRef, _renderer, componentFactoryResolver);
         this._zoneSubscription = ngZone.onStable.subscribe(function () {
             if (_this.isPopupOpen()) {
-                positioning_1.positionElements(_this._elementRef.nativeElement, _this._windowRef.location.nativeElement, 'bottom-left');
+                positioning_1.positionElements(_this._elementRef.nativeElement, _this._windowRef.location.nativeElement, _this.placement, _this.container === 'body');
             }
         });
     }
@@ -63248,14 +63870,16 @@ var NgbTypeahead = (function () {
             }
         });
         var results$ = let_1.letProto.call(inputValues$, this.ngbTypeahead);
-        var userInput$ = do_1._do.call(results$, function () {
+        var processedResults$ = do_1._do.call(results$, function () {
             if (!_this.editable) {
                 _this._onChange(undefined);
             }
         });
+        var userInput$ = switchMap_1.switchMap.call(this._resubscribeTypeahead, function () { return processedResults$; });
         this._subscription = this._subscribeToUserInput(userInput$);
     };
     NgbTypeahead.prototype.ngOnDestroy = function () {
+        this._closePopup();
         this._unsubscribeFromUserInput();
         this._zoneSubscription.unsubscribe();
     };
@@ -63272,7 +63896,10 @@ var NgbTypeahead = (function () {
         }
     };
     NgbTypeahead.prototype.isPopupOpen = function () { return this._windowRef != null; };
-    NgbTypeahead.prototype.handleBlur = function () { this._onTouched(); };
+    NgbTypeahead.prototype.handleBlur = function () {
+        this._resubscribeTypeahead.next(null);
+        this._onTouched();
+    };
     NgbTypeahead.prototype.handleKeyDown = function (event) {
         if (!this.isPopupOpen()) {
             return;
@@ -63301,6 +63928,7 @@ var NgbTypeahead = (function () {
                     break;
                 case Key.Escape:
                     event.preventDefault();
+                    this._resubscribeTypeahead.next(null);
                     this.dismissPopup();
                     break;
             }
@@ -63313,6 +63941,9 @@ var NgbTypeahead = (function () {
             this._windowRef.instance.id = this.popupId;
             this._windowRef.instance.selectEvent.subscribe(function (result) { return _this._selectResultClosePopup(result); });
             this._windowRef.instance.activeChangeEvent.subscribe(function (activeId) { return _this.activeDescendant = activeId; });
+            if (this.container === 'body') {
+                window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
+            }
         }
     };
     NgbTypeahead.prototype._closePopup = function () {
@@ -63323,6 +63954,7 @@ var NgbTypeahead = (function () {
     NgbTypeahead.prototype._selectResult = function (result) {
         var defaultPrevented = false;
         this.selectItem.emit({ item: result, preventDefault: function () { defaultPrevented = true; } });
+        this._resubscribeTypeahead.next(null);
         if (!defaultPrevented) {
             this.writeValue(result);
             this._onChange(result);
@@ -63386,6 +64018,10 @@ var NgbTypeahead = (function () {
 }());
 __decorate([
     core_1.Input(),
+    __metadata("design:type", String)
+], NgbTypeahead.prototype, "container", void 0);
+__decorate([
+    core_1.Input(),
     __metadata("design:type", Boolean)
 ], NgbTypeahead.prototype, "editable", void 0);
 __decorate([
@@ -63412,6 +64048,10 @@ __decorate([
     core_1.Input(),
     __metadata("design:type", Boolean)
 ], NgbTypeahead.prototype, "showHint", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], NgbTypeahead.prototype, "placement", void 0);
 __decorate([
     core_1.Output(),
     __metadata("design:type", Object)
@@ -63444,7 +64084,7 @@ exports.NgbTypeahead = NgbTypeahead;
 
 
 /***/ }),
-/* 69 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63462,7 +64102,7 @@ var Trigger = (function () {
 }());
 exports.Trigger = Trigger;
 var DEFAULT_ALIASES = {
-    hover: ['mouseenter', 'mouseleave']
+    'hover': ['mouseenter', 'mouseleave']
 };
 function parseTriggers(triggers, aliases) {
     if (aliases === void 0) { aliases = DEFAULT_ALIASES; }
@@ -63505,7 +64145,98 @@ exports.listenToTriggers = listenToTriggers;
 
 
 /***/ }),
-/* 70 */
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var core_1 = __webpack_require__(0);
+var datepicker_service_1 = __webpack_require__(30);
+var ngb_calendar_1 = __webpack_require__(3);
+var util_1 = __webpack_require__(1);
+var Key;
+(function (Key) {
+    Key[Key["Enter"] = 13] = "Enter";
+    Key[Key["Space"] = 32] = "Space";
+    Key[Key["PageUp"] = 33] = "PageUp";
+    Key[Key["PageDown"] = 34] = "PageDown";
+    Key[Key["End"] = 35] = "End";
+    Key[Key["Home"] = 36] = "Home";
+    Key[Key["ArrowLeft"] = 37] = "ArrowLeft";
+    Key[Key["ArrowUp"] = 38] = "ArrowUp";
+    Key[Key["ArrowRight"] = 39] = "ArrowRight";
+    Key[Key["ArrowDown"] = 40] = "ArrowDown";
+})(Key || (Key = {}));
+var NgbDatepickerKeyMapService = (function () {
+    function NgbDatepickerKeyMapService(_service, _calendar) {
+        var _this = this;
+        this._service = _service;
+        this._calendar = _calendar;
+        _service.model$.subscribe(function (model) {
+            _this._minDate = model.minDate;
+            _this._maxDate = model.maxDate;
+            _this._firstViewDate = model.firstDate;
+            _this._lastViewDate = model.lastDate;
+        });
+    }
+    NgbDatepickerKeyMapService.prototype.processKey = function (event) {
+        if (Key[util_1.toString(event.which)]) {
+            switch (event.which) {
+                case Key.PageUp:
+                    this._service.focusMove(event.shiftKey ? 'y' : 'm', -1);
+                    break;
+                case Key.PageDown:
+                    this._service.focusMove(event.shiftKey ? 'y' : 'm', 1);
+                    break;
+                case Key.End:
+                    this._service.focus(event.shiftKey ? this._maxDate : this._lastViewDate);
+                    break;
+                case Key.Home:
+                    this._service.focus(event.shiftKey ? this._minDate : this._firstViewDate);
+                    break;
+                case Key.ArrowLeft:
+                    this._service.focusMove('d', -1);
+                    break;
+                case Key.ArrowUp:
+                    this._service.focusMove('d', -this._calendar.getDaysPerWeek());
+                    break;
+                case Key.ArrowRight:
+                    this._service.focusMove('d', 1);
+                    break;
+                case Key.ArrowDown:
+                    this._service.focusMove('d', this._calendar.getDaysPerWeek());
+                    break;
+                case Key.Enter:
+                case Key.Space:
+                    this._service.focusSelect();
+                    break;
+                default:
+                    return;
+            }
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    };
+    return NgbDatepickerKeyMapService;
+}());
+NgbDatepickerKeyMapService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [datepicker_service_1.NgbDatepickerService, ngb_calendar_1.NgbCalendar])
+], NgbDatepickerKeyMapService);
+exports.NgbDatepickerKeyMapService = NgbDatepickerKeyMapService;
+
+
+/***/ }),
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63589,7 +64320,7 @@ exports.NgbCalendarHijri = NgbCalendarHijri;
 
 
 /***/ }),
-/* 71 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63605,7 +64336,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var ngb_calendar_hijri_1 = __webpack_require__(70);
+var ngb_calendar_hijri_1 = __webpack_require__(74);
 var ngb_date_1 = __webpack_require__(4);
 var core_1 = __webpack_require__(0);
 function isGregorianLeapYear(date) {
@@ -63743,7 +64474,7 @@ exports.NgbCalendarIslamicCivil = NgbCalendarIslamicCivil;
 
 
 /***/ }),
-/* 72 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63804,25 +64535,49 @@ exports.NgbTime = NgbTime;
 
 
 /***/ }),
-/* 73 */
+/* 77 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_73__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_77__;
 
 /***/ }),
-/* 74 */
+/* 78 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_74__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_78__;
 
 /***/ }),
-/* 75 */
+/* 79 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_75__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_79__;
 
 /***/ }),
-/* 76 */
+/* 80 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_80__;
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_81__;
+
+/***/ }),
+/* 82 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_82__;
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_83__;
+
+/***/ }),
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63834,45 +64589,46 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = __webpack_require__(0);
-var accordion_module_1 = __webpack_require__(9);
-var alert_module_1 = __webpack_require__(10);
-var radio_module_1 = __webpack_require__(11);
-var carousel_module_1 = __webpack_require__(12);
-var collapse_module_1 = __webpack_require__(13);
-var datepicker_module_1 = __webpack_require__(14);
-var dropdown_module_1 = __webpack_require__(15);
-var modal_module_1 = __webpack_require__(16);
-var pagination_module_1 = __webpack_require__(17);
-var popover_module_1 = __webpack_require__(18);
-var progressbar_module_1 = __webpack_require__(19);
-var rating_module_1 = __webpack_require__(20);
-var tabset_module_1 = __webpack_require__(21);
-var timepicker_module_1 = __webpack_require__(22);
-var tooltip_module_1 = __webpack_require__(23);
-var typeahead_module_1 = __webpack_require__(24);
-var accordion_module_2 = __webpack_require__(9);
+var accordion_module_1 = __webpack_require__(10);
+var alert_module_1 = __webpack_require__(11);
+var buttons_module_1 = __webpack_require__(12);
+var carousel_module_1 = __webpack_require__(13);
+var collapse_module_1 = __webpack_require__(14);
+var datepicker_module_1 = __webpack_require__(15);
+var dropdown_module_1 = __webpack_require__(16);
+var modal_module_1 = __webpack_require__(17);
+var pagination_module_1 = __webpack_require__(18);
+var popover_module_1 = __webpack_require__(19);
+var progressbar_module_1 = __webpack_require__(20);
+var rating_module_1 = __webpack_require__(21);
+var tabset_module_1 = __webpack_require__(22);
+var timepicker_module_1 = __webpack_require__(23);
+var tooltip_module_1 = __webpack_require__(24);
+var typeahead_module_1 = __webpack_require__(25);
+var accordion_module_2 = __webpack_require__(10);
 exports.NgbAccordionModule = accordion_module_2.NgbAccordionModule;
 exports.NgbAccordionConfig = accordion_module_2.NgbAccordionConfig;
 exports.NgbAccordion = accordion_module_2.NgbAccordion;
 exports.NgbPanel = accordion_module_2.NgbPanel;
 exports.NgbPanelTitle = accordion_module_2.NgbPanelTitle;
 exports.NgbPanelContent = accordion_module_2.NgbPanelContent;
-var alert_module_2 = __webpack_require__(10);
+var alert_module_2 = __webpack_require__(11);
 exports.NgbAlertModule = alert_module_2.NgbAlertModule;
 exports.NgbAlertConfig = alert_module_2.NgbAlertConfig;
 exports.NgbAlert = alert_module_2.NgbAlert;
-var radio_module_2 = __webpack_require__(11);
-exports.NgbButtonsModule = radio_module_2.NgbButtonsModule;
-exports.NgbRadioGroup = radio_module_2.NgbRadioGroup;
-var carousel_module_2 = __webpack_require__(12);
+var buttons_module_2 = __webpack_require__(12);
+exports.NgbButtonsModule = buttons_module_2.NgbButtonsModule;
+exports.NgbCheckBox = buttons_module_2.NgbCheckBox;
+exports.NgbRadioGroup = buttons_module_2.NgbRadioGroup;
+var carousel_module_2 = __webpack_require__(13);
 exports.NgbCarouselModule = carousel_module_2.NgbCarouselModule;
 exports.NgbCarouselConfig = carousel_module_2.NgbCarouselConfig;
 exports.NgbCarousel = carousel_module_2.NgbCarousel;
 exports.NgbSlide = carousel_module_2.NgbSlide;
-var collapse_module_2 = __webpack_require__(13);
+var collapse_module_2 = __webpack_require__(14);
 exports.NgbCollapseModule = collapse_module_2.NgbCollapseModule;
 exports.NgbCollapse = collapse_module_2.NgbCollapse;
-var datepicker_module_2 = __webpack_require__(14);
+var datepicker_module_2 = __webpack_require__(15);
 exports.NgbCalendar = datepicker_module_2.NgbCalendar;
 exports.NgbCalendarIslamicCivil = datepicker_module_2.NgbCalendarIslamicCivil;
 exports.NgbDatepickerModule = datepicker_module_2.NgbDatepickerModule;
@@ -63881,53 +64637,54 @@ exports.NgbDatepickerConfig = datepicker_module_2.NgbDatepickerConfig;
 exports.NgbDateParserFormatter = datepicker_module_2.NgbDateParserFormatter;
 exports.NgbDatepicker = datepicker_module_2.NgbDatepicker;
 exports.NgbInputDatepicker = datepicker_module_2.NgbInputDatepicker;
-var dropdown_module_2 = __webpack_require__(15);
+var dropdown_module_2 = __webpack_require__(16);
 exports.NgbDropdownModule = dropdown_module_2.NgbDropdownModule;
 exports.NgbDropdownConfig = dropdown_module_2.NgbDropdownConfig;
 exports.NgbDropdown = dropdown_module_2.NgbDropdown;
-var modal_module_2 = __webpack_require__(16);
+var modal_module_2 = __webpack_require__(17);
 exports.NgbModalModule = modal_module_2.NgbModalModule;
 exports.NgbModal = modal_module_2.NgbModal;
 exports.NgbActiveModal = modal_module_2.NgbActiveModal;
 exports.NgbModalRef = modal_module_2.NgbModalRef;
 exports.ModalDismissReasons = modal_module_2.ModalDismissReasons;
-var pagination_module_2 = __webpack_require__(17);
+var pagination_module_2 = __webpack_require__(18);
 exports.NgbPaginationModule = pagination_module_2.NgbPaginationModule;
 exports.NgbPaginationConfig = pagination_module_2.NgbPaginationConfig;
 exports.NgbPagination = pagination_module_2.NgbPagination;
-var popover_module_2 = __webpack_require__(18);
+var popover_module_2 = __webpack_require__(19);
 exports.NgbPopoverModule = popover_module_2.NgbPopoverModule;
 exports.NgbPopoverConfig = popover_module_2.NgbPopoverConfig;
 exports.NgbPopover = popover_module_2.NgbPopover;
-var progressbar_module_2 = __webpack_require__(19);
+var progressbar_module_2 = __webpack_require__(20);
 exports.NgbProgressbarModule = progressbar_module_2.NgbProgressbarModule;
 exports.NgbProgressbarConfig = progressbar_module_2.NgbProgressbarConfig;
 exports.NgbProgressbar = progressbar_module_2.NgbProgressbar;
-var rating_module_2 = __webpack_require__(20);
+var rating_module_2 = __webpack_require__(21);
 exports.NgbRatingModule = rating_module_2.NgbRatingModule;
 exports.NgbRatingConfig = rating_module_2.NgbRatingConfig;
 exports.NgbRating = rating_module_2.NgbRating;
-var tabset_module_2 = __webpack_require__(21);
+var tabset_module_2 = __webpack_require__(22);
 exports.NgbTabsetModule = tabset_module_2.NgbTabsetModule;
 exports.NgbTabsetConfig = tabset_module_2.NgbTabsetConfig;
 exports.NgbTabset = tabset_module_2.NgbTabset;
 exports.NgbTab = tabset_module_2.NgbTab;
 exports.NgbTabContent = tabset_module_2.NgbTabContent;
 exports.NgbTabTitle = tabset_module_2.NgbTabTitle;
-var timepicker_module_2 = __webpack_require__(22);
+var timepicker_module_2 = __webpack_require__(23);
 exports.NgbTimepickerModule = timepicker_module_2.NgbTimepickerModule;
 exports.NgbTimepickerConfig = timepicker_module_2.NgbTimepickerConfig;
 exports.NgbTimepicker = timepicker_module_2.NgbTimepicker;
-var tooltip_module_2 = __webpack_require__(23);
+var tooltip_module_2 = __webpack_require__(24);
 exports.NgbTooltipModule = tooltip_module_2.NgbTooltipModule;
 exports.NgbTooltipConfig = tooltip_module_2.NgbTooltipConfig;
 exports.NgbTooltip = tooltip_module_2.NgbTooltip;
-var typeahead_module_2 = __webpack_require__(24);
+var typeahead_module_2 = __webpack_require__(25);
+exports.NgbHighlight = typeahead_module_2.NgbHighlight;
 exports.NgbTypeaheadModule = typeahead_module_2.NgbTypeaheadModule;
 exports.NgbTypeaheadConfig = typeahead_module_2.NgbTypeaheadConfig;
 exports.NgbTypeahead = typeahead_module_2.NgbTypeahead;
 var NGB_MODULES = [
-    accordion_module_1.NgbAccordionModule, alert_module_1.NgbAlertModule, radio_module_1.NgbButtonsModule, carousel_module_1.NgbCarouselModule, collapse_module_1.NgbCollapseModule, datepicker_module_1.NgbDatepickerModule,
+    accordion_module_1.NgbAccordionModule, alert_module_1.NgbAlertModule, buttons_module_1.NgbButtonsModule, carousel_module_1.NgbCarouselModule, collapse_module_1.NgbCollapseModule, datepicker_module_1.NgbDatepickerModule,
     dropdown_module_1.NgbDropdownModule, modal_module_1.NgbModalModule, pagination_module_1.NgbPaginationModule, popover_module_1.NgbPopoverModule, progressbar_module_1.NgbProgressbarModule, rating_module_1.NgbRatingModule,
     tabset_module_1.NgbTabsetModule, timepicker_module_1.NgbTimepickerModule, tooltip_module_1.NgbTooltipModule, typeahead_module_1.NgbTypeaheadModule
 ];
@@ -63939,7 +64696,7 @@ var NgbRootModule = (function () {
 NgbRootModule = __decorate([
     core_1.NgModule({
         imports: [
-            alert_module_1.NgbAlertModule.forRoot(), radio_module_1.NgbButtonsModule.forRoot(), collapse_module_1.NgbCollapseModule.forRoot(), progressbar_module_1.NgbProgressbarModule.forRoot(),
+            alert_module_1.NgbAlertModule.forRoot(), buttons_module_1.NgbButtonsModule.forRoot(), collapse_module_1.NgbCollapseModule.forRoot(), progressbar_module_1.NgbProgressbarModule.forRoot(),
             tooltip_module_1.NgbTooltipModule.forRoot(), typeahead_module_1.NgbTypeaheadModule.forRoot(), accordion_module_1.NgbAccordionModule.forRoot(), carousel_module_1.NgbCarouselModule.forRoot(),
             datepicker_module_1.NgbDatepickerModule.forRoot(), dropdown_module_1.NgbDropdownModule.forRoot(), modal_module_1.NgbModalModule.forRoot(), pagination_module_1.NgbPaginationModule.forRoot(),
             popover_module_1.NgbPopoverModule.forRoot(), progressbar_module_1.NgbProgressbarModule.forRoot(), rating_module_1.NgbRatingModule.forRoot(), tabset_module_1.NgbTabsetModule.forRoot(),
@@ -63965,7 +64722,7 @@ exports.NgbModule = NgbModule;
 /******/ ]);
 });
 
-},{"@angular/common":5,"@angular/core":7,"@angular/forms":8,"rxjs/observable/fromEvent":110,"rxjs/operator/do":113,"rxjs/operator/let":114}],12:[function(require,module,exports){
+},{"@angular/common":5,"@angular/core":7,"@angular/forms":8,"rxjs/BehaviorSubject":94,"rxjs/Subject":99,"rxjs/observable/fromEvent":111,"rxjs/operator/do":114,"rxjs/operator/filter":115,"rxjs/operator/let":116,"rxjs/operator/switchMap":122}],12:[function(require,module,exports){
 require('../modules/es7.reflect.define-metadata');
 require('../modules/es7.reflect.delete-metadata');
 require('../modules/es7.reflect.get-metadata');
@@ -63977,27 +64734,30 @@ require('../modules/es7.reflect.has-own-metadata');
 require('../modules/es7.reflect.metadata');
 module.exports = require('../modules/_core').Reflect;
 
-},{"../modules/_core":26,"../modules/es7.reflect.define-metadata":84,"../modules/es7.reflect.delete-metadata":85,"../modules/es7.reflect.get-metadata":87,"../modules/es7.reflect.get-metadata-keys":86,"../modules/es7.reflect.get-own-metadata":89,"../modules/es7.reflect.get-own-metadata-keys":88,"../modules/es7.reflect.has-metadata":90,"../modules/es7.reflect.has-own-metadata":91,"../modules/es7.reflect.metadata":92}],13:[function(require,module,exports){
-module.exports = function(it){
-  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
+},{"../modules/_core":26,"../modules/es7.reflect.define-metadata":85,"../modules/es7.reflect.delete-metadata":86,"../modules/es7.reflect.get-metadata":88,"../modules/es7.reflect.get-metadata-keys":87,"../modules/es7.reflect.get-own-metadata":90,"../modules/es7.reflect.get-own-metadata-keys":89,"../modules/es7.reflect.has-metadata":91,"../modules/es7.reflect.has-own-metadata":92,"../modules/es7.reflect.metadata":93}],13:[function(require,module,exports){
+module.exports = function (it) {
+  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
   return it;
 };
+
 },{}],14:[function(require,module,exports){
-module.exports = function(it, Constructor, name, forbiddenField){
-  if(!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)){
+module.exports = function (it, Constructor, name, forbiddenField) {
+  if (!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)) {
     throw TypeError(name + ': incorrect invocation!');
   } return it;
 };
+
 },{}],15:[function(require,module,exports){
 var isObject = require('./_is-object');
-module.exports = function(it){
-  if(!isObject(it))throw TypeError(it + ' is not an object!');
+module.exports = function (it) {
+  if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
 };
+
 },{"./_is-object":44}],16:[function(require,module,exports){
 var forOf = require('./_for-of');
 
-module.exports = function(iter, ITERATOR){
+module.exports = function (iter, ITERATOR) {
   var result = [];
   forOf(iter, false, result.push, result, ITERATOR);
   return result;
@@ -64006,26 +64766,29 @@ module.exports = function(iter, ITERATOR){
 },{"./_for-of":34}],17:[function(require,module,exports){
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = require('./_to-iobject')
-  , toLength  = require('./_to-length')
-  , toIndex   = require('./_to-index');
-module.exports = function(IS_INCLUDES){
-  return function($this, el, fromIndex){
-    var O      = toIObject($this)
-      , length = toLength(O.length)
-      , index  = toIndex(fromIndex, length)
-      , value;
+var toIObject = require('./_to-iobject');
+var toLength = require('./_to-length');
+var toAbsoluteIndex = require('./_to-absolute-index');
+module.exports = function (IS_INCLUDES) {
+  return function ($this, el, fromIndex) {
+    var O = toIObject($this);
+    var length = toLength(O.length);
+    var index = toAbsoluteIndex(fromIndex, length);
+    var value;
     // Array#includes uses SameValueZero equality algorithm
-    if(IS_INCLUDES && el != el)while(length > index){
+    // eslint-disable-next-line no-self-compare
+    if (IS_INCLUDES && el != el) while (length > index) {
       value = O[index++];
-      if(value != value)return true;
-    // Array#toIndex ignores holes, Array#includes - not
-    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
-      if(O[index] === el)return IS_INCLUDES || index || 0;
+      // eslint-disable-next-line no-self-compare
+      if (value != value) return true;
+    // Array#indexOf ignores holes, Array#includes - not
+    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
+      if (O[index] === el) return IS_INCLUDES || index || 0;
     } return !IS_INCLUDES && -1;
   };
 };
-},{"./_to-index":72,"./_to-iobject":74,"./_to-length":75}],18:[function(require,module,exports){
+
+},{"./_to-absolute-index":72,"./_to-iobject":74,"./_to-length":75}],18:[function(require,module,exports){
 // 0 -> Array#forEach
 // 1 -> Array#map
 // 2 -> Array#filter
@@ -64033,82 +64796,85 @@ module.exports = function(IS_INCLUDES){
 // 4 -> Array#every
 // 5 -> Array#find
 // 6 -> Array#findIndex
-var ctx      = require('./_ctx')
-  , IObject  = require('./_iobject')
-  , toObject = require('./_to-object')
-  , toLength = require('./_to-length')
-  , asc      = require('./_array-species-create');
-module.exports = function(TYPE, $create){
-  var IS_MAP        = TYPE == 1
-    , IS_FILTER     = TYPE == 2
-    , IS_SOME       = TYPE == 3
-    , IS_EVERY      = TYPE == 4
-    , IS_FIND_INDEX = TYPE == 6
-    , NO_HOLES      = TYPE == 5 || IS_FIND_INDEX
-    , create        = $create || asc;
-  return function($this, callbackfn, that){
-    var O      = toObject($this)
-      , self   = IObject(O)
-      , f      = ctx(callbackfn, that, 3)
-      , length = toLength(self.length)
-      , index  = 0
-      , result = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined
-      , val, res;
-    for(;length > index; index++)if(NO_HOLES || index in self){
+var ctx = require('./_ctx');
+var IObject = require('./_iobject');
+var toObject = require('./_to-object');
+var toLength = require('./_to-length');
+var asc = require('./_array-species-create');
+module.exports = function (TYPE, $create) {
+  var IS_MAP = TYPE == 1;
+  var IS_FILTER = TYPE == 2;
+  var IS_SOME = TYPE == 3;
+  var IS_EVERY = TYPE == 4;
+  var IS_FIND_INDEX = TYPE == 6;
+  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
+  var create = $create || asc;
+  return function ($this, callbackfn, that) {
+    var O = toObject($this);
+    var self = IObject(O);
+    var f = ctx(callbackfn, that, 3);
+    var length = toLength(self.length);
+    var index = 0;
+    var result = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
+    var val, res;
+    for (;length > index; index++) if (NO_HOLES || index in self) {
       val = self[index];
       res = f(val, index, O);
-      if(TYPE){
-        if(IS_MAP)result[index] = res;            // map
-        else if(res)switch(TYPE){
-          case 3: return true;                    // some
-          case 5: return val;                     // find
-          case 6: return index;                   // findIndex
-          case 2: result.push(val);               // filter
-        } else if(IS_EVERY)return false;          // every
+      if (TYPE) {
+        if (IS_MAP) result[index] = res;   // map
+        else if (res) switch (TYPE) {
+          case 3: return true;             // some
+          case 5: return val;              // find
+          case 6: return index;            // findIndex
+          case 2: result.push(val);        // filter
+        } else if (IS_EVERY) return false; // every
       }
     }
     return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : result;
   };
 };
-},{"./_array-species-create":20,"./_ctx":27,"./_iobject":41,"./_to-length":75,"./_to-object":76}],19:[function(require,module,exports){
-var isObject = require('./_is-object')
-  , isArray  = require('./_is-array')
-  , SPECIES  = require('./_wks')('species');
 
-module.exports = function(original){
+},{"./_array-species-create":20,"./_ctx":27,"./_iobject":41,"./_to-length":75,"./_to-object":76}],19:[function(require,module,exports){
+var isObject = require('./_is-object');
+var isArray = require('./_is-array');
+var SPECIES = require('./_wks')('species');
+
+module.exports = function (original) {
   var C;
-  if(isArray(original)){
+  if (isArray(original)) {
     C = original.constructor;
     // cross-realm fallback
-    if(typeof C == 'function' && (C === Array || isArray(C.prototype)))C = undefined;
-    if(isObject(C)){
+    if (typeof C == 'function' && (C === Array || isArray(C.prototype))) C = undefined;
+    if (isObject(C)) {
       C = C[SPECIES];
-      if(C === null)C = undefined;
+      if (C === null) C = undefined;
     }
   } return C === undefined ? Array : C;
 };
-},{"./_is-array":43,"./_is-object":44,"./_wks":79}],20:[function(require,module,exports){
+
+},{"./_is-array":43,"./_is-object":44,"./_wks":80}],20:[function(require,module,exports){
 // 9.4.2.3 ArraySpeciesCreate(originalArray, length)
 var speciesConstructor = require('./_array-species-constructor');
 
-module.exports = function(original, length){
+module.exports = function (original, length) {
   return new (speciesConstructor(original))(length);
 };
+
 },{"./_array-species-constructor":19}],21:[function(require,module,exports){
 // getting tag from 19.1.3.6 Object.prototype.toString()
-var cof = require('./_cof')
-  , TAG = require('./_wks')('toStringTag')
-  // ES3 wrong here
-  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
+var cof = require('./_cof');
+var TAG = require('./_wks')('toStringTag');
+// ES3 wrong here
+var ARG = cof(function () { return arguments; }()) == 'Arguments';
 
 // fallback for IE11 Script Access Denied error
-var tryGet = function(it, key){
+var tryGet = function (it, key) {
   try {
     return it[key];
-  } catch(e){ /* empty */ }
+  } catch (e) { /* empty */ }
 };
 
-module.exports = function(it){
+module.exports = function (it) {
   var O, T, B;
   return it === undefined ? 'Undefined' : it === null ? 'Null'
     // @@toStringTag case
@@ -64118,55 +64884,59 @@ module.exports = function(it){
     // ES3 arguments fallback
     : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
 };
-},{"./_cof":22,"./_wks":79}],22:[function(require,module,exports){
+
+},{"./_cof":22,"./_wks":80}],22:[function(require,module,exports){
 var toString = {}.toString;
 
-module.exports = function(it){
+module.exports = function (it) {
   return toString.call(it).slice(8, -1);
 };
+
 },{}],23:[function(require,module,exports){
 'use strict';
-var dP          = require('./_object-dp').f
-  , create      = require('./_object-create')
-  , redefineAll = require('./_redefine-all')
-  , ctx         = require('./_ctx')
-  , anInstance  = require('./_an-instance')
-  , defined     = require('./_defined')
-  , forOf       = require('./_for-of')
-  , $iterDefine = require('./_iter-define')
-  , step        = require('./_iter-step')
-  , setSpecies  = require('./_set-species')
-  , DESCRIPTORS = require('./_descriptors')
-  , fastKey     = require('./_meta').fastKey
-  , SIZE        = DESCRIPTORS ? '_s' : 'size';
+var dP = require('./_object-dp').f;
+var create = require('./_object-create');
+var redefineAll = require('./_redefine-all');
+var ctx = require('./_ctx');
+var anInstance = require('./_an-instance');
+var forOf = require('./_for-of');
+var $iterDefine = require('./_iter-define');
+var step = require('./_iter-step');
+var setSpecies = require('./_set-species');
+var DESCRIPTORS = require('./_descriptors');
+var fastKey = require('./_meta').fastKey;
+var validate = require('./_validate-collection');
+var SIZE = DESCRIPTORS ? '_s' : 'size';
 
-var getEntry = function(that, key){
+var getEntry = function (that, key) {
   // fast case
-  var index = fastKey(key), entry;
-  if(index !== 'F')return that._i[index];
+  var index = fastKey(key);
+  var entry;
+  if (index !== 'F') return that._i[index];
   // frozen object case
-  for(entry = that._f; entry; entry = entry.n){
-    if(entry.k == key)return entry;
+  for (entry = that._f; entry; entry = entry.n) {
+    if (entry.k == key) return entry;
   }
 };
 
 module.exports = {
-  getConstructor: function(wrapper, NAME, IS_MAP, ADDER){
-    var C = wrapper(function(that, iterable){
+  getConstructor: function (wrapper, NAME, IS_MAP, ADDER) {
+    var C = wrapper(function (that, iterable) {
       anInstance(that, C, NAME, '_i');
+      that._t = NAME;         // collection type
       that._i = create(null); // index
       that._f = undefined;    // first entry
       that._l = undefined;    // last entry
       that[SIZE] = 0;         // size
-      if(iterable != undefined)forOf(iterable, IS_MAP, that[ADDER], that);
+      if (iterable != undefined) forOf(iterable, IS_MAP, that[ADDER], that);
     });
     redefineAll(C.prototype, {
       // 23.1.3.1 Map.prototype.clear()
       // 23.2.3.2 Set.prototype.clear()
-      clear: function clear(){
-        for(var that = this, data = that._i, entry = that._f; entry; entry = entry.n){
+      clear: function clear() {
+        for (var that = validate(this, NAME), data = that._i, entry = that._f; entry; entry = entry.n) {
           entry.r = true;
-          if(entry.p)entry.p = entry.p.n = undefined;
+          if (entry.p) entry.p = entry.p.n = undefined;
           delete data[entry.i];
         }
         that._f = that._l = undefined;
@@ -64174,51 +64944,51 @@ module.exports = {
       },
       // 23.1.3.3 Map.prototype.delete(key)
       // 23.2.3.4 Set.prototype.delete(value)
-      'delete': function(key){
-        var that  = this
-          , entry = getEntry(that, key);
-        if(entry){
-          var next = entry.n
-            , prev = entry.p;
+      'delete': function (key) {
+        var that = validate(this, NAME);
+        var entry = getEntry(that, key);
+        if (entry) {
+          var next = entry.n;
+          var prev = entry.p;
           delete that._i[entry.i];
           entry.r = true;
-          if(prev)prev.n = next;
-          if(next)next.p = prev;
-          if(that._f == entry)that._f = next;
-          if(that._l == entry)that._l = prev;
+          if (prev) prev.n = next;
+          if (next) next.p = prev;
+          if (that._f == entry) that._f = next;
+          if (that._l == entry) that._l = prev;
           that[SIZE]--;
         } return !!entry;
       },
       // 23.2.3.6 Set.prototype.forEach(callbackfn, thisArg = undefined)
       // 23.1.3.5 Map.prototype.forEach(callbackfn, thisArg = undefined)
-      forEach: function forEach(callbackfn /*, that = undefined */){
-        anInstance(this, C, 'forEach');
-        var f = ctx(callbackfn, arguments.length > 1 ? arguments[1] : undefined, 3)
-          , entry;
-        while(entry = entry ? entry.n : this._f){
+      forEach: function forEach(callbackfn /* , that = undefined */) {
+        validate(this, NAME);
+        var f = ctx(callbackfn, arguments.length > 1 ? arguments[1] : undefined, 3);
+        var entry;
+        while (entry = entry ? entry.n : this._f) {
           f(entry.v, entry.k, this);
           // revert to the last existing entry
-          while(entry && entry.r)entry = entry.p;
+          while (entry && entry.r) entry = entry.p;
         }
       },
       // 23.1.3.7 Map.prototype.has(key)
       // 23.2.3.7 Set.prototype.has(value)
-      has: function has(key){
-        return !!getEntry(this, key);
+      has: function has(key) {
+        return !!getEntry(validate(this, NAME), key);
       }
     });
-    if(DESCRIPTORS)dP(C.prototype, 'size', {
-      get: function(){
-        return defined(this[SIZE]);
+    if (DESCRIPTORS) dP(C.prototype, 'size', {
+      get: function () {
+        return validate(this, NAME)[SIZE];
       }
     });
     return C;
   },
-  def: function(that, key, value){
-    var entry = getEntry(that, key)
-      , prev, index;
+  def: function (that, key, value) {
+    var entry = getEntry(that, key);
+    var prev, index;
     // change existing entry
-    if(entry){
+    if (entry) {
       entry.v = value;
     // create new entry
     } else {
@@ -64230,202 +65000,206 @@ module.exports = {
         n: undefined,                  // <- next entry
         r: false                       // <- removed
       };
-      if(!that._f)that._f = entry;
-      if(prev)prev.n = entry;
+      if (!that._f) that._f = entry;
+      if (prev) prev.n = entry;
       that[SIZE]++;
       // add to index
-      if(index !== 'F')that._i[index] = entry;
+      if (index !== 'F') that._i[index] = entry;
     } return that;
   },
   getEntry: getEntry,
-  setStrong: function(C, NAME, IS_MAP){
+  setStrong: function (C, NAME, IS_MAP) {
     // add .keys, .values, .entries, [@@iterator]
     // 23.1.3.4, 23.1.3.8, 23.1.3.11, 23.1.3.12, 23.2.3.5, 23.2.3.8, 23.2.3.10, 23.2.3.11
-    $iterDefine(C, NAME, function(iterated, kind){
-      this._t = iterated;  // target
-      this._k = kind;      // kind
-      this._l = undefined; // previous
-    }, function(){
-      var that  = this
-        , kind  = that._k
-        , entry = that._l;
+    $iterDefine(C, NAME, function (iterated, kind) {
+      this._t = validate(iterated, NAME); // target
+      this._k = kind;                     // kind
+      this._l = undefined;                // previous
+    }, function () {
+      var that = this;
+      var kind = that._k;
+      var entry = that._l;
       // revert to the last existing entry
-      while(entry && entry.r)entry = entry.p;
+      while (entry && entry.r) entry = entry.p;
       // get next entry
-      if(!that._t || !(that._l = entry = entry ? entry.n : that._t._f)){
+      if (!that._t || !(that._l = entry = entry ? entry.n : that._t._f)) {
         // or finish the iteration
         that._t = undefined;
         return step(1);
       }
       // return step by kind
-      if(kind == 'keys'  )return step(0, entry.k);
-      if(kind == 'values')return step(0, entry.v);
+      if (kind == 'keys') return step(0, entry.k);
+      if (kind == 'values') return step(0, entry.v);
       return step(0, [entry.k, entry.v]);
-    }, IS_MAP ? 'entries' : 'values' , !IS_MAP, true);
+    }, IS_MAP ? 'entries' : 'values', !IS_MAP, true);
 
     // add [@@species], 23.1.2.2, 23.2.2.2
     setSpecies(NAME);
   }
 };
-},{"./_an-instance":14,"./_ctx":27,"./_defined":28,"./_descriptors":29,"./_for-of":34,"./_iter-define":47,"./_iter-step":49,"./_meta":52,"./_object-create":55,"./_object-dp":56,"./_redefine-all":65,"./_set-species":68}],24:[function(require,module,exports){
+
+},{"./_an-instance":14,"./_ctx":27,"./_descriptors":29,"./_for-of":34,"./_iter-define":47,"./_iter-step":49,"./_meta":52,"./_object-create":55,"./_object-dp":56,"./_redefine-all":65,"./_set-species":68,"./_validate-collection":79}],24:[function(require,module,exports){
 'use strict';
-var redefineAll       = require('./_redefine-all')
-  , getWeak           = require('./_meta').getWeak
-  , anObject          = require('./_an-object')
-  , isObject          = require('./_is-object')
-  , anInstance        = require('./_an-instance')
-  , forOf             = require('./_for-of')
-  , createArrayMethod = require('./_array-methods')
-  , $has              = require('./_has')
-  , arrayFind         = createArrayMethod(5)
-  , arrayFindIndex    = createArrayMethod(6)
-  , id                = 0;
+var redefineAll = require('./_redefine-all');
+var getWeak = require('./_meta').getWeak;
+var anObject = require('./_an-object');
+var isObject = require('./_is-object');
+var anInstance = require('./_an-instance');
+var forOf = require('./_for-of');
+var createArrayMethod = require('./_array-methods');
+var $has = require('./_has');
+var validate = require('./_validate-collection');
+var arrayFind = createArrayMethod(5);
+var arrayFindIndex = createArrayMethod(6);
+var id = 0;
 
 // fallback for uncaught frozen keys
-var uncaughtFrozenStore = function(that){
-  return that._l || (that._l = new UncaughtFrozenStore);
+var uncaughtFrozenStore = function (that) {
+  return that._l || (that._l = new UncaughtFrozenStore());
 };
-var UncaughtFrozenStore = function(){
+var UncaughtFrozenStore = function () {
   this.a = [];
 };
-var findUncaughtFrozen = function(store, key){
-  return arrayFind(store.a, function(it){
+var findUncaughtFrozen = function (store, key) {
+  return arrayFind(store.a, function (it) {
     return it[0] === key;
   });
 };
 UncaughtFrozenStore.prototype = {
-  get: function(key){
+  get: function (key) {
     var entry = findUncaughtFrozen(this, key);
-    if(entry)return entry[1];
+    if (entry) return entry[1];
   },
-  has: function(key){
+  has: function (key) {
     return !!findUncaughtFrozen(this, key);
   },
-  set: function(key, value){
+  set: function (key, value) {
     var entry = findUncaughtFrozen(this, key);
-    if(entry)entry[1] = value;
+    if (entry) entry[1] = value;
     else this.a.push([key, value]);
   },
-  'delete': function(key){
-    var index = arrayFindIndex(this.a, function(it){
+  'delete': function (key) {
+    var index = arrayFindIndex(this.a, function (it) {
       return it[0] === key;
     });
-    if(~index)this.a.splice(index, 1);
+    if (~index) this.a.splice(index, 1);
     return !!~index;
   }
 };
 
 module.exports = {
-  getConstructor: function(wrapper, NAME, IS_MAP, ADDER){
-    var C = wrapper(function(that, iterable){
+  getConstructor: function (wrapper, NAME, IS_MAP, ADDER) {
+    var C = wrapper(function (that, iterable) {
       anInstance(that, C, NAME, '_i');
+      that._t = NAME;      // collection type
       that._i = id++;      // collection id
       that._l = undefined; // leak store for uncaught frozen objects
-      if(iterable != undefined)forOf(iterable, IS_MAP, that[ADDER], that);
+      if (iterable != undefined) forOf(iterable, IS_MAP, that[ADDER], that);
     });
     redefineAll(C.prototype, {
       // 23.3.3.2 WeakMap.prototype.delete(key)
       // 23.4.3.3 WeakSet.prototype.delete(value)
-      'delete': function(key){
-        if(!isObject(key))return false;
+      'delete': function (key) {
+        if (!isObject(key)) return false;
         var data = getWeak(key);
-        if(data === true)return uncaughtFrozenStore(this)['delete'](key);
+        if (data === true) return uncaughtFrozenStore(validate(this, NAME))['delete'](key);
         return data && $has(data, this._i) && delete data[this._i];
       },
       // 23.3.3.4 WeakMap.prototype.has(key)
       // 23.4.3.4 WeakSet.prototype.has(value)
-      has: function has(key){
-        if(!isObject(key))return false;
+      has: function has(key) {
+        if (!isObject(key)) return false;
         var data = getWeak(key);
-        if(data === true)return uncaughtFrozenStore(this).has(key);
+        if (data === true) return uncaughtFrozenStore(validate(this, NAME)).has(key);
         return data && $has(data, this._i);
       }
     });
     return C;
   },
-  def: function(that, key, value){
+  def: function (that, key, value) {
     var data = getWeak(anObject(key), true);
-    if(data === true)uncaughtFrozenStore(that).set(key, value);
+    if (data === true) uncaughtFrozenStore(that).set(key, value);
     else data[that._i] = value;
     return that;
   },
   ufstore: uncaughtFrozenStore
 };
-},{"./_an-instance":14,"./_an-object":15,"./_array-methods":18,"./_for-of":34,"./_has":36,"./_is-object":44,"./_meta":52,"./_redefine-all":65}],25:[function(require,module,exports){
-'use strict';
-var global            = require('./_global')
-  , $export           = require('./_export')
-  , redefine          = require('./_redefine')
-  , redefineAll       = require('./_redefine-all')
-  , meta              = require('./_meta')
-  , forOf             = require('./_for-of')
-  , anInstance        = require('./_an-instance')
-  , isObject          = require('./_is-object')
-  , fails             = require('./_fails')
-  , $iterDetect       = require('./_iter-detect')
-  , setToStringTag    = require('./_set-to-string-tag')
-  , inheritIfRequired = require('./_inherit-if-required');
 
-module.exports = function(NAME, wrapper, methods, common, IS_MAP, IS_WEAK){
-  var Base  = global[NAME]
-    , C     = Base
-    , ADDER = IS_MAP ? 'set' : 'add'
-    , proto = C && C.prototype
-    , O     = {};
-  var fixMethod = function(KEY){
+},{"./_an-instance":14,"./_an-object":15,"./_array-methods":18,"./_for-of":34,"./_has":36,"./_is-object":44,"./_meta":52,"./_redefine-all":65,"./_validate-collection":79}],25:[function(require,module,exports){
+'use strict';
+var global = require('./_global');
+var $export = require('./_export');
+var redefine = require('./_redefine');
+var redefineAll = require('./_redefine-all');
+var meta = require('./_meta');
+var forOf = require('./_for-of');
+var anInstance = require('./_an-instance');
+var isObject = require('./_is-object');
+var fails = require('./_fails');
+var $iterDetect = require('./_iter-detect');
+var setToStringTag = require('./_set-to-string-tag');
+var inheritIfRequired = require('./_inherit-if-required');
+
+module.exports = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
+  var Base = global[NAME];
+  var C = Base;
+  var ADDER = IS_MAP ? 'set' : 'add';
+  var proto = C && C.prototype;
+  var O = {};
+  var fixMethod = function (KEY) {
     var fn = proto[KEY];
     redefine(proto, KEY,
-      KEY == 'delete' ? function(a){
+      KEY == 'delete' ? function (a) {
         return IS_WEAK && !isObject(a) ? false : fn.call(this, a === 0 ? 0 : a);
-      } : KEY == 'has' ? function has(a){
+      } : KEY == 'has' ? function has(a) {
         return IS_WEAK && !isObject(a) ? false : fn.call(this, a === 0 ? 0 : a);
-      } : KEY == 'get' ? function get(a){
+      } : KEY == 'get' ? function get(a) {
         return IS_WEAK && !isObject(a) ? undefined : fn.call(this, a === 0 ? 0 : a);
-      } : KEY == 'add' ? function add(a){ fn.call(this, a === 0 ? 0 : a); return this; }
-        : function set(a, b){ fn.call(this, a === 0 ? 0 : a, b); return this; }
+      } : KEY == 'add' ? function add(a) { fn.call(this, a === 0 ? 0 : a); return this; }
+        : function set(a, b) { fn.call(this, a === 0 ? 0 : a, b); return this; }
     );
   };
-  if(typeof C != 'function' || !(IS_WEAK || proto.forEach && !fails(function(){
+  if (typeof C != 'function' || !(IS_WEAK || proto.forEach && !fails(function () {
     new C().entries().next();
-  }))){
+  }))) {
     // create collection constructor
     C = common.getConstructor(wrapper, NAME, IS_MAP, ADDER);
     redefineAll(C.prototype, methods);
     meta.NEED = true;
   } else {
-    var instance             = new C
-      // early implementations not supports chaining
-      , HASNT_CHAINING       = instance[ADDER](IS_WEAK ? {} : -0, 1) != instance
-      // V8 ~  Chromium 40- weak-collections throws on primitives, but should return false
-      , THROWS_ON_PRIMITIVES = fails(function(){ instance.has(1); })
-      // most early implementations doesn't supports iterables, most modern - not close it correctly
-      , ACCEPT_ITERABLES     = $iterDetect(function(iter){ new C(iter); }) // eslint-disable-line no-new
-      // for early implementations -0 and +0 not the same
-      , BUGGY_ZERO = !IS_WEAK && fails(function(){
-        // V8 ~ Chromium 42- fails only with 5+ elements
-        var $instance = new C()
-          , index     = 5;
-        while(index--)$instance[ADDER](index, index);
-        return !$instance.has(-0);
-      });
-    if(!ACCEPT_ITERABLES){ 
-      C = wrapper(function(target, iterable){
+    var instance = new C();
+    // early implementations not supports chaining
+    var HASNT_CHAINING = instance[ADDER](IS_WEAK ? {} : -0, 1) != instance;
+    // V8 ~  Chromium 40- weak-collections throws on primitives, but should return false
+    var THROWS_ON_PRIMITIVES = fails(function () { instance.has(1); });
+    // most early implementations doesn't supports iterables, most modern - not close it correctly
+    var ACCEPT_ITERABLES = $iterDetect(function (iter) { new C(iter); }); // eslint-disable-line no-new
+    // for early implementations -0 and +0 not the same
+    var BUGGY_ZERO = !IS_WEAK && fails(function () {
+      // V8 ~ Chromium 42- fails only with 5+ elements
+      var $instance = new C();
+      var index = 5;
+      while (index--) $instance[ADDER](index, index);
+      return !$instance.has(-0);
+    });
+    if (!ACCEPT_ITERABLES) {
+      C = wrapper(function (target, iterable) {
         anInstance(target, C, NAME);
-        var that = inheritIfRequired(new Base, target, C);
-        if(iterable != undefined)forOf(iterable, IS_MAP, that[ADDER], that);
+        var that = inheritIfRequired(new Base(), target, C);
+        if (iterable != undefined) forOf(iterable, IS_MAP, that[ADDER], that);
         return that;
       });
       C.prototype = proto;
       proto.constructor = C;
     }
-    if(THROWS_ON_PRIMITIVES || BUGGY_ZERO){
+    if (THROWS_ON_PRIMITIVES || BUGGY_ZERO) {
       fixMethod('delete');
       fixMethod('has');
       IS_MAP && fixMethod('get');
     }
-    if(BUGGY_ZERO || HASNT_CHAINING)fixMethod(ADDER);
+    if (BUGGY_ZERO || HASNT_CHAINING) fixMethod(ADDER);
     // weak collections should not contains .clear method
-    if(IS_WEAK && proto.clear)delete proto.clear;
+    if (IS_WEAK && proto.clear) delete proto.clear;
   }
 
   setToStringTag(C, NAME);
@@ -64433,78 +65207,85 @@ module.exports = function(NAME, wrapper, methods, common, IS_MAP, IS_WEAK){
   O[NAME] = C;
   $export($export.G + $export.W + $export.F * (C != Base), O);
 
-  if(!IS_WEAK)common.setStrong(C, NAME, IS_MAP);
+  if (!IS_WEAK) common.setStrong(C, NAME, IS_MAP);
 
   return C;
 };
+
 },{"./_an-instance":14,"./_export":32,"./_fails":33,"./_for-of":34,"./_global":35,"./_inherit-if-required":40,"./_is-object":44,"./_iter-detect":48,"./_meta":52,"./_redefine":66,"./_redefine-all":65,"./_set-to-string-tag":69}],26:[function(require,module,exports){
-var core = module.exports = {version: '2.4.0'};
-if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+var core = module.exports = { version: '2.5.1' };
+if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+
 },{}],27:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./_a-function');
-module.exports = function(fn, that, length){
+module.exports = function (fn, that, length) {
   aFunction(fn);
-  if(that === undefined)return fn;
-  switch(length){
-    case 1: return function(a){
+  if (that === undefined) return fn;
+  switch (length) {
+    case 1: return function (a) {
       return fn.call(that, a);
     };
-    case 2: return function(a, b){
+    case 2: return function (a, b) {
       return fn.call(that, a, b);
     };
-    case 3: return function(a, b, c){
+    case 3: return function (a, b, c) {
       return fn.call(that, a, b, c);
     };
   }
-  return function(/* ...args */){
+  return function (/* ...args */) {
     return fn.apply(that, arguments);
   };
 };
+
 },{"./_a-function":13}],28:[function(require,module,exports){
 // 7.2.1 RequireObjectCoercible(argument)
-module.exports = function(it){
-  if(it == undefined)throw TypeError("Can't call method on  " + it);
+module.exports = function (it) {
+  if (it == undefined) throw TypeError("Can't call method on  " + it);
   return it;
 };
+
 },{}],29:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
-module.exports = !require('./_fails')(function(){
-  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
+module.exports = !require('./_fails')(function () {
+  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
+
 },{"./_fails":33}],30:[function(require,module,exports){
-var isObject = require('./_is-object')
-  , document = require('./_global').document
-  // in old IE typeof document.createElement is 'object'
-  , is = isObject(document) && isObject(document.createElement);
-module.exports = function(it){
+var isObject = require('./_is-object');
+var document = require('./_global').document;
+// typeof document.createElement is 'object' in old IE
+var is = isObject(document) && isObject(document.createElement);
+module.exports = function (it) {
   return is ? document.createElement(it) : {};
 };
+
 },{"./_global":35,"./_is-object":44}],31:[function(require,module,exports){
 // IE 8- don't enum bug keys
 module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
-},{}],32:[function(require,module,exports){
-var global    = require('./_global')
-  , core      = require('./_core')
-  , hide      = require('./_hide')
-  , redefine  = require('./_redefine')
-  , ctx       = require('./_ctx')
-  , PROTOTYPE = 'prototype';
 
-var $export = function(type, name, source){
-  var IS_FORCED = type & $export.F
-    , IS_GLOBAL = type & $export.G
-    , IS_STATIC = type & $export.S
-    , IS_PROTO  = type & $export.P
-    , IS_BIND   = type & $export.B
-    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] || (global[name] = {}) : (global[name] || {})[PROTOTYPE]
-    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
-    , expProto  = exports[PROTOTYPE] || (exports[PROTOTYPE] = {})
-    , key, own, out, exp;
-  if(IS_GLOBAL)source = name;
-  for(key in source){
+},{}],32:[function(require,module,exports){
+var global = require('./_global');
+var core = require('./_core');
+var hide = require('./_hide');
+var redefine = require('./_redefine');
+var ctx = require('./_ctx');
+var PROTOTYPE = 'prototype';
+
+var $export = function (type, name, source) {
+  var IS_FORCED = type & $export.F;
+  var IS_GLOBAL = type & $export.G;
+  var IS_STATIC = type & $export.S;
+  var IS_PROTO = type & $export.P;
+  var IS_BIND = type & $export.B;
+  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] || (global[name] = {}) : (global[name] || {})[PROTOTYPE];
+  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
+  var expProto = exports[PROTOTYPE] || (exports[PROTOTYPE] = {});
+  var key, own, out, exp;
+  if (IS_GLOBAL) source = name;
+  for (key in source) {
     // contains in native
     own = !IS_FORCED && target && target[key] !== undefined;
     // export native or passed
@@ -64512,10 +65293,10 @@ var $export = function(type, name, source){
     // bind timers to global for call from export context
     exp = IS_BIND && own ? ctx(out, global) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
     // extend global
-    if(target)redefine(target, key, out, type & $export.U);
+    if (target) redefine(target, key, out, type & $export.U);
     // export
-    if(exports[key] != out)hide(exports, key, exp);
-    if(IS_PROTO && expProto[key] != out)expProto[key] = out;
+    if (exports[key] != out) hide(exports, key, exp);
+    if (IS_PROTO && expProto[key] != out) expProto[key] = out;
   }
 };
 global.core = core;
@@ -64527,322 +65308,349 @@ $export.P = 8;   // proto
 $export.B = 16;  // bind
 $export.W = 32;  // wrap
 $export.U = 64;  // safe
-$export.R = 128; // real proto method for `library` 
+$export.R = 128; // real proto method for `library`
 module.exports = $export;
+
 },{"./_core":26,"./_ctx":27,"./_global":35,"./_hide":37,"./_redefine":66}],33:[function(require,module,exports){
-module.exports = function(exec){
+module.exports = function (exec) {
   try {
     return !!exec();
-  } catch(e){
+  } catch (e) {
     return true;
   }
 };
+
 },{}],34:[function(require,module,exports){
-var ctx         = require('./_ctx')
-  , call        = require('./_iter-call')
-  , isArrayIter = require('./_is-array-iter')
-  , anObject    = require('./_an-object')
-  , toLength    = require('./_to-length')
-  , getIterFn   = require('./core.get-iterator-method')
-  , BREAK       = {}
-  , RETURN      = {};
-var exports = module.exports = function(iterable, entries, fn, that, ITERATOR){
-  var iterFn = ITERATOR ? function(){ return iterable; } : getIterFn(iterable)
-    , f      = ctx(fn, that, entries ? 2 : 1)
-    , index  = 0
-    , length, step, iterator, result;
-  if(typeof iterFn != 'function')throw TypeError(iterable + ' is not iterable!');
+var ctx = require('./_ctx');
+var call = require('./_iter-call');
+var isArrayIter = require('./_is-array-iter');
+var anObject = require('./_an-object');
+var toLength = require('./_to-length');
+var getIterFn = require('./core.get-iterator-method');
+var BREAK = {};
+var RETURN = {};
+var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) {
+  var iterFn = ITERATOR ? function () { return iterable; } : getIterFn(iterable);
+  var f = ctx(fn, that, entries ? 2 : 1);
+  var index = 0;
+  var length, step, iterator, result;
+  if (typeof iterFn != 'function') throw TypeError(iterable + ' is not iterable!');
   // fast case for arrays with default iterator
-  if(isArrayIter(iterFn))for(length = toLength(iterable.length); length > index; index++){
+  if (isArrayIter(iterFn)) for (length = toLength(iterable.length); length > index; index++) {
     result = entries ? f(anObject(step = iterable[index])[0], step[1]) : f(iterable[index]);
-    if(result === BREAK || result === RETURN)return result;
-  } else for(iterator = iterFn.call(iterable); !(step = iterator.next()).done; ){
+    if (result === BREAK || result === RETURN) return result;
+  } else for (iterator = iterFn.call(iterable); !(step = iterator.next()).done;) {
     result = call(iterator, f, step.value, entries);
-    if(result === BREAK || result === RETURN)return result;
+    if (result === BREAK || result === RETURN) return result;
   }
 };
-exports.BREAK  = BREAK;
+exports.BREAK = BREAK;
 exports.RETURN = RETURN;
-},{"./_an-object":15,"./_ctx":27,"./_is-array-iter":42,"./_iter-call":45,"./_to-length":75,"./core.get-iterator-method":80}],35:[function(require,module,exports){
+
+},{"./_an-object":15,"./_ctx":27,"./_is-array-iter":42,"./_iter-call":45,"./_to-length":75,"./core.get-iterator-method":81}],35:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
-if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
+  ? window : typeof self != 'undefined' && self.Math == Math ? self
+  // eslint-disable-next-line no-new-func
+  : Function('return this')();
+if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
+
 },{}],36:[function(require,module,exports){
 var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function(it, key){
+module.exports = function (it, key) {
   return hasOwnProperty.call(it, key);
 };
+
 },{}],37:[function(require,module,exports){
-var dP         = require('./_object-dp')
-  , createDesc = require('./_property-desc');
-module.exports = require('./_descriptors') ? function(object, key, value){
+var dP = require('./_object-dp');
+var createDesc = require('./_property-desc');
+module.exports = require('./_descriptors') ? function (object, key, value) {
   return dP.f(object, key, createDesc(1, value));
-} : function(object, key, value){
+} : function (object, key, value) {
   object[key] = value;
   return object;
 };
+
 },{"./_descriptors":29,"./_object-dp":56,"./_property-desc":64}],38:[function(require,module,exports){
-module.exports = require('./_global').document && document.documentElement;
+var document = require('./_global').document;
+module.exports = document && document.documentElement;
+
 },{"./_global":35}],39:[function(require,module,exports){
-module.exports = !require('./_descriptors') && !require('./_fails')(function(){
-  return Object.defineProperty(require('./_dom-create')('div'), 'a', {get: function(){ return 7; }}).a != 7;
+module.exports = !require('./_descriptors') && !require('./_fails')(function () {
+  return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
+
 },{"./_descriptors":29,"./_dom-create":30,"./_fails":33}],40:[function(require,module,exports){
-var isObject       = require('./_is-object')
-  , setPrototypeOf = require('./_set-proto').set;
-module.exports = function(that, target, C){
-  var P, S = target.constructor;
-  if(S !== C && typeof S == 'function' && (P = S.prototype) !== C.prototype && isObject(P) && setPrototypeOf){
+var isObject = require('./_is-object');
+var setPrototypeOf = require('./_set-proto').set;
+module.exports = function (that, target, C) {
+  var S = target.constructor;
+  var P;
+  if (S !== C && typeof S == 'function' && (P = S.prototype) !== C.prototype && isObject(P) && setPrototypeOf) {
     setPrototypeOf(that, P);
   } return that;
 };
+
 },{"./_is-object":44,"./_set-proto":67}],41:[function(require,module,exports){
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var cof = require('./_cof');
-module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
+// eslint-disable-next-line no-prototype-builtins
+module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
+
 },{"./_cof":22}],42:[function(require,module,exports){
 // check on default Array iterator
-var Iterators  = require('./_iterators')
-  , ITERATOR   = require('./_wks')('iterator')
-  , ArrayProto = Array.prototype;
+var Iterators = require('./_iterators');
+var ITERATOR = require('./_wks')('iterator');
+var ArrayProto = Array.prototype;
 
-module.exports = function(it){
+module.exports = function (it) {
   return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
 };
-},{"./_iterators":50,"./_wks":79}],43:[function(require,module,exports){
+
+},{"./_iterators":50,"./_wks":80}],43:[function(require,module,exports){
 // 7.2.2 IsArray(argument)
 var cof = require('./_cof');
-module.exports = Array.isArray || function isArray(arg){
+module.exports = Array.isArray || function isArray(arg) {
   return cof(arg) == 'Array';
 };
+
 },{"./_cof":22}],44:[function(require,module,exports){
-module.exports = function(it){
+module.exports = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
+
 },{}],45:[function(require,module,exports){
 // call something on iterator step with safe closing on error
 var anObject = require('./_an-object');
-module.exports = function(iterator, fn, value, entries){
+module.exports = function (iterator, fn, value, entries) {
   try {
     return entries ? fn(anObject(value)[0], value[1]) : fn(value);
   // 7.4.6 IteratorClose(iterator, completion)
-  } catch(e){
+  } catch (e) {
     var ret = iterator['return'];
-    if(ret !== undefined)anObject(ret.call(iterator));
+    if (ret !== undefined) anObject(ret.call(iterator));
     throw e;
   }
 };
+
 },{"./_an-object":15}],46:[function(require,module,exports){
 'use strict';
-var create         = require('./_object-create')
-  , descriptor     = require('./_property-desc')
-  , setToStringTag = require('./_set-to-string-tag')
-  , IteratorPrototype = {};
+var create = require('./_object-create');
+var descriptor = require('./_property-desc');
+var setToStringTag = require('./_set-to-string-tag');
+var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-require('./_hide')(IteratorPrototype, require('./_wks')('iterator'), function(){ return this; });
+require('./_hide')(IteratorPrototype, require('./_wks')('iterator'), function () { return this; });
 
-module.exports = function(Constructor, NAME, next){
-  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
+module.exports = function (Constructor, NAME, next) {
+  Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
   setToStringTag(Constructor, NAME + ' Iterator');
 };
-},{"./_hide":37,"./_object-create":55,"./_property-desc":64,"./_set-to-string-tag":69,"./_wks":79}],47:[function(require,module,exports){
+
+},{"./_hide":37,"./_object-create":55,"./_property-desc":64,"./_set-to-string-tag":69,"./_wks":80}],47:[function(require,module,exports){
 'use strict';
-var LIBRARY        = require('./_library')
-  , $export        = require('./_export')
-  , redefine       = require('./_redefine')
-  , hide           = require('./_hide')
-  , has            = require('./_has')
-  , Iterators      = require('./_iterators')
-  , $iterCreate    = require('./_iter-create')
-  , setToStringTag = require('./_set-to-string-tag')
-  , getPrototypeOf = require('./_object-gpo')
-  , ITERATOR       = require('./_wks')('iterator')
-  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
-  , FF_ITERATOR    = '@@iterator'
-  , KEYS           = 'keys'
-  , VALUES         = 'values';
+var LIBRARY = require('./_library');
+var $export = require('./_export');
+var redefine = require('./_redefine');
+var hide = require('./_hide');
+var has = require('./_has');
+var Iterators = require('./_iterators');
+var $iterCreate = require('./_iter-create');
+var setToStringTag = require('./_set-to-string-tag');
+var getPrototypeOf = require('./_object-gpo');
+var ITERATOR = require('./_wks')('iterator');
+var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
+var FF_ITERATOR = '@@iterator';
+var KEYS = 'keys';
+var VALUES = 'values';
 
-var returnThis = function(){ return this; };
+var returnThis = function () { return this; };
 
-module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED){
+module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
   $iterCreate(Constructor, NAME, next);
-  var getMethod = function(kind){
-    if(!BUGGY && kind in proto)return proto[kind];
-    switch(kind){
-      case KEYS: return function keys(){ return new Constructor(this, kind); };
-      case VALUES: return function values(){ return new Constructor(this, kind); };
-    } return function entries(){ return new Constructor(this, kind); };
+  var getMethod = function (kind) {
+    if (!BUGGY && kind in proto) return proto[kind];
+    switch (kind) {
+      case KEYS: return function keys() { return new Constructor(this, kind); };
+      case VALUES: return function values() { return new Constructor(this, kind); };
+    } return function entries() { return new Constructor(this, kind); };
   };
-  var TAG        = NAME + ' Iterator'
-    , DEF_VALUES = DEFAULT == VALUES
-    , VALUES_BUG = false
-    , proto      = Base.prototype
-    , $native    = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT]
-    , $default   = $native || getMethod(DEFAULT)
-    , $entries   = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined
-    , $anyNative = NAME == 'Array' ? proto.entries || $native : $native
-    , methods, key, IteratorPrototype;
+  var TAG = NAME + ' Iterator';
+  var DEF_VALUES = DEFAULT == VALUES;
+  var VALUES_BUG = false;
+  var proto = Base.prototype;
+  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
+  var $default = $native || getMethod(DEFAULT);
+  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
+  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
+  var methods, key, IteratorPrototype;
   // Fix native
-  if($anyNative){
-    IteratorPrototype = getPrototypeOf($anyNative.call(new Base));
-    if(IteratorPrototype !== Object.prototype){
+  if ($anyNative) {
+    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
+    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
       // Set @@toStringTag to native iterators
       setToStringTag(IteratorPrototype, TAG, true);
       // fix for some old engines
-      if(!LIBRARY && !has(IteratorPrototype, ITERATOR))hide(IteratorPrototype, ITERATOR, returnThis);
+      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
-  if(DEF_VALUES && $native && $native.name !== VALUES){
+  if (DEF_VALUES && $native && $native.name !== VALUES) {
     VALUES_BUG = true;
-    $default = function values(){ return $native.call(this); };
+    $default = function values() { return $native.call(this); };
   }
   // Define iterator
-  if((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])){
+  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
     hide(proto, ITERATOR, $default);
   }
   // Plug for library
   Iterators[NAME] = $default;
-  Iterators[TAG]  = returnThis;
-  if(DEFAULT){
+  Iterators[TAG] = returnThis;
+  if (DEFAULT) {
     methods = {
-      values:  DEF_VALUES ? $default : getMethod(VALUES),
-      keys:    IS_SET     ? $default : getMethod(KEYS),
+      values: DEF_VALUES ? $default : getMethod(VALUES),
+      keys: IS_SET ? $default : getMethod(KEYS),
       entries: $entries
     };
-    if(FORCED)for(key in methods){
-      if(!(key in proto))redefine(proto, key, methods[key]);
+    if (FORCED) for (key in methods) {
+      if (!(key in proto)) redefine(proto, key, methods[key]);
     } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
   }
   return methods;
 };
-},{"./_export":32,"./_has":36,"./_hide":37,"./_iter-create":46,"./_iterators":50,"./_library":51,"./_object-gpo":60,"./_redefine":66,"./_set-to-string-tag":69,"./_wks":79}],48:[function(require,module,exports){
-var ITERATOR     = require('./_wks')('iterator')
-  , SAFE_CLOSING = false;
+
+},{"./_export":32,"./_has":36,"./_hide":37,"./_iter-create":46,"./_iterators":50,"./_library":51,"./_object-gpo":60,"./_redefine":66,"./_set-to-string-tag":69,"./_wks":80}],48:[function(require,module,exports){
+var ITERATOR = require('./_wks')('iterator');
+var SAFE_CLOSING = false;
 
 try {
   var riter = [7][ITERATOR]();
-  riter['return'] = function(){ SAFE_CLOSING = true; };
-  Array.from(riter, function(){ throw 2; });
-} catch(e){ /* empty */ }
+  riter['return'] = function () { SAFE_CLOSING = true; };
+  // eslint-disable-next-line no-throw-literal
+  Array.from(riter, function () { throw 2; });
+} catch (e) { /* empty */ }
 
-module.exports = function(exec, skipClosing){
-  if(!skipClosing && !SAFE_CLOSING)return false;
+module.exports = function (exec, skipClosing) {
+  if (!skipClosing && !SAFE_CLOSING) return false;
   var safe = false;
   try {
-    var arr  = [7]
-      , iter = arr[ITERATOR]();
-    iter.next = function(){ return {done: safe = true}; };
-    arr[ITERATOR] = function(){ return iter; };
+    var arr = [7];
+    var iter = arr[ITERATOR]();
+    iter.next = function () { return { done: safe = true }; };
+    arr[ITERATOR] = function () { return iter; };
     exec(arr);
-  } catch(e){ /* empty */ }
+  } catch (e) { /* empty */ }
   return safe;
 };
-},{"./_wks":79}],49:[function(require,module,exports){
-module.exports = function(done, value){
-  return {value: value, done: !!done};
+
+},{"./_wks":80}],49:[function(require,module,exports){
+module.exports = function (done, value) {
+  return { value: value, done: !!done };
 };
+
 },{}],50:[function(require,module,exports){
 module.exports = {};
+
 },{}],51:[function(require,module,exports){
 module.exports = false;
+
 },{}],52:[function(require,module,exports){
-var META     = require('./_uid')('meta')
-  , isObject = require('./_is-object')
-  , has      = require('./_has')
-  , setDesc  = require('./_object-dp').f
-  , id       = 0;
-var isExtensible = Object.isExtensible || function(){
+var META = require('./_uid')('meta');
+var isObject = require('./_is-object');
+var has = require('./_has');
+var setDesc = require('./_object-dp').f;
+var id = 0;
+var isExtensible = Object.isExtensible || function () {
   return true;
 };
-var FREEZE = !require('./_fails')(function(){
+var FREEZE = !require('./_fails')(function () {
   return isExtensible(Object.preventExtensions({}));
 });
-var setMeta = function(it){
-  setDesc(it, META, {value: {
+var setMeta = function (it) {
+  setDesc(it, META, { value: {
     i: 'O' + ++id, // object ID
     w: {}          // weak collections IDs
-  }});
+  } });
 };
-var fastKey = function(it, create){
+var fastKey = function (it, create) {
   // return primitive with prefix
-  if(!isObject(it))return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
-  if(!has(it, META)){
+  if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+  if (!has(it, META)) {
     // can't set metadata to uncaught frozen object
-    if(!isExtensible(it))return 'F';
+    if (!isExtensible(it)) return 'F';
     // not necessary to add metadata
-    if(!create)return 'E';
+    if (!create) return 'E';
     // add missing metadata
     setMeta(it);
   // return object ID
   } return it[META].i;
 };
-var getWeak = function(it, create){
-  if(!has(it, META)){
+var getWeak = function (it, create) {
+  if (!has(it, META)) {
     // can't set metadata to uncaught frozen object
-    if(!isExtensible(it))return true;
+    if (!isExtensible(it)) return true;
     // not necessary to add metadata
-    if(!create)return false;
+    if (!create) return false;
     // add missing metadata
     setMeta(it);
   // return hash weak collections IDs
   } return it[META].w;
 };
 // add metadata on freeze-family methods calling
-var onFreeze = function(it){
-  if(FREEZE && meta.NEED && isExtensible(it) && !has(it, META))setMeta(it);
+var onFreeze = function (it) {
+  if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
   return it;
 };
 var meta = module.exports = {
-  KEY:      META,
-  NEED:     false,
-  fastKey:  fastKey,
-  getWeak:  getWeak,
+  KEY: META,
+  NEED: false,
+  fastKey: fastKey,
+  getWeak: getWeak,
   onFreeze: onFreeze
 };
-},{"./_fails":33,"./_has":36,"./_is-object":44,"./_object-dp":56,"./_uid":78}],53:[function(require,module,exports){
-var Map     = require('./es6.map')
-  , $export = require('./_export')
-  , shared  = require('./_shared')('metadata')
-  , store   = shared.store || (shared.store = new (require('./es6.weak-map')));
 
-var getOrCreateMetadataMap = function(target, targetKey, create){
+},{"./_fails":33,"./_has":36,"./_is-object":44,"./_object-dp":56,"./_uid":78}],53:[function(require,module,exports){
+var Map = require('./es6.map');
+var $export = require('./_export');
+var shared = require('./_shared')('metadata');
+var store = shared.store || (shared.store = new (require('./es6.weak-map'))());
+
+var getOrCreateMetadataMap = function (target, targetKey, create) {
   var targetMetadata = store.get(target);
-  if(!targetMetadata){
-    if(!create)return undefined;
-    store.set(target, targetMetadata = new Map);
+  if (!targetMetadata) {
+    if (!create) return undefined;
+    store.set(target, targetMetadata = new Map());
   }
   var keyMetadata = targetMetadata.get(targetKey);
-  if(!keyMetadata){
-    if(!create)return undefined;
-    targetMetadata.set(targetKey, keyMetadata = new Map);
+  if (!keyMetadata) {
+    if (!create) return undefined;
+    targetMetadata.set(targetKey, keyMetadata = new Map());
   } return keyMetadata;
 };
-var ordinaryHasOwnMetadata = function(MetadataKey, O, P){
+var ordinaryHasOwnMetadata = function (MetadataKey, O, P) {
   var metadataMap = getOrCreateMetadataMap(O, P, false);
   return metadataMap === undefined ? false : metadataMap.has(MetadataKey);
 };
-var ordinaryGetOwnMetadata = function(MetadataKey, O, P){
+var ordinaryGetOwnMetadata = function (MetadataKey, O, P) {
   var metadataMap = getOrCreateMetadataMap(O, P, false);
   return metadataMap === undefined ? undefined : metadataMap.get(MetadataKey);
 };
-var ordinaryDefineOwnMetadata = function(MetadataKey, MetadataValue, O, P){
+var ordinaryDefineOwnMetadata = function (MetadataKey, MetadataValue, O, P) {
   getOrCreateMetadataMap(O, P, true).set(MetadataKey, MetadataValue);
 };
-var ordinaryOwnMetadataKeys = function(target, targetKey){
-  var metadataMap = getOrCreateMetadataMap(target, targetKey, false)
-    , keys        = [];
-  if(metadataMap)metadataMap.forEach(function(_, key){ keys.push(key); });
+var ordinaryOwnMetadataKeys = function (target, targetKey) {
+  var metadataMap = getOrCreateMetadataMap(target, targetKey, false);
+  var keys = [];
+  if (metadataMap) metadataMap.forEach(function (_, key) { keys.push(key); });
   return keys;
 };
-var toMetaKey = function(it){
+var toMetaKey = function (it) {
   return it === undefined || typeof it == 'symbol' ? it : String(it);
 };
-var exp = function(O){
+var exp = function (O) {
   $export($export.S, 'Reflect', O);
 };
 
@@ -64856,57 +65664,60 @@ module.exports = {
   key: toMetaKey,
   exp: exp
 };
-},{"./_export":32,"./_shared":71,"./es6.map":81,"./es6.weak-map":83}],54:[function(require,module,exports){
+
+},{"./_export":32,"./_shared":71,"./es6.map":82,"./es6.weak-map":84}],54:[function(require,module,exports){
 'use strict';
 // 19.1.2.1 Object.assign(target, source, ...)
-var getKeys  = require('./_object-keys')
-  , gOPS     = require('./_object-gops')
-  , pIE      = require('./_object-pie')
-  , toObject = require('./_to-object')
-  , IObject  = require('./_iobject')
-  , $assign  = Object.assign;
+var getKeys = require('./_object-keys');
+var gOPS = require('./_object-gops');
+var pIE = require('./_object-pie');
+var toObject = require('./_to-object');
+var IObject = require('./_iobject');
+var $assign = Object.assign;
 
 // should work with symbols and should have deterministic property order (V8 bug)
-module.exports = !$assign || require('./_fails')(function(){
-  var A = {}
-    , B = {}
-    , S = Symbol()
-    , K = 'abcdefghijklmnopqrst';
+module.exports = !$assign || require('./_fails')(function () {
+  var A = {};
+  var B = {};
+  // eslint-disable-next-line no-undef
+  var S = Symbol();
+  var K = 'abcdefghijklmnopqrst';
   A[S] = 7;
-  K.split('').forEach(function(k){ B[k] = k; });
+  K.split('').forEach(function (k) { B[k] = k; });
   return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
-}) ? function assign(target, source){ // eslint-disable-line no-unused-vars
-  var T     = toObject(target)
-    , aLen  = arguments.length
-    , index = 1
-    , getSymbols = gOPS.f
-    , isEnum     = pIE.f;
-  while(aLen > index){
-    var S      = IObject(arguments[index++])
-      , keys   = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S)
-      , length = keys.length
-      , j      = 0
-      , key;
-    while(length > j)if(isEnum.call(S, key = keys[j++]))T[key] = S[key];
+}) ? function assign(target, source) { // eslint-disable-line no-unused-vars
+  var T = toObject(target);
+  var aLen = arguments.length;
+  var index = 1;
+  var getSymbols = gOPS.f;
+  var isEnum = pIE.f;
+  while (aLen > index) {
+    var S = IObject(arguments[index++]);
+    var keys = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S);
+    var length = keys.length;
+    var j = 0;
+    var key;
+    while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
   } return T;
 } : $assign;
+
 },{"./_fails":33,"./_iobject":41,"./_object-gops":59,"./_object-keys":62,"./_object-pie":63,"./_to-object":76}],55:[function(require,module,exports){
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject    = require('./_an-object')
-  , dPs         = require('./_object-dps')
-  , enumBugKeys = require('./_enum-bug-keys')
-  , IE_PROTO    = require('./_shared-key')('IE_PROTO')
-  , Empty       = function(){ /* empty */ }
-  , PROTOTYPE   = 'prototype';
+var anObject = require('./_an-object');
+var dPs = require('./_object-dps');
+var enumBugKeys = require('./_enum-bug-keys');
+var IE_PROTO = require('./_shared-key')('IE_PROTO');
+var Empty = function () { /* empty */ };
+var PROTOTYPE = 'prototype';
 
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
-var createDict = function(){
+var createDict = function () {
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = require('./_dom-create')('iframe')
-    , i      = enumBugKeys.length
-    , lt     = '<'
-    , gt     = '>'
-    , iframeDocument;
+  var iframe = require('./_dom-create')('iframe');
+  var i = enumBugKeys.length;
+  var lt = '<';
+  var gt = '>';
+  var iframeDocument;
   iframe.style.display = 'none';
   require('./_html').appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
@@ -64917,15 +65728,15 @@ var createDict = function(){
   iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
   iframeDocument.close();
   createDict = iframeDocument.F;
-  while(i--)delete createDict[PROTOTYPE][enumBugKeys[i]];
+  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
   return createDict();
 };
 
-module.exports = Object.create || function create(O, Properties){
+module.exports = Object.create || function create(O, Properties) {
   var result;
-  if(O !== null){
+  if (O !== null) {
     Empty[PROTOTYPE] = anObject(O);
-    result = new Empty;
+    result = new Empty();
     Empty[PROTOTYPE] = null;
     // add "__proto__" for Object.getPrototypeOf polyfill
     result[IE_PROTO] = O;
@@ -64934,362 +65745,402 @@ module.exports = Object.create || function create(O, Properties){
 };
 
 },{"./_an-object":15,"./_dom-create":30,"./_enum-bug-keys":31,"./_html":38,"./_object-dps":57,"./_shared-key":70}],56:[function(require,module,exports){
-var anObject       = require('./_an-object')
-  , IE8_DOM_DEFINE = require('./_ie8-dom-define')
-  , toPrimitive    = require('./_to-primitive')
-  , dP             = Object.defineProperty;
+var anObject = require('./_an-object');
+var IE8_DOM_DEFINE = require('./_ie8-dom-define');
+var toPrimitive = require('./_to-primitive');
+var dP = Object.defineProperty;
 
-exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes){
+exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes) {
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
-  if(IE8_DOM_DEFINE)try {
+  if (IE8_DOM_DEFINE) try {
     return dP(O, P, Attributes);
-  } catch(e){ /* empty */ }
-  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
-  if('value' in Attributes)O[P] = Attributes.value;
+  } catch (e) { /* empty */ }
+  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
+  if ('value' in Attributes) O[P] = Attributes.value;
   return O;
 };
+
 },{"./_an-object":15,"./_descriptors":29,"./_ie8-dom-define":39,"./_to-primitive":77}],57:[function(require,module,exports){
-var dP       = require('./_object-dp')
-  , anObject = require('./_an-object')
-  , getKeys  = require('./_object-keys');
+var dP = require('./_object-dp');
+var anObject = require('./_an-object');
+var getKeys = require('./_object-keys');
 
-module.exports = require('./_descriptors') ? Object.defineProperties : function defineProperties(O, Properties){
+module.exports = require('./_descriptors') ? Object.defineProperties : function defineProperties(O, Properties) {
   anObject(O);
-  var keys   = getKeys(Properties)
-    , length = keys.length
-    , i = 0
-    , P;
-  while(length > i)dP.f(O, P = keys[i++], Properties[P]);
+  var keys = getKeys(Properties);
+  var length = keys.length;
+  var i = 0;
+  var P;
+  while (length > i) dP.f(O, P = keys[i++], Properties[P]);
   return O;
 };
-},{"./_an-object":15,"./_descriptors":29,"./_object-dp":56,"./_object-keys":62}],58:[function(require,module,exports){
-var pIE            = require('./_object-pie')
-  , createDesc     = require('./_property-desc')
-  , toIObject      = require('./_to-iobject')
-  , toPrimitive    = require('./_to-primitive')
-  , has            = require('./_has')
-  , IE8_DOM_DEFINE = require('./_ie8-dom-define')
-  , gOPD           = Object.getOwnPropertyDescriptor;
 
-exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor(O, P){
+},{"./_an-object":15,"./_descriptors":29,"./_object-dp":56,"./_object-keys":62}],58:[function(require,module,exports){
+var pIE = require('./_object-pie');
+var createDesc = require('./_property-desc');
+var toIObject = require('./_to-iobject');
+var toPrimitive = require('./_to-primitive');
+var has = require('./_has');
+var IE8_DOM_DEFINE = require('./_ie8-dom-define');
+var gOPD = Object.getOwnPropertyDescriptor;
+
+exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor(O, P) {
   O = toIObject(O);
   P = toPrimitive(P, true);
-  if(IE8_DOM_DEFINE)try {
+  if (IE8_DOM_DEFINE) try {
     return gOPD(O, P);
-  } catch(e){ /* empty */ }
-  if(has(O, P))return createDesc(!pIE.f.call(O, P), O[P]);
+  } catch (e) { /* empty */ }
+  if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
 };
+
 },{"./_descriptors":29,"./_has":36,"./_ie8-dom-define":39,"./_object-pie":63,"./_property-desc":64,"./_to-iobject":74,"./_to-primitive":77}],59:[function(require,module,exports){
 exports.f = Object.getOwnPropertySymbols;
+
 },{}],60:[function(require,module,exports){
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has         = require('./_has')
-  , toObject    = require('./_to-object')
-  , IE_PROTO    = require('./_shared-key')('IE_PROTO')
-  , ObjectProto = Object.prototype;
+var has = require('./_has');
+var toObject = require('./_to-object');
+var IE_PROTO = require('./_shared-key')('IE_PROTO');
+var ObjectProto = Object.prototype;
 
-module.exports = Object.getPrototypeOf || function(O){
+module.exports = Object.getPrototypeOf || function (O) {
   O = toObject(O);
-  if(has(O, IE_PROTO))return O[IE_PROTO];
-  if(typeof O.constructor == 'function' && O instanceof O.constructor){
+  if (has(O, IE_PROTO)) return O[IE_PROTO];
+  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
     return O.constructor.prototype;
   } return O instanceof Object ? ObjectProto : null;
 };
-},{"./_has":36,"./_shared-key":70,"./_to-object":76}],61:[function(require,module,exports){
-var has          = require('./_has')
-  , toIObject    = require('./_to-iobject')
-  , arrayIndexOf = require('./_array-includes')(false)
-  , IE_PROTO     = require('./_shared-key')('IE_PROTO');
 
-module.exports = function(object, names){
-  var O      = toIObject(object)
-    , i      = 0
-    , result = []
-    , key;
-  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
+},{"./_has":36,"./_shared-key":70,"./_to-object":76}],61:[function(require,module,exports){
+var has = require('./_has');
+var toIObject = require('./_to-iobject');
+var arrayIndexOf = require('./_array-includes')(false);
+var IE_PROTO = require('./_shared-key')('IE_PROTO');
+
+module.exports = function (object, names) {
+  var O = toIObject(object);
+  var i = 0;
+  var result = [];
+  var key;
+  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
   // Don't enum bug & hidden keys
-  while(names.length > i)if(has(O, key = names[i++])){
+  while (names.length > i) if (has(O, key = names[i++])) {
     ~arrayIndexOf(result, key) || result.push(key);
   }
   return result;
 };
+
 },{"./_array-includes":17,"./_has":36,"./_shared-key":70,"./_to-iobject":74}],62:[function(require,module,exports){
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys       = require('./_object-keys-internal')
-  , enumBugKeys = require('./_enum-bug-keys');
+var $keys = require('./_object-keys-internal');
+var enumBugKeys = require('./_enum-bug-keys');
 
-module.exports = Object.keys || function keys(O){
+module.exports = Object.keys || function keys(O) {
   return $keys(O, enumBugKeys);
 };
+
 },{"./_enum-bug-keys":31,"./_object-keys-internal":61}],63:[function(require,module,exports){
 exports.f = {}.propertyIsEnumerable;
+
 },{}],64:[function(require,module,exports){
-module.exports = function(bitmap, value){
+module.exports = function (bitmap, value) {
   return {
-    enumerable  : !(bitmap & 1),
+    enumerable: !(bitmap & 1),
     configurable: !(bitmap & 2),
-    writable    : !(bitmap & 4),
-    value       : value
+    writable: !(bitmap & 4),
+    value: value
   };
 };
+
 },{}],65:[function(require,module,exports){
 var redefine = require('./_redefine');
-module.exports = function(target, src, safe){
-  for(var key in src)redefine(target, key, src[key], safe);
+module.exports = function (target, src, safe) {
+  for (var key in src) redefine(target, key, src[key], safe);
   return target;
 };
-},{"./_redefine":66}],66:[function(require,module,exports){
-var global    = require('./_global')
-  , hide      = require('./_hide')
-  , has       = require('./_has')
-  , SRC       = require('./_uid')('src')
-  , TO_STRING = 'toString'
-  , $toString = Function[TO_STRING]
-  , TPL       = ('' + $toString).split(TO_STRING);
 
-require('./_core').inspectSource = function(it){
+},{"./_redefine":66}],66:[function(require,module,exports){
+var global = require('./_global');
+var hide = require('./_hide');
+var has = require('./_has');
+var SRC = require('./_uid')('src');
+var TO_STRING = 'toString';
+var $toString = Function[TO_STRING];
+var TPL = ('' + $toString).split(TO_STRING);
+
+require('./_core').inspectSource = function (it) {
   return $toString.call(it);
 };
 
-(module.exports = function(O, key, val, safe){
+(module.exports = function (O, key, val, safe) {
   var isFunction = typeof val == 'function';
-  if(isFunction)has(val, 'name') || hide(val, 'name', key);
-  if(O[key] === val)return;
-  if(isFunction)has(val, SRC) || hide(val, SRC, O[key] ? '' + O[key] : TPL.join(String(key)));
-  if(O === global){
+  if (isFunction) has(val, 'name') || hide(val, 'name', key);
+  if (O[key] === val) return;
+  if (isFunction) has(val, SRC) || hide(val, SRC, O[key] ? '' + O[key] : TPL.join(String(key)));
+  if (O === global) {
+    O[key] = val;
+  } else if (!safe) {
+    delete O[key];
+    hide(O, key, val);
+  } else if (O[key]) {
     O[key] = val;
   } else {
-    if(!safe){
-      delete O[key];
-      hide(O, key, val);
-    } else {
-      if(O[key])O[key] = val;
-      else hide(O, key, val);
-    }
+    hide(O, key, val);
   }
 // add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
-})(Function.prototype, TO_STRING, function toString(){
+})(Function.prototype, TO_STRING, function toString() {
   return typeof this == 'function' && this[SRC] || $toString.call(this);
 });
+
 },{"./_core":26,"./_global":35,"./_has":36,"./_hide":37,"./_uid":78}],67:[function(require,module,exports){
 // Works with __proto__ only. Old v8 can't work with null proto objects.
 /* eslint-disable no-proto */
-var isObject = require('./_is-object')
-  , anObject = require('./_an-object');
-var check = function(O, proto){
+var isObject = require('./_is-object');
+var anObject = require('./_an-object');
+var check = function (O, proto) {
   anObject(O);
-  if(!isObject(proto) && proto !== null)throw TypeError(proto + ": can't set as prototype!");
+  if (!isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
 };
 module.exports = {
   set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
-    function(test, buggy, set){
+    function (test, buggy, set) {
       try {
         set = require('./_ctx')(Function.call, require('./_object-gopd').f(Object.prototype, '__proto__').set, 2);
         set(test, []);
         buggy = !(test instanceof Array);
-      } catch(e){ buggy = true; }
-      return function setPrototypeOf(O, proto){
+      } catch (e) { buggy = true; }
+      return function setPrototypeOf(O, proto) {
         check(O, proto);
-        if(buggy)O.__proto__ = proto;
+        if (buggy) O.__proto__ = proto;
         else set(O, proto);
         return O;
       };
     }({}, false) : undefined),
   check: check
 };
+
 },{"./_an-object":15,"./_ctx":27,"./_is-object":44,"./_object-gopd":58}],68:[function(require,module,exports){
 'use strict';
-var global      = require('./_global')
-  , dP          = require('./_object-dp')
-  , DESCRIPTORS = require('./_descriptors')
-  , SPECIES     = require('./_wks')('species');
+var global = require('./_global');
+var dP = require('./_object-dp');
+var DESCRIPTORS = require('./_descriptors');
+var SPECIES = require('./_wks')('species');
 
-module.exports = function(KEY){
+module.exports = function (KEY) {
   var C = global[KEY];
-  if(DESCRIPTORS && C && !C[SPECIES])dP.f(C, SPECIES, {
+  if (DESCRIPTORS && C && !C[SPECIES]) dP.f(C, SPECIES, {
     configurable: true,
-    get: function(){ return this; }
+    get: function () { return this; }
   });
 };
-},{"./_descriptors":29,"./_global":35,"./_object-dp":56,"./_wks":79}],69:[function(require,module,exports){
-var def = require('./_object-dp').f
-  , has = require('./_has')
-  , TAG = require('./_wks')('toStringTag');
 
-module.exports = function(it, tag, stat){
-  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
+},{"./_descriptors":29,"./_global":35,"./_object-dp":56,"./_wks":80}],69:[function(require,module,exports){
+var def = require('./_object-dp').f;
+var has = require('./_has');
+var TAG = require('./_wks')('toStringTag');
+
+module.exports = function (it, tag, stat) {
+  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
 };
-},{"./_has":36,"./_object-dp":56,"./_wks":79}],70:[function(require,module,exports){
-var shared = require('./_shared')('keys')
-  , uid    = require('./_uid');
-module.exports = function(key){
+
+},{"./_has":36,"./_object-dp":56,"./_wks":80}],70:[function(require,module,exports){
+var shared = require('./_shared')('keys');
+var uid = require('./_uid');
+module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
+
 },{"./_shared":71,"./_uid":78}],71:[function(require,module,exports){
-var global = require('./_global')
-  , SHARED = '__core-js_shared__'
-  , store  = global[SHARED] || (global[SHARED] = {});
-module.exports = function(key){
+var global = require('./_global');
+var SHARED = '__core-js_shared__';
+var store = global[SHARED] || (global[SHARED] = {});
+module.exports = function (key) {
   return store[key] || (store[key] = {});
 };
+
 },{"./_global":35}],72:[function(require,module,exports){
-var toInteger = require('./_to-integer')
-  , max       = Math.max
-  , min       = Math.min;
-module.exports = function(index, length){
+var toInteger = require('./_to-integer');
+var max = Math.max;
+var min = Math.min;
+module.exports = function (index, length) {
   index = toInteger(index);
   return index < 0 ? max(index + length, 0) : min(index, length);
 };
+
 },{"./_to-integer":73}],73:[function(require,module,exports){
 // 7.1.4 ToInteger
-var ceil  = Math.ceil
-  , floor = Math.floor;
-module.exports = function(it){
+var ceil = Math.ceil;
+var floor = Math.floor;
+module.exports = function (it) {
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
+
 },{}],74:[function(require,module,exports){
 // to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = require('./_iobject')
-  , defined = require('./_defined');
-module.exports = function(it){
+var IObject = require('./_iobject');
+var defined = require('./_defined');
+module.exports = function (it) {
   return IObject(defined(it));
 };
+
 },{"./_defined":28,"./_iobject":41}],75:[function(require,module,exports){
 // 7.1.15 ToLength
-var toInteger = require('./_to-integer')
-  , min       = Math.min;
-module.exports = function(it){
+var toInteger = require('./_to-integer');
+var min = Math.min;
+module.exports = function (it) {
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 };
+
 },{"./_to-integer":73}],76:[function(require,module,exports){
 // 7.1.13 ToObject(argument)
 var defined = require('./_defined');
-module.exports = function(it){
+module.exports = function (it) {
   return Object(defined(it));
 };
+
 },{"./_defined":28}],77:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
-module.exports = function(it, S){
-  if(!isObject(it))return it;
+module.exports = function (it, S) {
+  if (!isObject(it)) return it;
   var fn, val;
-  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
-  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
-  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
+  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
   throw TypeError("Can't convert object to primitive value");
 };
+
 },{"./_is-object":44}],78:[function(require,module,exports){
-var id = 0
-  , px = Math.random();
-module.exports = function(key){
+var id = 0;
+var px = Math.random();
+module.exports = function (key) {
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
-},{}],79:[function(require,module,exports){
-var store      = require('./_shared')('wks')
-  , uid        = require('./_uid')
-  , Symbol     = require('./_global').Symbol
-  , USE_SYMBOL = typeof Symbol == 'function';
 
-var $exports = module.exports = function(name){
+},{}],79:[function(require,module,exports){
+var isObject = require('./_is-object');
+module.exports = function (it, TYPE) {
+  if (!isObject(it) || it._t !== TYPE) throw TypeError('Incompatible receiver, ' + TYPE + ' required!');
+  return it;
+};
+
+},{"./_is-object":44}],80:[function(require,module,exports){
+var store = require('./_shared')('wks');
+var uid = require('./_uid');
+var Symbol = require('./_global').Symbol;
+var USE_SYMBOL = typeof Symbol == 'function';
+
+var $exports = module.exports = function (name) {
   return store[name] || (store[name] =
     USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
 };
 
 $exports.store = store;
-},{"./_global":35,"./_shared":71,"./_uid":78}],80:[function(require,module,exports){
-var classof   = require('./_classof')
-  , ITERATOR  = require('./_wks')('iterator')
-  , Iterators = require('./_iterators');
-module.exports = require('./_core').getIteratorMethod = function(it){
-  if(it != undefined)return it[ITERATOR]
+
+},{"./_global":35,"./_shared":71,"./_uid":78}],81:[function(require,module,exports){
+var classof = require('./_classof');
+var ITERATOR = require('./_wks')('iterator');
+var Iterators = require('./_iterators');
+module.exports = require('./_core').getIteratorMethod = function (it) {
+  if (it != undefined) return it[ITERATOR]
     || it['@@iterator']
     || Iterators[classof(it)];
 };
-},{"./_classof":21,"./_core":26,"./_iterators":50,"./_wks":79}],81:[function(require,module,exports){
+
+},{"./_classof":21,"./_core":26,"./_iterators":50,"./_wks":80}],82:[function(require,module,exports){
 'use strict';
 var strong = require('./_collection-strong');
+var validate = require('./_validate-collection');
+var MAP = 'Map';
 
 // 23.1 Map Objects
-module.exports = require('./_collection')('Map', function(get){
-  return function Map(){ return get(this, arguments.length > 0 ? arguments[0] : undefined); };
+module.exports = require('./_collection')(MAP, function (get) {
+  return function Map() { return get(this, arguments.length > 0 ? arguments[0] : undefined); };
 }, {
   // 23.1.3.6 Map.prototype.get(key)
-  get: function get(key){
-    var entry = strong.getEntry(this, key);
+  get: function get(key) {
+    var entry = strong.getEntry(validate(this, MAP), key);
     return entry && entry.v;
   },
   // 23.1.3.9 Map.prototype.set(key, value)
-  set: function set(key, value){
-    return strong.def(this, key === 0 ? 0 : key, value);
+  set: function set(key, value) {
+    return strong.def(validate(this, MAP), key === 0 ? 0 : key, value);
   }
 }, strong, true);
-},{"./_collection":25,"./_collection-strong":23}],82:[function(require,module,exports){
+
+},{"./_collection":25,"./_collection-strong":23,"./_validate-collection":79}],83:[function(require,module,exports){
 'use strict';
 var strong = require('./_collection-strong');
+var validate = require('./_validate-collection');
+var SET = 'Set';
 
 // 23.2 Set Objects
-module.exports = require('./_collection')('Set', function(get){
-  return function Set(){ return get(this, arguments.length > 0 ? arguments[0] : undefined); };
+module.exports = require('./_collection')(SET, function (get) {
+  return function Set() { return get(this, arguments.length > 0 ? arguments[0] : undefined); };
 }, {
   // 23.2.3.1 Set.prototype.add(value)
-  add: function add(value){
-    return strong.def(this, value = value === 0 ? 0 : value, value);
+  add: function add(value) {
+    return strong.def(validate(this, SET), value = value === 0 ? 0 : value, value);
   }
 }, strong);
-},{"./_collection":25,"./_collection-strong":23}],83:[function(require,module,exports){
-'use strict';
-var each         = require('./_array-methods')(0)
-  , redefine     = require('./_redefine')
-  , meta         = require('./_meta')
-  , assign       = require('./_object-assign')
-  , weak         = require('./_collection-weak')
-  , isObject     = require('./_is-object')
-  , getWeak      = meta.getWeak
-  , isExtensible = Object.isExtensible
-  , uncaughtFrozenStore = weak.ufstore
-  , tmp          = {}
-  , InternalMap;
 
-var wrapper = function(get){
-  return function WeakMap(){
+},{"./_collection":25,"./_collection-strong":23,"./_validate-collection":79}],84:[function(require,module,exports){
+'use strict';
+var each = require('./_array-methods')(0);
+var redefine = require('./_redefine');
+var meta = require('./_meta');
+var assign = require('./_object-assign');
+var weak = require('./_collection-weak');
+var isObject = require('./_is-object');
+var fails = require('./_fails');
+var validate = require('./_validate-collection');
+var WEAK_MAP = 'WeakMap';
+var getWeak = meta.getWeak;
+var isExtensible = Object.isExtensible;
+var uncaughtFrozenStore = weak.ufstore;
+var tmp = {};
+var InternalMap;
+
+var wrapper = function (get) {
+  return function WeakMap() {
     return get(this, arguments.length > 0 ? arguments[0] : undefined);
   };
 };
 
 var methods = {
   // 23.3.3.3 WeakMap.prototype.get(key)
-  get: function get(key){
-    if(isObject(key)){
+  get: function get(key) {
+    if (isObject(key)) {
       var data = getWeak(key);
-      if(data === true)return uncaughtFrozenStore(this).get(key);
+      if (data === true) return uncaughtFrozenStore(validate(this, WEAK_MAP)).get(key);
       return data ? data[this._i] : undefined;
     }
   },
   // 23.3.3.5 WeakMap.prototype.set(key, value)
-  set: function set(key, value){
-    return weak.def(this, key, value);
+  set: function set(key, value) {
+    return weak.def(validate(this, WEAK_MAP), key, value);
   }
 };
 
 // 23.3 WeakMap Objects
-var $WeakMap = module.exports = require('./_collection')('WeakMap', wrapper, methods, weak, true, true);
+var $WeakMap = module.exports = require('./_collection')(WEAK_MAP, wrapper, methods, weak, true, true);
 
 // IE11 WeakMap frozen keys fix
-if(new $WeakMap().set((Object.freeze || Object)(tmp), 7).get(tmp) != 7){
-  InternalMap = weak.getConstructor(wrapper);
+if (fails(function () { return new $WeakMap().set((Object.freeze || Object)(tmp), 7).get(tmp) != 7; })) {
+  InternalMap = weak.getConstructor(wrapper, WEAK_MAP);
   assign(InternalMap.prototype, methods);
   meta.NEED = true;
-  each(['delete', 'has', 'get', 'set'], function(key){
-    var proto  = $WeakMap.prototype
-      , method = proto[key];
-    redefine(proto, key, function(a, b){
+  each(['delete', 'has', 'get', 'set'], function (key) {
+    var proto = $WeakMap.prototype;
+    var method = proto[key];
+    redefine(proto, key, function (a, b) {
       // store frozen objects on internal weakmap shim
-      if(isObject(a) && !isExtensible(a)){
-        if(!this._f)this._f = new InternalMap;
+      if (isObject(a) && !isExtensible(a)) {
+        if (!this._f) this._f = new InternalMap();
         var result = this._f[key](a, b);
         return key == 'set' ? this : result;
       // store all the rest on native weakmap
@@ -65297,314 +66148,192 @@ if(new $WeakMap().set((Object.freeze || Object)(tmp), 7).get(tmp) != 7){
     });
   });
 }
-},{"./_array-methods":18,"./_collection":25,"./_collection-weak":24,"./_is-object":44,"./_meta":52,"./_object-assign":54,"./_redefine":66}],84:[function(require,module,exports){
-var metadata                  = require('./_metadata')
-  , anObject                  = require('./_an-object')
-  , toMetaKey                 = metadata.key
-  , ordinaryDefineOwnMetadata = metadata.set;
 
-metadata.exp({defineMetadata: function defineMetadata(metadataKey, metadataValue, target, targetKey){
+},{"./_array-methods":18,"./_collection":25,"./_collection-weak":24,"./_fails":33,"./_is-object":44,"./_meta":52,"./_object-assign":54,"./_redefine":66,"./_validate-collection":79}],85:[function(require,module,exports){
+var metadata = require('./_metadata');
+var anObject = require('./_an-object');
+var toMetaKey = metadata.key;
+var ordinaryDefineOwnMetadata = metadata.set;
+
+metadata.exp({ defineMetadata: function defineMetadata(metadataKey, metadataValue, target, targetKey) {
   ordinaryDefineOwnMetadata(metadataKey, metadataValue, anObject(target), toMetaKey(targetKey));
-}});
-},{"./_an-object":15,"./_metadata":53}],85:[function(require,module,exports){
-var metadata               = require('./_metadata')
-  , anObject               = require('./_an-object')
-  , toMetaKey              = metadata.key
-  , getOrCreateMetadataMap = metadata.map
-  , store                  = metadata.store;
+} });
 
-metadata.exp({deleteMetadata: function deleteMetadata(metadataKey, target /*, targetKey */){
-  var targetKey   = arguments.length < 3 ? undefined : toMetaKey(arguments[2])
-    , metadataMap = getOrCreateMetadataMap(anObject(target), targetKey, false);
-  if(metadataMap === undefined || !metadataMap['delete'](metadataKey))return false;
-  if(metadataMap.size)return true;
+},{"./_an-object":15,"./_metadata":53}],86:[function(require,module,exports){
+var metadata = require('./_metadata');
+var anObject = require('./_an-object');
+var toMetaKey = metadata.key;
+var getOrCreateMetadataMap = metadata.map;
+var store = metadata.store;
+
+metadata.exp({ deleteMetadata: function deleteMetadata(metadataKey, target /* , targetKey */) {
+  var targetKey = arguments.length < 3 ? undefined : toMetaKey(arguments[2]);
+  var metadataMap = getOrCreateMetadataMap(anObject(target), targetKey, false);
+  if (metadataMap === undefined || !metadataMap['delete'](metadataKey)) return false;
+  if (metadataMap.size) return true;
   var targetMetadata = store.get(target);
   targetMetadata['delete'](targetKey);
   return !!targetMetadata.size || store['delete'](target);
-}});
-},{"./_an-object":15,"./_metadata":53}],86:[function(require,module,exports){
-var Set                     = require('./es6.set')
-  , from                    = require('./_array-from-iterable')
-  , metadata                = require('./_metadata')
-  , anObject                = require('./_an-object')
-  , getPrototypeOf          = require('./_object-gpo')
-  , ordinaryOwnMetadataKeys = metadata.keys
-  , toMetaKey               = metadata.key;
+} });
 
-var ordinaryMetadataKeys = function(O, P){
-  var oKeys  = ordinaryOwnMetadataKeys(O, P)
-    , parent = getPrototypeOf(O);
-  if(parent === null)return oKeys;
-  var pKeys  = ordinaryMetadataKeys(parent, P);
+},{"./_an-object":15,"./_metadata":53}],87:[function(require,module,exports){
+var Set = require('./es6.set');
+var from = require('./_array-from-iterable');
+var metadata = require('./_metadata');
+var anObject = require('./_an-object');
+var getPrototypeOf = require('./_object-gpo');
+var ordinaryOwnMetadataKeys = metadata.keys;
+var toMetaKey = metadata.key;
+
+var ordinaryMetadataKeys = function (O, P) {
+  var oKeys = ordinaryOwnMetadataKeys(O, P);
+  var parent = getPrototypeOf(O);
+  if (parent === null) return oKeys;
+  var pKeys = ordinaryMetadataKeys(parent, P);
   return pKeys.length ? oKeys.length ? from(new Set(oKeys.concat(pKeys))) : pKeys : oKeys;
 };
 
-metadata.exp({getMetadataKeys: function getMetadataKeys(target /*, targetKey */){
+metadata.exp({ getMetadataKeys: function getMetadataKeys(target /* , targetKey */) {
   return ordinaryMetadataKeys(anObject(target), arguments.length < 2 ? undefined : toMetaKey(arguments[1]));
-}});
-},{"./_an-object":15,"./_array-from-iterable":16,"./_metadata":53,"./_object-gpo":60,"./es6.set":82}],87:[function(require,module,exports){
-var metadata               = require('./_metadata')
-  , anObject               = require('./_an-object')
-  , getPrototypeOf         = require('./_object-gpo')
-  , ordinaryHasOwnMetadata = metadata.has
-  , ordinaryGetOwnMetadata = metadata.get
-  , toMetaKey              = metadata.key;
+} });
 
-var ordinaryGetMetadata = function(MetadataKey, O, P){
+},{"./_an-object":15,"./_array-from-iterable":16,"./_metadata":53,"./_object-gpo":60,"./es6.set":83}],88:[function(require,module,exports){
+var metadata = require('./_metadata');
+var anObject = require('./_an-object');
+var getPrototypeOf = require('./_object-gpo');
+var ordinaryHasOwnMetadata = metadata.has;
+var ordinaryGetOwnMetadata = metadata.get;
+var toMetaKey = metadata.key;
+
+var ordinaryGetMetadata = function (MetadataKey, O, P) {
   var hasOwn = ordinaryHasOwnMetadata(MetadataKey, O, P);
-  if(hasOwn)return ordinaryGetOwnMetadata(MetadataKey, O, P);
+  if (hasOwn) return ordinaryGetOwnMetadata(MetadataKey, O, P);
   var parent = getPrototypeOf(O);
   return parent !== null ? ordinaryGetMetadata(MetadataKey, parent, P) : undefined;
 };
 
-metadata.exp({getMetadata: function getMetadata(metadataKey, target /*, targetKey */){
+metadata.exp({ getMetadata: function getMetadata(metadataKey, target /* , targetKey */) {
   return ordinaryGetMetadata(metadataKey, anObject(target), arguments.length < 3 ? undefined : toMetaKey(arguments[2]));
-}});
-},{"./_an-object":15,"./_metadata":53,"./_object-gpo":60}],88:[function(require,module,exports){
-var metadata                = require('./_metadata')
-  , anObject                = require('./_an-object')
-  , ordinaryOwnMetadataKeys = metadata.keys
-  , toMetaKey               = metadata.key;
+} });
 
-metadata.exp({getOwnMetadataKeys: function getOwnMetadataKeys(target /*, targetKey */){
+},{"./_an-object":15,"./_metadata":53,"./_object-gpo":60}],89:[function(require,module,exports){
+var metadata = require('./_metadata');
+var anObject = require('./_an-object');
+var ordinaryOwnMetadataKeys = metadata.keys;
+var toMetaKey = metadata.key;
+
+metadata.exp({ getOwnMetadataKeys: function getOwnMetadataKeys(target /* , targetKey */) {
   return ordinaryOwnMetadataKeys(anObject(target), arguments.length < 2 ? undefined : toMetaKey(arguments[1]));
-}});
-},{"./_an-object":15,"./_metadata":53}],89:[function(require,module,exports){
-var metadata               = require('./_metadata')
-  , anObject               = require('./_an-object')
-  , ordinaryGetOwnMetadata = metadata.get
-  , toMetaKey              = metadata.key;
+} });
 
-metadata.exp({getOwnMetadata: function getOwnMetadata(metadataKey, target /*, targetKey */){
+},{"./_an-object":15,"./_metadata":53}],90:[function(require,module,exports){
+var metadata = require('./_metadata');
+var anObject = require('./_an-object');
+var ordinaryGetOwnMetadata = metadata.get;
+var toMetaKey = metadata.key;
+
+metadata.exp({ getOwnMetadata: function getOwnMetadata(metadataKey, target /* , targetKey */) {
   return ordinaryGetOwnMetadata(metadataKey, anObject(target)
     , arguments.length < 3 ? undefined : toMetaKey(arguments[2]));
-}});
-},{"./_an-object":15,"./_metadata":53}],90:[function(require,module,exports){
-var metadata               = require('./_metadata')
-  , anObject               = require('./_an-object')
-  , getPrototypeOf         = require('./_object-gpo')
-  , ordinaryHasOwnMetadata = metadata.has
-  , toMetaKey              = metadata.key;
+} });
 
-var ordinaryHasMetadata = function(MetadataKey, O, P){
+},{"./_an-object":15,"./_metadata":53}],91:[function(require,module,exports){
+var metadata = require('./_metadata');
+var anObject = require('./_an-object');
+var getPrototypeOf = require('./_object-gpo');
+var ordinaryHasOwnMetadata = metadata.has;
+var toMetaKey = metadata.key;
+
+var ordinaryHasMetadata = function (MetadataKey, O, P) {
   var hasOwn = ordinaryHasOwnMetadata(MetadataKey, O, P);
-  if(hasOwn)return true;
+  if (hasOwn) return true;
   var parent = getPrototypeOf(O);
   return parent !== null ? ordinaryHasMetadata(MetadataKey, parent, P) : false;
 };
 
-metadata.exp({hasMetadata: function hasMetadata(metadataKey, target /*, targetKey */){
+metadata.exp({ hasMetadata: function hasMetadata(metadataKey, target /* , targetKey */) {
   return ordinaryHasMetadata(metadataKey, anObject(target), arguments.length < 3 ? undefined : toMetaKey(arguments[2]));
-}});
-},{"./_an-object":15,"./_metadata":53,"./_object-gpo":60}],91:[function(require,module,exports){
-var metadata               = require('./_metadata')
-  , anObject               = require('./_an-object')
-  , ordinaryHasOwnMetadata = metadata.has
-  , toMetaKey              = metadata.key;
+} });
 
-metadata.exp({hasOwnMetadata: function hasOwnMetadata(metadataKey, target /*, targetKey */){
+},{"./_an-object":15,"./_metadata":53,"./_object-gpo":60}],92:[function(require,module,exports){
+var metadata = require('./_metadata');
+var anObject = require('./_an-object');
+var ordinaryHasOwnMetadata = metadata.has;
+var toMetaKey = metadata.key;
+
+metadata.exp({ hasOwnMetadata: function hasOwnMetadata(metadataKey, target /* , targetKey */) {
   return ordinaryHasOwnMetadata(metadataKey, anObject(target)
     , arguments.length < 3 ? undefined : toMetaKey(arguments[2]));
-}});
-},{"./_an-object":15,"./_metadata":53}],92:[function(require,module,exports){
-var metadata                  = require('./_metadata')
-  , anObject                  = require('./_an-object')
-  , aFunction                 = require('./_a-function')
-  , toMetaKey                 = metadata.key
-  , ordinaryDefineOwnMetadata = metadata.set;
+} });
 
-metadata.exp({metadata: function metadata(metadataKey, metadataValue){
-  return function decorator(target, targetKey){
+},{"./_an-object":15,"./_metadata":53}],93:[function(require,module,exports){
+var $metadata = require('./_metadata');
+var anObject = require('./_an-object');
+var aFunction = require('./_a-function');
+var toMetaKey = $metadata.key;
+var ordinaryDefineOwnMetadata = $metadata.set;
+
+$metadata.exp({ metadata: function metadata(metadataKey, metadataValue) {
+  return function decorator(target, targetKey) {
     ordinaryDefineOwnMetadata(
       metadataKey, metadataValue,
       (targetKey !== undefined ? anObject : aFunction)(target),
       toMetaKey(targetKey)
     );
   };
-}});
-},{"./_a-function":13,"./_an-object":15,"./_metadata":53}],93:[function(require,module,exports){
-// shim for using process in browser
-var process = module.exports = {};
+} });
 
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
+},{"./_a-function":13,"./_an-object":15,"./_metadata":53}],94:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var Subject_1 = require('./Subject');
+var ObjectUnsubscribedError_1 = require('./util/ObjectUnsubscribedError');
+/**
+ * @class BehaviorSubject<T>
+ */
+var BehaviorSubject = (function (_super) {
+    __extends(BehaviorSubject, _super);
+    function BehaviorSubject(_value) {
+        _super.call(this);
+        this._value = _value;
+    }
+    Object.defineProperty(BehaviorSubject.prototype, "value", {
+        get: function () {
+            return this.getValue();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BehaviorSubject.prototype._subscribe = function (subscriber) {
+        var subscription = _super.prototype._subscribe.call(this, subscriber);
+        if (subscription && !subscription.closed) {
+            subscriber.next(this._value);
+        }
+        return subscription;
+    };
+    BehaviorSubject.prototype.getValue = function () {
+        if (this.hasError) {
+            throw this.thrownError;
+        }
+        else if (this.closed) {
+            throw new ObjectUnsubscribedError_1.ObjectUnsubscribedError();
+        }
+        else {
+            return this._value;
+        }
+    };
+    BehaviorSubject.prototype.next = function (value) {
+        _super.prototype.next.call(this, this._value = value);
+    };
+    return BehaviorSubject;
+}(Subject_1.Subject));
+exports.BehaviorSubject = BehaviorSubject;
 
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-},{}],94:[function(require,module,exports){
+},{"./Subject":99,"./util/ObjectUnsubscribedError":126}],95:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -65641,13 +66370,13 @@ var InnerSubscriber = (function (_super) {
 }(Subscriber_1.Subscriber));
 exports.InnerSubscriber = InnerSubscriber;
 
-},{"./Subscriber":100}],95:[function(require,module,exports){
+},{"./Subscriber":101}],96:[function(require,module,exports){
 "use strict";
 var root_1 = require('./util/root');
 var toSubscriber_1 = require('./util/toSubscriber');
 var observable_1 = require('./symbol/observable');
 /**
- * A representation of any set of values over any amount of time. This the most basic building block
+ * A representation of any set of values over any amount of time. This is the most basic building block
  * of RxJS.
  *
  * @class Observable<T>
@@ -65655,7 +66384,7 @@ var observable_1 = require('./symbol/observable');
 var Observable = (function () {
     /**
      * @constructor
-     * @param {Function} subscribe the function that is  called when the Observable is
+     * @param {Function} subscribe the function that is called when the Observable is
      * initially subscribed to. This function is given a Subscriber, to which new values
      * can be `next`ed, or an `error` method can be called to raise an error, or
      * `complete` can be called to notify of a successful completion.
@@ -65679,6 +66408,120 @@ var Observable = (function () {
         observable.operator = operator;
         return observable;
     };
+    /**
+     * Invokes an execution of an Observable and registers Observer handlers for notifications it will emit.
+     *
+     * <span class="informal">Use it when you have all these Observables, but still nothing is happening.</span>
+     *
+     * `subscribe` is not a regular operator, but a method that calls Observable's internal `subscribe` function. It
+     * might be for example a function that you passed to a {@link create} static factory, but most of the time it is
+     * a library implementation, which defines what and when will be emitted by an Observable. This means that calling
+     * `subscribe` is actually the moment when Observable starts its work, not when it is created, as it is often
+     * thought.
+     *
+     * Apart from starting the execution of an Observable, this method allows you to listen for values
+     * that an Observable emits, as well as for when it completes or errors. You can achieve this in two
+     * following ways.
+     *
+     * The first way is creating an object that implements {@link Observer} interface. It should have methods
+     * defined by that interface, but note that it should be just a regular JavaScript object, which you can create
+     * yourself in any way you want (ES6 class, classic function constructor, object literal etc.). In particular do
+     * not attempt to use any RxJS implementation details to create Observers - you don't need them. Remember also
+     * that your object does not have to implement all methods. If you find yourself creating a method that doesn't
+     * do anything, you can simply omit it. Note however, that if `error` method is not provided, all errors will
+     * be left uncaught.
+     *
+     * The second way is to give up on Observer object altogether and simply provide callback functions in place of its methods.
+     * This means you can provide three functions as arguments to `subscribe`, where first function is equivalent
+     * of a `next` method, second of an `error` method and third of a `complete` method. Just as in case of Observer,
+     * if you do not need to listen for something, you can omit a function, preferably by passing `undefined` or `null`,
+     * since `subscribe` recognizes these functions by where they were placed in function call. When it comes
+     * to `error` function, just as before, if not provided, errors emitted by an Observable will be thrown.
+     *
+     * Whatever style of calling `subscribe` you use, in both cases it returns a Subscription object.
+     * This object allows you to call `unsubscribe` on it, which in turn will stop work that an Observable does and will clean
+     * up all resources that an Observable used. Note that cancelling a subscription will not call `complete` callback
+     * provided to `subscribe` function, which is reserved for a regular completion signal that comes from an Observable.
+     *
+     * Remember that callbacks provided to `subscribe` are not guaranteed to be called asynchronously.
+     * It is an Observable itself that decides when these functions will be called. For example {@link of}
+     * by default emits all its values synchronously. Always check documentation for how given Observable
+     * will behave when subscribed and if its default behavior can be modified with a {@link Scheduler}.
+     *
+     * @example <caption>Subscribe with an Observer</caption>
+     * const sumObserver = {
+     *   sum: 0,
+     *   next(value) {
+     *     console.log('Adding: ' + value);
+     *     this.sum = this.sum + value;
+     *   },
+     *   error() { // We actually could just remove this method,
+     *   },        // since we do not really care about errors right now.
+     *   complete() {
+     *     console.log('Sum equals: ' + this.sum);
+     *   }
+     * };
+     *
+     * Rx.Observable.of(1, 2, 3) // Synchronously emits 1, 2, 3 and then completes.
+     * .subscribe(sumObserver);
+     *
+     * // Logs:
+     * // "Adding: 1"
+     * // "Adding: 2"
+     * // "Adding: 3"
+     * // "Sum equals: 6"
+     *
+     *
+     * @example <caption>Subscribe with functions</caption>
+     * let sum = 0;
+     *
+     * Rx.Observable.of(1, 2, 3)
+     * .subscribe(
+     *   function(value) {
+     *     console.log('Adding: ' + value);
+     *     sum = sum + value;
+     *   },
+     *   undefined,
+     *   function() {
+     *     console.log('Sum equals: ' + sum);
+     *   }
+     * );
+     *
+     * // Logs:
+     * // "Adding: 1"
+     * // "Adding: 2"
+     * // "Adding: 3"
+     * // "Sum equals: 6"
+     *
+     *
+     * @example <caption>Cancel a subscription</caption>
+     * const subscription = Rx.Observable.interval(1000).subscribe(
+     *   num => console.log(num),
+     *   undefined,
+     *   () => console.log('completed!') // Will not be called, even
+     * );                                // when cancelling subscription
+     *
+     *
+     * setTimeout(() => {
+     *   subscription.unsubscribe();
+     *   console.log('unsubscribed!');
+     * }, 2500);
+     *
+     * // Logs:
+     * // 0 after 1s
+     * // 1 after 2s
+     * // "unsubscribed!" after 2.5s
+     *
+     *
+     * @param {Observer|Function} observerOrNext (optional) Either an observer with methods to be called,
+     *  or the first of three possible handlers, which is the handler for each value emitted from the subscribed
+     *  Observable.
+     * @param {Function} error (optional) A handler for a terminal event resulting from an error. If no error handler is provided,
+     *  the error will be thrown as unhandled.
+     * @param {Function} complete (optional) A handler for a terminal event resulting from successful completion.
+     * @return {ISubscription} a subscription reference to the registered handlers
+     * @method subscribe
+     */
     Observable.prototype.subscribe = function (observerOrNext, error, complete) {
         var operator = this.operator;
         var sink = toSubscriber_1.toSubscriber(observerOrNext, error, complete);
@@ -65686,7 +66529,7 @@ var Observable = (function () {
             operator.call(sink, this.source);
         }
         else {
-            sink.add(this._trySubscribe(sink));
+            sink.add(this.source ? this._subscribe(sink) : this._trySubscribe(sink));
         }
         if (sink.syncErrorThrowable) {
             sink.syncErrorThrowable = false;
@@ -65784,7 +66627,7 @@ var Observable = (function () {
 }());
 exports.Observable = Observable;
 
-},{"./symbol/observable":121,"./util/root":132,"./util/toSubscriber":134}],96:[function(require,module,exports){
+},{"./symbol/observable":124,"./util/root":135,"./util/toSubscriber":137}],97:[function(require,module,exports){
 "use strict";
 exports.empty = {
     closed: true,
@@ -65793,7 +66636,7 @@ exports.empty = {
     complete: function () { }
 };
 
-},{}],97:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -65824,7 +66667,7 @@ var OuterSubscriber = (function (_super) {
 }(Subscriber_1.Subscriber));
 exports.OuterSubscriber = OuterSubscriber;
 
-},{"./Subscriber":100}],98:[function(require,module,exports){
+},{"./Subscriber":101}],99:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -65993,7 +66836,7 @@ var AnonymousSubject = (function (_super) {
 }(Subject));
 exports.AnonymousSubject = AnonymousSubject;
 
-},{"./Observable":95,"./SubjectSubscription":99,"./Subscriber":100,"./Subscription":101,"./symbol/rxSubscriber":122,"./util/ObjectUnsubscribedError":123}],99:[function(require,module,exports){
+},{"./Observable":96,"./SubjectSubscription":100,"./Subscriber":101,"./Subscription":102,"./symbol/rxSubscriber":125,"./util/ObjectUnsubscribedError":126}],100:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -66034,7 +66877,7 @@ var SubjectSubscription = (function (_super) {
 }(Subscription_1.Subscription));
 exports.SubjectSubscription = SubjectSubscription;
 
-},{"./Subscription":101}],100:[function(require,module,exports){
+},{"./Subscription":102}],101:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -66299,7 +67142,7 @@ var SafeSubscriber = (function (_super) {
     return SafeSubscriber;
 }(Subscriber));
 
-},{"./Observer":96,"./Subscription":101,"./symbol/rxSubscriber":122,"./util/isFunction":128}],101:[function(require,module,exports){
+},{"./Observer":97,"./Subscription":102,"./symbol/rxSubscriber":125,"./util/isFunction":131}],102:[function(require,module,exports){
 "use strict";
 var isArray_1 = require('./util/isArray');
 var isObject_1 = require('./util/isObject');
@@ -66493,7 +67336,7 @@ function flattenUnsubscriptionErrors(errors) {
     return errors.reduce(function (errs, err) { return errs.concat((err instanceof UnsubscriptionError_1.UnsubscriptionError) ? err.errors : err); }, []);
 }
 
-},{"./util/UnsubscriptionError":124,"./util/errorObject":125,"./util/isArray":126,"./util/isFunction":128,"./util/isObject":129,"./util/tryCatch":135}],102:[function(require,module,exports){
+},{"./util/UnsubscriptionError":127,"./util/errorObject":128,"./util/isArray":129,"./util/isFunction":131,"./util/isObject":132,"./util/tryCatch":138}],103:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -66616,7 +67459,7 @@ var ArrayObservable = (function (_super) {
 }(Observable_1.Observable));
 exports.ArrayObservable = ArrayObservable;
 
-},{"../Observable":95,"../util/isScheduler":131,"./EmptyObservable":104,"./ScalarObservable":108}],103:[function(require,module,exports){
+},{"../Observable":96,"../util/isScheduler":134,"./EmptyObservable":105,"./ScalarObservable":109}],104:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -66786,7 +67629,7 @@ var RefCountSubscriber = (function (_super) {
     return RefCountSubscriber;
 }(Subscriber_1.Subscriber));
 
-},{"../Observable":95,"../Subject":98,"../Subscriber":100,"../Subscription":101}],104:[function(require,module,exports){
+},{"../Observable":96,"../Subject":99,"../Subscriber":101,"../Subscription":102}],105:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -66868,7 +67711,7 @@ var EmptyObservable = (function (_super) {
 }(Observable_1.Observable));
 exports.EmptyObservable = EmptyObservable;
 
-},{"../Observable":95}],105:[function(require,module,exports){
+},{"../Observable":96}],106:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -66981,7 +67824,7 @@ var ForkJoinSubscriber = (function (_super) {
     return ForkJoinSubscriber;
 }(OuterSubscriber_1.OuterSubscriber));
 
-},{"../Observable":95,"../OuterSubscriber":97,"../util/isArray":126,"../util/subscribeToResult":133,"./EmptyObservable":104}],106:[function(require,module,exports){
+},{"../Observable":96,"../OuterSubscriber":98,"../util/isArray":129,"../util/subscribeToResult":136,"./EmptyObservable":105}],107:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -67122,7 +67965,7 @@ var FromEventObservable = (function (_super) {
 }(Observable_1.Observable));
 exports.FromEventObservable = FromEventObservable;
 
-},{"../Observable":95,"../Subscription":101,"../util/errorObject":125,"../util/isFunction":128,"../util/tryCatch":135}],107:[function(require,module,exports){
+},{"../Observable":96,"../Subscription":102,"../util/errorObject":128,"../util/isFunction":131,"../util/tryCatch":138}],108:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -67244,7 +68087,7 @@ function dispatchError(arg) {
     }
 }
 
-},{"../Observable":95,"../util/root":132}],108:[function(require,module,exports){
+},{"../Observable":96,"../util/root":135}],109:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -67303,27 +68146,27 @@ var ScalarObservable = (function (_super) {
 }(Observable_1.Observable));
 exports.ScalarObservable = ScalarObservable;
 
-},{"../Observable":95}],109:[function(require,module,exports){
+},{"../Observable":96}],110:[function(require,module,exports){
 "use strict";
 var ForkJoinObservable_1 = require('./ForkJoinObservable');
 exports.forkJoin = ForkJoinObservable_1.ForkJoinObservable.create;
 
-},{"./ForkJoinObservable":105}],110:[function(require,module,exports){
+},{"./ForkJoinObservable":106}],111:[function(require,module,exports){
 "use strict";
 var FromEventObservable_1 = require('./FromEventObservable');
 exports.fromEvent = FromEventObservable_1.FromEventObservable.create;
 
-},{"./FromEventObservable":106}],111:[function(require,module,exports){
+},{"./FromEventObservable":107}],112:[function(require,module,exports){
 "use strict";
 var PromiseObservable_1 = require('./PromiseObservable');
 exports.fromPromise = PromiseObservable_1.PromiseObservable.create;
 
-},{"./PromiseObservable":107}],112:[function(require,module,exports){
+},{"./PromiseObservable":108}],113:[function(require,module,exports){
 "use strict";
 var merge_1 = require('../operator/merge');
 exports.merge = merge_1.mergeStatic;
 
-},{"../operator/merge":116}],113:[function(require,module,exports){
+},{"../operator/merge":118}],114:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -67355,7 +68198,7 @@ var Subscriber_1 = require('../Subscriber');
  * Observer will never happen. `do` therefore simply spies on existing
  * execution, it does not trigger an execution to happen like `subscribe` does.
  *
- * @example <caption>Map every every click to the clientX position of that click, while also logging the click event</caption>
+ * @example <caption>Map every click to the clientX position of that click, while also logging the click event</caption>
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var positions = clicks
  *   .do(ev => console.log(ev))
@@ -67437,7 +68280,100 @@ var DoSubscriber = (function (_super) {
     return DoSubscriber;
 }(Subscriber_1.Subscriber));
 
-},{"../Subscriber":100}],114:[function(require,module,exports){
+},{"../Subscriber":101}],115:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Subscriber_1 = require('../Subscriber');
+/* tslint:enable:max-line-length */
+/**
+ * Filter items emitted by the source Observable by only emitting those that
+ * satisfy a specified predicate.
+ *
+ * <span class="informal">Like
+ * [Array.prototype.filter()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter),
+ * it only emits a value from the source if it passes a criterion function.</span>
+ *
+ * <img src="./img/filter.png" width="100%">
+ *
+ * Similar to the well-known `Array.prototype.filter` method, this operator
+ * takes values from the source Observable, passes them through a `predicate`
+ * function and only emits those values that yielded `true`.
+ *
+ * @example <caption>Emit only click events whose target was a DIV element</caption>
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var clicksOnDivs = clicks.filter(ev => ev.target.tagName === 'DIV');
+ * clicksOnDivs.subscribe(x => console.log(x));
+ *
+ * @see {@link distinct}
+ * @see {@link distinctUntilChanged}
+ * @see {@link distinctUntilKeyChanged}
+ * @see {@link ignoreElements}
+ * @see {@link partition}
+ * @see {@link skip}
+ *
+ * @param {function(value: T, index: number): boolean} predicate A function that
+ * evaluates each value emitted by the source Observable. If it returns `true`,
+ * the value is emitted, if `false` the value is not passed to the output
+ * Observable. The `index` parameter is the number `i` for the i-th source
+ * emission that has happened since the subscription, starting from the number
+ * `0`.
+ * @param {any} [thisArg] An optional argument to determine the value of `this`
+ * in the `predicate` function.
+ * @return {Observable} An Observable of values from the source that were
+ * allowed by the `predicate` function.
+ * @method filter
+ * @owner Observable
+ */
+function filter(predicate, thisArg) {
+    return this.lift(new FilterOperator(predicate, thisArg));
+}
+exports.filter = filter;
+var FilterOperator = (function () {
+    function FilterOperator(predicate, thisArg) {
+        this.predicate = predicate;
+        this.thisArg = thisArg;
+    }
+    FilterOperator.prototype.call = function (subscriber, source) {
+        return source.subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
+    };
+    return FilterOperator;
+}());
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var FilterSubscriber = (function (_super) {
+    __extends(FilterSubscriber, _super);
+    function FilterSubscriber(destination, predicate, thisArg) {
+        _super.call(this, destination);
+        this.predicate = predicate;
+        this.thisArg = thisArg;
+        this.count = 0;
+    }
+    // the try catch block below is left specifically for
+    // optimization and perf reasons. a tryCatcher is not necessary here.
+    FilterSubscriber.prototype._next = function (value) {
+        var result;
+        try {
+            result = this.predicate.call(this.thisArg, value, this.count++);
+        }
+        catch (err) {
+            this.destination.error(err);
+            return;
+        }
+        if (result) {
+            this.destination.next(value);
+        }
+    };
+    return FilterSubscriber;
+}(Subscriber_1.Subscriber));
+
+},{"../Subscriber":101}],116:[function(require,module,exports){
 "use strict";
 /**
  * @param func
@@ -67450,7 +68386,7 @@ function letProto(func) {
 }
 exports.letProto = letProto;
 
-},{}],115:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -67538,7 +68474,7 @@ var MapSubscriber = (function (_super) {
     return MapSubscriber;
 }(Subscriber_1.Subscriber));
 
-},{"../Subscriber":100}],116:[function(require,module,exports){
+},{"../Subscriber":101}],118:[function(require,module,exports){
 "use strict";
 var Observable_1 = require('../Observable');
 var ArrayObservable_1 = require('../observable/ArrayObservable');
@@ -67684,7 +68620,7 @@ function mergeStatic() {
 }
 exports.mergeStatic = mergeStatic;
 
-},{"../Observable":95,"../observable/ArrayObservable":102,"../util/isScheduler":131,"./mergeAll":117}],117:[function(require,module,exports){
+},{"../Observable":96,"../observable/ArrayObservable":103,"../util/isScheduler":134,"./mergeAll":119}],119:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -67796,7 +68732,7 @@ var MergeAllSubscriber = (function (_super) {
 }(OuterSubscriber_1.OuterSubscriber));
 exports.MergeAllSubscriber = MergeAllSubscriber;
 
-},{"../OuterSubscriber":97,"../util/subscribeToResult":133}],118:[function(require,module,exports){
+},{"../OuterSubscriber":98,"../util/subscribeToResult":136}],120:[function(require,module,exports){
 "use strict";
 var ConnectableObservable_1 = require('../observable/ConnectableObservable');
 /* tslint:enable:max-line-length */
@@ -67854,7 +68790,7 @@ var MulticastOperator = (function () {
 }());
 exports.MulticastOperator = MulticastOperator;
 
-},{"../observable/ConnectableObservable":103}],119:[function(require,module,exports){
+},{"../observable/ConnectableObservable":104}],121:[function(require,module,exports){
 "use strict";
 var multicast_1 = require('./multicast');
 var Subject_1 = require('../Subject');
@@ -67879,7 +68815,148 @@ function share() {
 exports.share = share;
 ;
 
-},{"../Subject":98,"./multicast":118}],120:[function(require,module,exports){
+},{"../Subject":99,"./multicast":120}],122:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var OuterSubscriber_1 = require('../OuterSubscriber');
+var subscribeToResult_1 = require('../util/subscribeToResult');
+/* tslint:enable:max-line-length */
+/**
+ * Projects each source value to an Observable which is merged in the output
+ * Observable, emitting values only from the most recently projected Observable.
+ *
+ * <span class="informal">Maps each value to an Observable, then flattens all of
+ * these inner Observables using {@link switch}.</span>
+ *
+ * <img src="./img/switchMap.png" width="100%">
+ *
+ * Returns an Observable that emits items based on applying a function that you
+ * supply to each item emitted by the source Observable, where that function
+ * returns an (so-called "inner") Observable. Each time it observes one of these
+ * inner Observables, the output Observable begins emitting the items emitted by
+ * that inner Observable. When a new inner Observable is emitted, `switchMap`
+ * stops emitting items from the earlier-emitted inner Observable and begins
+ * emitting items from the new one. It continues to behave like this for
+ * subsequent inner Observables.
+ *
+ * @example <caption>Rerun an interval Observable on every click event</caption>
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var result = clicks.switchMap((ev) => Rx.Observable.interval(1000));
+ * result.subscribe(x => console.log(x));
+ *
+ * @see {@link concatMap}
+ * @see {@link exhaustMap}
+ * @see {@link mergeMap}
+ * @see {@link switch}
+ * @see {@link switchMapTo}
+ *
+ * @param {function(value: T, ?index: number): ObservableInput} project A function
+ * that, when applied to an item emitted by the source Observable, returns an
+ * Observable.
+ * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
+ * A function to produce the value on the output Observable based on the values
+ * and the indices of the source (outer) emission and the inner Observable
+ * emission. The arguments passed to this function are:
+ * - `outerValue`: the value that came from the source
+ * - `innerValue`: the value that came from the projected Observable
+ * - `outerIndex`: the "index" of the value that came from the source
+ * - `innerIndex`: the "index" of the value from the projected Observable
+ * @return {Observable} An Observable that emits the result of applying the
+ * projection function (and the optional `resultSelector`) to each item emitted
+ * by the source Observable and taking only the values from the most recently
+ * projected inner Observable.
+ * @method switchMap
+ * @owner Observable
+ */
+function switchMap(project, resultSelector) {
+    return this.lift(new SwitchMapOperator(project, resultSelector));
+}
+exports.switchMap = switchMap;
+var SwitchMapOperator = (function () {
+    function SwitchMapOperator(project, resultSelector) {
+        this.project = project;
+        this.resultSelector = resultSelector;
+    }
+    SwitchMapOperator.prototype.call = function (subscriber, source) {
+        return source.subscribe(new SwitchMapSubscriber(subscriber, this.project, this.resultSelector));
+    };
+    return SwitchMapOperator;
+}());
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var SwitchMapSubscriber = (function (_super) {
+    __extends(SwitchMapSubscriber, _super);
+    function SwitchMapSubscriber(destination, project, resultSelector) {
+        _super.call(this, destination);
+        this.project = project;
+        this.resultSelector = resultSelector;
+        this.index = 0;
+    }
+    SwitchMapSubscriber.prototype._next = function (value) {
+        var result;
+        var index = this.index++;
+        try {
+            result = this.project(value, index);
+        }
+        catch (error) {
+            this.destination.error(error);
+            return;
+        }
+        this._innerSub(result, value, index);
+    };
+    SwitchMapSubscriber.prototype._innerSub = function (result, value, index) {
+        var innerSubscription = this.innerSubscription;
+        if (innerSubscription) {
+            innerSubscription.unsubscribe();
+        }
+        this.add(this.innerSubscription = subscribeToResult_1.subscribeToResult(this, result, value, index));
+    };
+    SwitchMapSubscriber.prototype._complete = function () {
+        var innerSubscription = this.innerSubscription;
+        if (!innerSubscription || innerSubscription.closed) {
+            _super.prototype._complete.call(this);
+        }
+    };
+    SwitchMapSubscriber.prototype._unsubscribe = function () {
+        this.innerSubscription = null;
+    };
+    SwitchMapSubscriber.prototype.notifyComplete = function (innerSub) {
+        this.remove(innerSub);
+        this.innerSubscription = null;
+        if (this.isStopped) {
+            _super.prototype._complete.call(this);
+        }
+    };
+    SwitchMapSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        if (this.resultSelector) {
+            this._tryNotifyNext(outerValue, innerValue, outerIndex, innerIndex);
+        }
+        else {
+            this.destination.next(innerValue);
+        }
+    };
+    SwitchMapSubscriber.prototype._tryNotifyNext = function (outerValue, innerValue, outerIndex, innerIndex) {
+        var result;
+        try {
+            result = this.resultSelector(outerValue, innerValue, outerIndex, innerIndex);
+        }
+        catch (err) {
+            this.destination.error(err);
+            return;
+        }
+        this.destination.next(result);
+    };
+    return SwitchMapSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
+
+},{"../OuterSubscriber":98,"../util/subscribeToResult":136}],123:[function(require,module,exports){
 "use strict";
 var root_1 = require('../util/root');
 function symbolIteratorPonyfill(root) {
@@ -67918,7 +68995,7 @@ exports.iterator = symbolIteratorPonyfill(root_1.root);
  */
 exports.$$iterator = exports.iterator;
 
-},{"../util/root":132}],121:[function(require,module,exports){
+},{"../util/root":135}],124:[function(require,module,exports){
 "use strict";
 var root_1 = require('../util/root');
 function getSymbolObservable(context) {
@@ -67945,7 +69022,7 @@ exports.observable = getSymbolObservable(root_1.root);
  */
 exports.$$observable = exports.observable;
 
-},{"../util/root":132}],122:[function(require,module,exports){
+},{"../util/root":135}],125:[function(require,module,exports){
 "use strict";
 var root_1 = require('../util/root');
 var Symbol = root_1.root.Symbol;
@@ -67956,7 +69033,7 @@ exports.rxSubscriber = (typeof Symbol === 'function' && typeof Symbol.for === 'f
  */
 exports.$$rxSubscriber = exports.rxSubscriber;
 
-},{"../util/root":132}],123:[function(require,module,exports){
+},{"../util/root":135}],126:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -67984,7 +69061,7 @@ var ObjectUnsubscribedError = (function (_super) {
 }(Error));
 exports.ObjectUnsubscribedError = ObjectUnsubscribedError;
 
-},{}],124:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -68010,48 +69087,48 @@ var UnsubscriptionError = (function (_super) {
 }(Error));
 exports.UnsubscriptionError = UnsubscriptionError;
 
-},{}],125:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 "use strict";
 // typeof any so that it we don't have to cast when comparing a result to the error object
 exports.errorObject = { e: {} };
 
-},{}],126:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 "use strict";
 exports.isArray = Array.isArray || (function (x) { return x && typeof x.length === 'number'; });
 
-},{}],127:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 "use strict";
 exports.isArrayLike = (function (x) { return x && typeof x.length === 'number'; });
 
-},{}],128:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 "use strict";
 function isFunction(x) {
     return typeof x === 'function';
 }
 exports.isFunction = isFunction;
 
-},{}],129:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 "use strict";
 function isObject(x) {
     return x != null && typeof x === 'object';
 }
 exports.isObject = isObject;
 
-},{}],130:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 "use strict";
 function isPromise(value) {
     return value && typeof value.subscribe !== 'function' && typeof value.then === 'function';
 }
 exports.isPromise = isPromise;
 
-},{}],131:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 "use strict";
 function isScheduler(value) {
     return value && typeof value.schedule === 'function';
 }
 exports.isScheduler = isScheduler;
 
-},{}],132:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 (function (global){
 "use strict";
 // CommonJS / Node have global context exposed as "global" variable.
@@ -68073,7 +69150,7 @@ exports.root = _root;
 })();
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],133:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 "use strict";
 var root_1 = require('./root');
 var isArrayLike_1 = require('./isArrayLike');
@@ -68152,7 +69229,7 @@ function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
 }
 exports.subscribeToResult = subscribeToResult;
 
-},{"../InnerSubscriber":94,"../Observable":95,"../symbol/iterator":120,"../symbol/observable":121,"./isArrayLike":127,"./isObject":129,"./isPromise":130,"./root":132}],134:[function(require,module,exports){
+},{"../InnerSubscriber":95,"../Observable":96,"../symbol/iterator":123,"../symbol/observable":124,"./isArrayLike":130,"./isObject":132,"./isPromise":133,"./root":135}],137:[function(require,module,exports){
 "use strict";
 var Subscriber_1 = require('../Subscriber');
 var rxSubscriber_1 = require('../symbol/rxSubscriber');
@@ -68173,7 +69250,7 @@ function toSubscriber(nextOrObserver, error, complete) {
 }
 exports.toSubscriber = toSubscriber;
 
-},{"../Observer":96,"../Subscriber":100,"../symbol/rxSubscriber":122}],135:[function(require,module,exports){
+},{"../Observer":97,"../Subscriber":101,"../symbol/rxSubscriber":125}],138:[function(require,module,exports){
 "use strict";
 var errorObject_1 = require('./errorObject');
 var tryCatchTarget;
@@ -68193,8 +69270,8 @@ function tryCatch(fn) {
 exports.tryCatch = tryCatch;
 ;
 
-},{"./errorObject":125}],136:[function(require,module,exports){
-(function (process,global){
+},{"./errorObject":128}],139:[function(require,module,exports){
+(function (global){
 /**
 * @license
 * Copyright Google Inc. All Rights Reserved.
@@ -68216,6 +69293,7 @@ exports.tryCatch = tryCatch;
  * found in the LICENSE file at https://angular.io/license
  */
 var Zone$1 = (function (global) {
+    var FUNCTION = 'function';
     var performance = global['performance'];
     function mark(name) {
         performance && performance['mark'] && performance['mark'](name);
@@ -68320,7 +69398,7 @@ var Zone$1 = (function (global) {
             return this._zoneDelegate.fork(this, zoneSpec);
         };
         Zone.prototype.wrap = function (callback, source) {
-            if (typeof callback !== 'function') {
+            if (typeof callback !== FUNCTION) {
                 throw new Error('Expecting function got: ' + callback);
             }
             var _callback = this._zoneDelegate.intercept(this, callback, source);
@@ -68361,9 +69439,19 @@ var Zone$1 = (function (global) {
             }
         };
         Zone.prototype.runTask = function (task, applyThis, applyArgs) {
-            if (task.zone != this)
+            if (task.zone != this) {
                 throw new Error('A task can only be run in the zone of creation! (Creation: ' +
                     (task.zone || NO_ZONE).name + '; Execution: ' + this.name + ')');
+            }
+            // https://github.com/angular/zone.js/issues/778, sometimes eventTask
+            // will run in notScheduled(canceled) state, we should not try to
+            // run such kind of task but just return
+            // we have to define an variable here, if not
+            // typescript compiler will complain below
+            var isNotScheduled = task.state === notScheduled;
+            if (isNotScheduled && task.type === eventTask) {
+                return;
+            }
             var reEntryGuard = task.state != running;
             reEntryGuard && task._transitionTo(running, scheduled);
             task.runCount++;
@@ -68643,9 +69731,9 @@ var Zone$1 = (function (global) {
             }
             if (prev == 0 || next == 0) {
                 var isEmpty = {
-                    microTask: counts.microTask > 0,
-                    macroTask: counts.macroTask > 0,
-                    eventTask: counts.eventTask > 0,
+                    microTask: counts['microTask'] > 0,
+                    macroTask: counts['macroTask'] > 0,
+                    eventTask: counts['eventTask'] > 0,
                     change: type
                 };
                 this.hasTask(this.zone, isEmpty);
@@ -68666,20 +69754,31 @@ var Zone$1 = (function (global) {
             this.cancelFn = cancelFn;
             this.callback = callback;
             var self = this;
-            this.invoke = function () {
-                _numberOfNestedTaskFrames++;
-                try {
-                    self.runCount++;
-                    return self.zone.runTask(self, this, arguments);
-                }
-                finally {
-                    if (_numberOfNestedTaskFrames == 1) {
-                        drainMicroTaskQueue();
-                    }
-                    _numberOfNestedTaskFrames--;
-                }
-            };
+            if (type === eventTask && options && options.isUsingGlobalCallback) {
+                this.invoke = ZoneTask.invokeTask;
+            }
+            else {
+                this.invoke = function () {
+                    return ZoneTask.invokeTask.apply(global, [self, this, arguments]);
+                };
+            }
         }
+        ZoneTask.invokeTask = function (task, target, args) {
+            if (!task) {
+                task = this;
+            }
+            _numberOfNestedTaskFrames++;
+            try {
+                task.runCount++;
+                return task.zone.runTask(task, target, args);
+            }
+            finally {
+                if (_numberOfNestedTaskFrames == 1) {
+                    drainMicroTaskQueue();
+                }
+                _numberOfNestedTaskFrames--;
+            }
+        };
         Object.defineProperty(ZoneTask.prototype, "zone", {
             get: function () {
                 return this._zone;
@@ -68745,13 +69844,19 @@ var Zone$1 = (function (global) {
     var symbolThen = __symbol__('then');
     var _microTaskQueue = [];
     var _isDrainingMicrotaskQueue = false;
+    var nativeMicroTaskQueuePromise;
     function scheduleMicroTask(task) {
         // if we are not running in any task, and there has not been anything scheduled
         // we must bootstrap the initial task creation by manually scheduling the drain
         if (_numberOfNestedTaskFrames === 0 && _microTaskQueue.length === 0) {
             // We are not running in Task, so we need to kickstart the microtask queue.
-            if (global[symbolPromise]) {
-                global[symbolPromise].resolve(0)[symbolThen](drainMicroTaskQueue);
+            if (!nativeMicroTaskQueuePromise) {
+                if (global[symbolPromise]) {
+                    nativeMicroTaskQueuePromise = global[symbolPromise].resolve(0);
+                }
+            }
+            if (nativeMicroTaskQueuePromise) {
+                nativeMicroTaskQueuePromise[symbolThen](drainMicroTaskQueue);
             }
             else {
                 global[symbolSetTimeout](drainMicroTaskQueue, 0);
@@ -68795,7 +69900,13 @@ var Zone$1 = (function (global) {
         onUnhandledError: noop,
         microtaskDrainDone: noop,
         scheduleMicroTask: scheduleMicroTask,
-        showUncaughtError: function () { return !Zone[__symbol__('ignoreConsoleErrorUncaughtError')]; }
+        showUncaughtError: function () { return !Zone[__symbol__('ignoreConsoleErrorUncaughtError')]; },
+        patchEventTarget: function () { return []; },
+        patchOnProperties: noop,
+        patchMethod: function () { return noop; },
+        setNativePromise: function (NativePromise) {
+            nativeMicroTaskQueuePromise = NativePromise.resolve(0);
+        },
     };
     var _currentZoneFrame = { parent: null, zone: new Zone(null, null) };
     var _currentTask = null;
@@ -68808,6 +69919,32 @@ var Zone$1 = (function (global) {
     return global['Zone'] = Zone;
 })(typeof window !== 'undefined' && window || typeof self !== 'undefined' && self || global);
 
+var __read = (undefined && undefined.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __values = (undefined && undefined.__values) || function (o) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    if (m) return m.call(o);
+    return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+};
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -68826,7 +69963,9 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
             if (rejection) {
                 console.error('Unhandled Promise rejection:', rejection instanceof Error ? rejection.message : rejection, '; Zone:', e.zone.name, '; Task:', e.task && e.task.source, '; Value:', rejection, rejection instanceof Error ? rejection.stack : undefined);
             }
-            console.error(e);
+            else {
+                console.error(e);
+            }
         }
     };
     api.microtaskDrainDone = function () {
@@ -68847,10 +69986,11 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
             }
         }
     };
+    var UNHANDLED_PROMISE_REJECTION_HANDLER_SYMBOL = __symbol__('unhandledPromiseRejectionHandler');
     function handleUnhandledRejection(e) {
         api.onUnhandledError(e);
         try {
-            var handler = Zone[__symbol__('unhandledPromiseRejectionHandler')];
+            var handler = Zone[UNHANDLED_PROMISE_REJECTION_HANDLER_SYMBOL];
             if (handler && typeof handler === 'function') {
                 handler.apply(this, [e]);
             }
@@ -68897,17 +70037,21 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
             };
         };
     };
+    var TYPE_ERROR = 'Promise resolved with itself';
+    var OBJECT = 'object';
+    var FUNCTION = 'function';
+    var CURRENT_TASK_SYMBOL = __symbol__('currentTask');
     // Promise Resolution
     function resolvePromise(promise, state, value) {
         var onceWrapper = once();
         if (promise === value) {
-            throw new TypeError('Promise resolved with itself');
+            throw new TypeError(TYPE_ERROR);
         }
         if (promise[symbolState] === UNRESOLVED) {
             // should only get value.then once based on promise spec.
             var then = null;
             try {
-                if (typeof value === 'object' || typeof value === 'function') {
+                if (typeof value === OBJECT || typeof value === FUNCTION) {
                     then = value && value.then;
                 }
             }
@@ -68924,7 +70068,7 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
                 clearRejectedNoCatch(value);
                 resolvePromise(promise, value[symbolState], value[symbolValue]);
             }
-            else if (state !== REJECTED && typeof then === 'function') {
+            else if (state !== REJECTED && typeof then === FUNCTION) {
                 try {
                     then.apply(value, [
                         onceWrapper(makeResolver(promise, state)), onceWrapper(makeResolver(promise, false))
@@ -68943,7 +70087,7 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
                 // record task information in value when error occurs, so we can
                 // do some additional work such as render longStackTrace
                 if (state === REJECTED && value instanceof Error) {
-                    value[__symbol__('currentTask')] = Zone.currentTask;
+                    value[CURRENT_TASK_SYMBOL] = Zone.currentTask;
                 }
                 for (var i = 0; i < queue.length;) {
                     scheduleResolveOrReject(promise, queue[i++], queue[i++], queue[i++], queue[i++]);
@@ -68969,6 +70113,7 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
         // Resolving an already resolved promise is a noop.
         return promise;
     }
+    var REJECTION_HANDLED_HANDLER = __symbol__('rejectionHandledHandler');
     function clearRejectedNoCatch(promise) {
         if (promise[symbolState] === REJECTED_NO_CATCH) {
             // if the promise is rejected no catch status
@@ -68977,8 +70122,8 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
             // windows.rejectionhandled eventHandler or nodejs rejectionHandled
             // eventHandler
             try {
-                var handler = Zone[__symbol__('rejectionHandledHandler')];
-                if (handler && typeof handler === 'function') {
+                var handler = Zone[REJECTION_HANDLED_HANDLER];
+                if (handler && typeof handler === FUNCTION) {
                     handler.apply(this, [{ rejection: promise[symbolValue], promise: promise }]);
                 }
             }
@@ -68995,8 +70140,8 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
     function scheduleResolveOrReject(promise, zone, chainPromise, onFulfilled, onRejected) {
         clearRejectedNoCatch(promise);
         var delegate = promise[symbolState] ?
-            (typeof onFulfilled === 'function') ? onFulfilled : forwardResolution :
-            (typeof onRejected === 'function') ? onRejected : forwardRejection;
+            (typeof onFulfilled === FUNCTION) ? onFulfilled : forwardResolution :
+            (typeof onRejected === FUNCTION) ? onRejected : forwardRejection;
         zone.scheduleMicroTask(source, function () {
             try {
                 resolvePromise(chainPromise, true, zone.run(delegate, undefined, [promise[symbolValue]]));
@@ -69006,6 +70151,7 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
             }
         });
     }
+    var ZONE_AWARE_PROMISE_TO_STRING = 'function ZoneAwarePromise() { [native code] }';
     var ZoneAwarePromise = (function () {
         function ZoneAwarePromise(executor) {
             var promise = this;
@@ -69022,7 +70168,7 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
             }
         }
         ZoneAwarePromise.toString = function () {
-            return 'function ZoneAwarePromise() { [native code] }';
+            return ZONE_AWARE_PROMISE_TO_STRING;
         };
         ZoneAwarePromise.resolve = function (value) {
             return resolvePromise(new this(null), RESOLVED, value);
@@ -69034,7 +70180,7 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
             var resolve;
             var reject;
             var promise = new this(function (res, rej) {
-                _a = [res, rej], resolve = _a[0], reject = _a[1];
+                _a = __read([res, rej], 2), resolve = _a[0], reject = _a[1];
                 var _a;
             });
             function onResolve(value) {
@@ -69043,14 +70189,24 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
             function onReject(error) {
                 promise && (promise = null || reject(error));
             }
-            for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
-                var value = values_1[_i];
-                if (!isThenable(value)) {
-                    value = this.resolve(value);
+            try {
+                for (var values_1 = __values(values), values_1_1 = values_1.next(); !values_1_1.done; values_1_1 = values_1.next()) {
+                    var value = values_1_1.value;
+                    if (!isThenable(value)) {
+                        value = this.resolve(value);
+                    }
+                    value.then(onResolve, onReject);
                 }
-                value.then(onResolve, onReject);
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (values_1_1 && !values_1_1.done && (_a = values_1.return)) _a.call(values_1);
+                }
+                finally { if (e_1) throw e_1.error; }
             }
             return promise;
+            var e_1, _a;
         };
         ZoneAwarePromise.all = function (values) {
             var resolve;
@@ -69061,23 +70217,33 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
             });
             var count = 0;
             var resolvedValues = [];
-            for (var _i = 0, values_2 = values; _i < values_2.length; _i++) {
-                var value = values_2[_i];
-                if (!isThenable(value)) {
-                    value = this.resolve(value);
-                }
-                value.then((function (index) { return function (value) {
-                    resolvedValues[index] = value;
-                    count--;
-                    if (!count) {
-                        resolve(resolvedValues);
+            try {
+                for (var values_2 = __values(values), values_2_1 = values_2.next(); !values_2_1.done; values_2_1 = values_2.next()) {
+                    var value = values_2_1.value;
+                    if (!isThenable(value)) {
+                        value = this.resolve(value);
                     }
-                }; })(count), reject);
-                count++;
+                    value.then((function (index) { return function (value) {
+                        resolvedValues[index] = value;
+                        count--;
+                        if (!count) {
+                            resolve(resolvedValues);
+                        }
+                    }; })(count), reject);
+                    count++;
+                }
+            }
+            catch (e_2_1) { e_2 = { error: e_2_1 }; }
+            finally {
+                try {
+                    if (values_2_1 && !values_2_1.done && (_a = values_2.return)) _a.call(values_2);
+                }
+                finally { if (e_2) throw e_2.error; }
             }
             if (!count)
                 resolve(resolvedValues);
             return promise;
+            var e_2, _a;
         };
         ZoneAwarePromise.prototype.then = function (onFulfilled, onRejected) {
             var chainPromise = new this.constructor(null);
@@ -69102,6 +70268,42 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
     ZoneAwarePromise['race'] = ZoneAwarePromise.race;
     ZoneAwarePromise['all'] = ZoneAwarePromise.all;
     var NativePromise = global[symbolPromise] = global['Promise'];
+    var ZONE_AWARE_PROMISE = Zone.__symbol__('ZoneAwarePromise');
+    var desc = Object.getOwnPropertyDescriptor(global, 'Promise');
+    if (!desc || desc.configurable) {
+        desc && delete desc.writable;
+        desc && delete desc.value;
+        if (!desc) {
+            desc = { configurable: true, enumerable: true };
+        }
+        desc.get = function () {
+            // if we already set ZoneAwarePromise, use patched one
+            // otherwise return native one.
+            return global[ZONE_AWARE_PROMISE] ? global[ZONE_AWARE_PROMISE] : global[symbolPromise];
+        };
+        desc.set = function (NewNativePromise) {
+            if (NewNativePromise === ZoneAwarePromise) {
+                // if the NewNativePromise is ZoneAwarePromise
+                // save to global
+                global[ZONE_AWARE_PROMISE] = NewNativePromise;
+            }
+            else {
+                // if the NewNativePromise is not ZoneAwarePromise
+                // for example: after load zone.js, some library just
+                // set es6-promise to global, if we set it to global
+                // directly, assertZonePatched will fail and angular
+                // will not loaded, so we just set the NewNativePromise
+                // to global[symbolPromise], so the result is just like
+                // we load ES6 Promise before zone.js
+                global[symbolPromise] = NewNativePromise;
+                if (!NewNativePromise.prototype[symbolThen]) {
+                    patchThen(NewNativePromise);
+                }
+                api.setNativePromise(NewNativePromise);
+            }
+        };
+        Object.defineProperty(global, 'Promise', desc);
+    }
     global['Promise'] = ZoneAwarePromise;
     var symbolThenPatched = __symbol__('thenPatched');
     function patchThen(Ctor) {
@@ -69109,6 +70311,12 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
         var originalThen = proto.then;
         // Keep a reference to the original method.
         proto[symbolThen] = originalThen;
+        // check Ctor.prototype.then propertyDescritor is writable or not
+        // in meteor env, writable is false, we have to make it to be true.
+        var prop = Object.getOwnPropertyDescriptor(Ctor.prototype, 'then');
+        if (prop && prop.writable === false && prop.configurable) {
+            Object.defineProperty(Ctor.prototype, 'then', { writable: true });
+        }
         Ctor.prototype.then = function (onResolve, onReject) {
             var _this = this;
             var wrapped = new ZoneAwarePromise(function (resolve, reject) {
@@ -69134,7 +70342,7 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
     if (NativePromise) {
         patchThen(NativePromise);
         var fetch_1 = global['fetch'];
-        if (typeof fetch_1 == 'function') {
+        if (typeof fetch_1 == FUNCTION) {
             global['fetch'] = zoneify(fetch_1);
         }
     }
@@ -69153,13 +70361,16 @@ Zone.__load_patch('ZoneAwarePromise', function (global, Zone, api) {
 /**
  * Suppress closure compiler errors about unknown 'Zone' variable
  * @fileoverview
- * @suppress {undefinedVars,globalThis}
+ * @suppress {undefinedVars,globalThis,missingRequire}
  */
-var zoneSymbol = function (n) { return "__zone_symbol__" + n; };
+var zoneSymbol = Zone.__symbol__;
 var _global = typeof window === 'object' && window || typeof self === 'object' && self || global;
+var FUNCTION = 'function';
+var UNDEFINED = 'undefined';
+var REMOVE_ATTRIBUTE = 'removeAttribute';
 function bindArguments(args, source) {
     for (var i = args.length - 1; i >= 0; i--) {
-        if (typeof args[i] === 'function') {
+        if (typeof args[i] === FUNCTION) {
             args[i] = Zone.current.wrap(args[i], source + '_' + i);
         }
     }
@@ -69171,6 +70382,10 @@ function patchPrototype(prototype, fnNames) {
         var name_1 = fnNames[i];
         var delegate = prototype[name_1];
         if (delegate) {
+            var prototypeDesc = Object.getOwnPropertyDescriptor(prototype, name_1);
+            if (!isPropertyWritable(prototypeDesc)) {
+                return "continue";
+            }
             prototype[name_1] = (function (delegate) {
                 var patched = function () {
                     return delegate.apply(this, bindArguments(arguments, source + '.' + name_1));
@@ -69184,19 +70399,62 @@ function patchPrototype(prototype, fnNames) {
         _loop_1(i);
     }
 }
+function isPropertyWritable(propertyDesc) {
+    if (!propertyDesc) {
+        return true;
+    }
+    if (propertyDesc.writable === false) {
+        return false;
+    }
+    if (typeof propertyDesc.get === FUNCTION && typeof propertyDesc.set === UNDEFINED) {
+        return false;
+    }
+    return true;
+}
 var isWebWorker = (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope);
-var isNode = (!('nw' in _global) && typeof process !== 'undefined' &&
-    {}.toString.call(process) === '[object process]');
+// Make sure to access `process` through `_global` so that WebPack does not accidently browserify
+// this code.
+var isNode = (!('nw' in _global) && typeof _global.process !== 'undefined' &&
+    {}.toString.call(_global.process) === '[object process]');
 var isBrowser = !isNode && !isWebWorker && !!(typeof window !== 'undefined' && window['HTMLElement']);
 // we are in electron of nw, so we are both browser and nodejs
-var isMix = typeof process !== 'undefined' &&
-    {}.toString.call(process) === '[object process]' && !isWebWorker &&
+// Make sure to access `process` through `_global` so that WebPack does not accidently browserify
+// this code.
+var isMix = typeof _global.process !== 'undefined' &&
+    {}.toString.call(_global.process) === '[object process]' && !isWebWorker &&
     !!(typeof window !== 'undefined' && window['HTMLElement']);
-function patchProperty(obj, prop) {
-    var desc = Object.getOwnPropertyDescriptor(obj, prop) || { enumerable: true, configurable: true };
-    // if the descriptor is not configurable
+var zoneSymbolEventNames = {};
+var wrapFn = function (event) {
+    // https://github.com/angular/zone.js/issues/911, in IE, sometimes
+    // event will be undefined, so we need to use window.event
+    event = event || _global.event;
+    if (!event) {
+        return;
+    }
+    var eventNameSymbol = zoneSymbolEventNames[event.type];
+    if (!eventNameSymbol) {
+        eventNameSymbol = zoneSymbolEventNames[event.type] = zoneSymbol('ON_PROPERTY' + event.type);
+    }
+    var target = this || event.target || _global;
+    var listener = target[eventNameSymbol];
+    var result = listener && listener.apply(this, arguments);
+    if (result != undefined && !result) {
+        event.preventDefault();
+    }
+    return result;
+};
+function patchProperty(obj, prop, prototype) {
+    var desc = Object.getOwnPropertyDescriptor(obj, prop);
+    if (!desc && prototype) {
+        // when patch window object, use prototype to check prop exist or not
+        var prototypeDesc = Object.getOwnPropertyDescriptor(prototype, prop);
+        if (prototypeDesc) {
+            desc = { enumerable: true, configurable: true };
+        }
+    }
+    // if the descriptor not exists or is not configurable
     // just return
-    if (!desc.configurable) {
+    if (!desc || !desc.configurable) {
         return;
     }
     // A property descriptor cannot have getter/setter and be writable
@@ -69209,7 +70467,10 @@ function patchProperty(obj, prop) {
     var originalDescGet = desc.get;
     // substr(2) cuz 'onclick' -> 'click', etc
     var eventName = prop.substr(2);
-    var _prop = zoneSymbol('_' + prop);
+    var eventNameSymbol = zoneSymbolEventNames[eventName];
+    if (!eventNameSymbol) {
+        eventNameSymbol = zoneSymbolEventNames[eventName] = zoneSymbol('ON_PROPERTY' + eventName);
+    }
     desc.set = function (newValue) {
         // in some of windows's onproperty callback, this is undefined
         // so we need to check it
@@ -69220,23 +70481,16 @@ function patchProperty(obj, prop) {
         if (!target) {
             return;
         }
-        var previousValue = target[_prop];
+        var previousValue = target[eventNameSymbol];
         if (previousValue) {
-            target.removeEventListener(eventName, previousValue);
+            target.removeEventListener(eventName, wrapFn);
         }
         if (typeof newValue === 'function') {
-            var wrapFn = function (event) {
-                var result = newValue.apply(this, arguments);
-                if (result != undefined && !result) {
-                    event.preventDefault();
-                }
-                return result;
-            };
-            target[_prop] = wrapFn;
+            target[eventNameSymbol] = newValue;
             target.addEventListener(eventName, wrapFn, false);
         }
         else {
-            target[_prop] = null;
+            target[eventNameSymbol] = null;
         }
     };
     // The getter would return undefined for unassigned properties but the default value of an
@@ -69251,8 +70505,9 @@ function patchProperty(obj, prop) {
         if (!target) {
             return null;
         }
-        if (target.hasOwnProperty(_prop)) {
-            return target[_prop];
+        var listener = target[eventNameSymbol];
+        if (listener) {
+            return listener;
         }
         else if (originalDescGet) {
             // result will be null when use inline event attribute,
@@ -69264,7 +70519,7 @@ function patchProperty(obj, prop) {
             var value = originalDescGet && originalDescGet.apply(this);
             if (value) {
                 desc.set.apply(this, [value]);
-                if (typeof target['removeAttribute'] === 'function') {
+                if (typeof target[REMOVE_ATTRIBUTE] === FUNCTION) {
                     target.removeAttribute(prop);
                 }
                 return value;
@@ -69274,10 +70529,10 @@ function patchProperty(obj, prop) {
     };
     Object.defineProperty(obj, prop, desc);
 }
-function patchOnProperties(obj, properties) {
+function patchOnProperties(obj, properties, prototype) {
     if (properties) {
         for (var i = 0; i < properties.length; i++) {
-            patchProperty(obj, 'on' + properties[i]);
+            patchProperty(obj, 'on' + properties[i], prototype);
         }
     }
     else {
@@ -69288,226 +70543,8 @@ function patchOnProperties(obj, properties) {
             }
         }
         for (var j = 0; j < onProperties.length; j++) {
-            patchProperty(obj, onProperties[j]);
+            patchProperty(obj, onProperties[j], prototype);
         }
-    }
-}
-var EVENT_TASKS = zoneSymbol('eventTasks');
-// For EventTarget
-var ADD_EVENT_LISTENER = 'addEventListener';
-var REMOVE_EVENT_LISTENER = 'removeEventListener';
-// compare the EventListenerOptionsOrCapture
-// 1. if the options is usCapture: boolean, compare the useCpature values directly
-// 2. if the options is EventListerOptions, only compare the capture
-function compareEventListenerOptions(left, right) {
-    var leftCapture = (typeof left === 'boolean') ?
-        left :
-        ((typeof left === 'object') ? (left && left.capture) : false);
-    var rightCapture = (typeof right === 'boolean') ?
-        right :
-        ((typeof right === 'object') ? (right && right.capture) : false);
-    return !!leftCapture === !!rightCapture;
-}
-function findExistingRegisteredTask(target, handler, name, options, remove) {
-    var eventTasks = target[EVENT_TASKS];
-    if (eventTasks) {
-        for (var i = 0; i < eventTasks.length; i++) {
-            var eventTask = eventTasks[i];
-            var data = eventTask.data;
-            var listener = data.handler;
-            if ((data.handler === handler || listener.listener === handler) &&
-                compareEventListenerOptions(data.options, options) && data.eventName === name) {
-                if (remove) {
-                    eventTasks.splice(i, 1);
-                }
-                return eventTask;
-            }
-        }
-    }
-    return null;
-}
-function attachRegisteredEvent(target, eventTask, isPrepend) {
-    var eventTasks = target[EVENT_TASKS];
-    if (!eventTasks) {
-        eventTasks = target[EVENT_TASKS] = [];
-    }
-    if (isPrepend) {
-        eventTasks.unshift(eventTask);
-    }
-    else {
-        eventTasks.push(eventTask);
-    }
-}
-var defaultListenerMetaCreator = function (self, args) {
-    return {
-        options: args[2],
-        eventName: args[0],
-        handler: args[1],
-        target: self || _global,
-        name: args[0],
-        crossContext: false,
-        invokeAddFunc: function (addFnSymbol, delegate) {
-            // check if the data is cross site context, if it is, fallback to
-            // remove the delegate directly and try catch error
-            if (!this.crossContext) {
-                if (delegate && delegate.invoke) {
-                    return this.target[addFnSymbol](this.eventName, delegate.invoke, this.options);
-                }
-                else {
-                    return this.target[addFnSymbol](this.eventName, delegate, this.options);
-                }
-            }
-            else {
-                // add a if/else branch here for performance concern, for most times
-                // cross site context is false, so we don't need to try/catch
-                try {
-                    return this.target[addFnSymbol](this.eventName, delegate, this.options);
-                }
-                catch (err) {
-                    // do nothing here is fine, because objects in a cross-site context are unusable
-                }
-            }
-        },
-        invokeRemoveFunc: function (removeFnSymbol, delegate) {
-            // check if the data is cross site context, if it is, fallback to
-            // remove the delegate directly and try catch error
-            if (!this.crossContext) {
-                if (delegate && delegate.invoke) {
-                    return this.target[removeFnSymbol](this.eventName, delegate.invoke, this.options);
-                }
-                else {
-                    return this.target[removeFnSymbol](this.eventName, delegate, this.options);
-                }
-            }
-            else {
-                // add a if/else branch here for performance concern, for most times
-                // cross site context is false, so we don't need to try/catch
-                try {
-                    return this.target[removeFnSymbol](this.eventName, delegate, this.options);
-                }
-                catch (err) {
-                    // do nothing here is fine, because objects in a cross-site context are unusable
-                }
-            }
-        }
-    };
-};
-function makeZoneAwareAddListener(addFnName, removeFnName, useCapturingParam, allowDuplicates, isPrepend, metaCreator) {
-    if (useCapturingParam === void 0) { useCapturingParam = true; }
-    if (allowDuplicates === void 0) { allowDuplicates = false; }
-    if (isPrepend === void 0) { isPrepend = false; }
-    if (metaCreator === void 0) { metaCreator = defaultListenerMetaCreator; }
-    var addFnSymbol = zoneSymbol(addFnName);
-    var removeFnSymbol = zoneSymbol(removeFnName);
-    var defaultUseCapturing = useCapturingParam ? false : undefined;
-    function scheduleEventListener(eventTask) {
-        var meta = eventTask.data;
-        attachRegisteredEvent(meta.target, eventTask, isPrepend);
-        return meta.invokeAddFunc(addFnSymbol, eventTask);
-    }
-    function cancelEventListener(eventTask) {
-        var meta = eventTask.data;
-        findExistingRegisteredTask(meta.target, eventTask.invoke, meta.eventName, meta.options, true);
-        return meta.invokeRemoveFunc(removeFnSymbol, eventTask);
-    }
-    return function zoneAwareAddListener(self, args) {
-        var data = metaCreator(self, args);
-        data.options = data.options || defaultUseCapturing;
-        // - Inside a Web Worker, `this` is undefined, the context is `global`
-        // - When `addEventListener` is called on the global context in strict mode, `this` is undefined
-        // see https://github.com/angular/zone.js/issues/190
-        var delegate = null;
-        if (typeof data.handler == 'function') {
-            delegate = data.handler;
-        }
-        else if (data.handler && data.handler.handleEvent) {
-            delegate = function (event) { return data.handler.handleEvent(event); };
-        }
-        var validZoneHandler = false;
-        try {
-            // In cross site contexts (such as WebDriver frameworks like Selenium),
-            // accessing the handler object here will cause an exception to be thrown which
-            // will fail tests prematurely.
-            validZoneHandler = data.handler && data.handler.toString() === '[object FunctionWrapper]';
-        }
-        catch (error) {
-            // we can still try to add the data.handler even we are in cross site context
-            data.crossContext = true;
-            return data.invokeAddFunc(addFnSymbol, data.handler);
-        }
-        // Ignore special listeners of IE11 & Edge dev tools, see
-        // https://github.com/angular/zone.js/issues/150
-        if (!delegate || validZoneHandler) {
-            return data.invokeAddFunc(addFnSymbol, data.handler);
-        }
-        if (!allowDuplicates) {
-            var eventTask = findExistingRegisteredTask(data.target, data.handler, data.eventName, data.options, false);
-            if (eventTask) {
-                // we already registered, so this will have noop.
-                return data.invokeAddFunc(addFnSymbol, eventTask);
-            }
-        }
-        var zone = Zone.current;
-        var source = data.target.constructor['name'] + '.' + addFnName + ':' + data.eventName;
-        zone.scheduleEventTask(source, delegate, data, scheduleEventListener, cancelEventListener);
-    };
-}
-function makeZoneAwareRemoveListener(fnName, useCapturingParam, metaCreator) {
-    if (useCapturingParam === void 0) { useCapturingParam = true; }
-    if (metaCreator === void 0) { metaCreator = defaultListenerMetaCreator; }
-    var symbol = zoneSymbol(fnName);
-    var defaultUseCapturing = useCapturingParam ? false : undefined;
-    return function zoneAwareRemoveListener(self, args) {
-        var data = metaCreator(self, args);
-        data.options = data.options || defaultUseCapturing;
-        // - Inside a Web Worker, `this` is undefined, the context is `global`
-        // - When `addEventListener` is called on the global context in strict mode, `this` is undefined
-        // see https://github.com/angular/zone.js/issues/190
-        var delegate = null;
-        if (typeof data.handler == 'function') {
-            delegate = data.handler;
-        }
-        else if (data.handler && data.handler.handleEvent) {
-            delegate = function (event) { return data.handler.handleEvent(event); };
-        }
-        var validZoneHandler = false;
-        try {
-            // In cross site contexts (such as WebDriver frameworks like Selenium),
-            // accessing the handler object here will cause an exception to be thrown which
-            // will fail tests prematurely.
-            validZoneHandler = data.handler && data.handler.toString() === '[object FunctionWrapper]';
-        }
-        catch (error) {
-            data.crossContext = true;
-            return data.invokeRemoveFunc(symbol, data.handler);
-        }
-        // Ignore special listeners of IE11 & Edge dev tools, see
-        // https://github.com/angular/zone.js/issues/150
-        if (!delegate || validZoneHandler) {
-            return data.invokeRemoveFunc(symbol, data.handler);
-        }
-        var eventTask = findExistingRegisteredTask(data.target, data.handler, data.eventName, data.options, true);
-        if (eventTask) {
-            eventTask.zone.cancelTask(eventTask);
-        }
-        else {
-            data.invokeRemoveFunc(symbol, data.handler);
-        }
-    };
-}
-
-
-function patchEventTargetMethods(obj, addFnName, removeFnName, metaCreator) {
-    if (addFnName === void 0) { addFnName = ADD_EVENT_LISTENER; }
-    if (removeFnName === void 0) { removeFnName = REMOVE_EVENT_LISTENER; }
-    if (metaCreator === void 0) { metaCreator = defaultListenerMetaCreator; }
-    if (obj && obj[addFnName]) {
-        patchMethod(obj, addFnName, function () { return makeZoneAwareAddListener(addFnName, removeFnName, true, false, false, metaCreator); });
-        patchMethod(obj, removeFnName, function () { return makeZoneAwareRemoveListener(removeFnName, true, metaCreator); });
-        return true;
-    }
-    else {
-        return false;
     }
 }
 var originalInstanceKey = zoneSymbol('originalInstance');
@@ -69594,37 +70631,64 @@ function patchMethod(target, name, patchFn) {
     var delegate;
     if (proto && !(delegate = proto[delegateName])) {
         delegate = proto[delegateName] = proto[name];
-        var patchDelegate_1 = patchFn(delegate, delegateName, name);
-        proto[name] = function () {
-            return patchDelegate_1(this, arguments);
-        };
-        attachOriginToPatched(proto[name], delegate);
+        // check whether proto[name] is writable
+        // some property is readonly in safari, such as HtmlCanvasElement.prototype.toBlob
+        var desc = proto && Object.getOwnPropertyDescriptor(proto, name);
+        if (isPropertyWritable(desc)) {
+            var patchDelegate_1 = patchFn(delegate, delegateName, name);
+            proto[name] = function () {
+                return patchDelegate_1(this, arguments);
+            };
+            attachOriginToPatched(proto[name], delegate);
+        }
     }
     return delegate;
 }
 // TODO: @JiaLiPassion, support cancel task later if necessary
-
-
-function findEventTask(target, evtName) {
-    var eventTasks = target[zoneSymbol('eventTasks')];
-    var result = [];
-    if (eventTasks) {
-        for (var i = 0; i < eventTasks.length; i++) {
-            var eventTask = eventTasks[i];
-            var data = eventTask.data;
-            var eventName = data && data.eventName;
-            if (eventName === evtName) {
-                result.push(eventTask);
-            }
-        }
+function patchMacroTask(obj, funcName, metaCreator) {
+    var setNative = null;
+    function scheduleTask(task) {
+        var data = task.data;
+        data.args[data.callbackIndex] = function () {
+            task.invoke.apply(this, arguments);
+        };
+        setNative.apply(data.target, data.args);
+        return task;
     }
-    return result;
+    setNative = patchMethod(obj, funcName, function (delegate) { return function (self, args) {
+        var meta = metaCreator(self, args);
+        if (meta.callbackIndex >= 0 && typeof args[meta.callbackIndex] === 'function') {
+            var task = Zone.current.scheduleMacroTask(meta.name, args[meta.callbackIndex], meta, scheduleTask, null);
+            return task;
+        }
+        else {
+            // cause an error by calling it directly.
+            return delegate.apply(self, args);
+        }
+    }; });
 }
+
 function attachOriginToPatched(patched, original) {
     patched[zoneSymbol('OriginalDelegate')] = original;
 }
-Zone[zoneSymbol('patchEventTargetMethods')] = patchEventTargetMethods;
-Zone[zoneSymbol('patchOnProperties')] = patchOnProperties;
+var isDetectedIEOrEdge = false;
+var ieOrEdge = false;
+function isIEOrEdge() {
+    if (isDetectedIEOrEdge) {
+        return ieOrEdge;
+    }
+    isDetectedIEOrEdge = true;
+    try {
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf('MSIE ');
+        if (ua.indexOf('MSIE ') !== -1 || ua.indexOf('Trident/') !== -1 || ua.indexOf('Edge/') !== -1) {
+            ieOrEdge = true;
+        }
+        return ieOrEdge;
+    }
+    catch (error) {
+    }
+}
 
 /**
  * @license
@@ -69637,20 +70701,31 @@ Zone[zoneSymbol('patchOnProperties')] = patchOnProperties;
 // look like native function
 Zone.__load_patch('toString', function (global, Zone, api) {
     // patch Func.prototype.toString to let them look like native
-    var originalFunctionToString = Function.prototype.toString;
+    var originalFunctionToString = Zone['__zone_symbol__originalToString'] =
+        Function.prototype.toString;
+    var FUNCTION = 'function';
+    var ORIGINAL_DELEGATE_SYMBOL = zoneSymbol('OriginalDelegate');
+    var PROMISE_SYMBOL = zoneSymbol('Promise');
+    var ERROR_SYMBOL = zoneSymbol('Error');
     Function.prototype.toString = function () {
-        if (typeof this === 'function') {
-            if (this[zoneSymbol('OriginalDelegate')]) {
-                return originalFunctionToString.apply(this[zoneSymbol('OriginalDelegate')], arguments);
+        if (typeof this === FUNCTION) {
+            var originalDelegate = this[ORIGINAL_DELEGATE_SYMBOL];
+            if (originalDelegate) {
+                if (typeof originalDelegate === FUNCTION) {
+                    return originalFunctionToString.apply(this[ORIGINAL_DELEGATE_SYMBOL], arguments);
+                }
+                else {
+                    return Object.prototype.toString.call(originalDelegate);
+                }
             }
             if (this === Promise) {
-                var nativePromise = global[zoneSymbol('Promise')];
+                var nativePromise = global[PROMISE_SYMBOL];
                 if (nativePromise) {
                     return originalFunctionToString.apply(nativePromise, arguments);
                 }
             }
             if (this === Error) {
-                var nativeError = global[zoneSymbol('Error')];
+                var nativeError = global[ERROR_SYMBOL];
                 if (nativeError) {
                     return originalFunctionToString.apply(nativeError, arguments);
                 }
@@ -69660,9 +70735,10 @@ Zone.__load_patch('toString', function (global, Zone, api) {
     };
     // patch Object.prototype.toString to let them look like native
     var originalObjectToString = Object.prototype.toString;
+    var PROMISE_OBJECT_TO_STRING = '[object Promise]';
     Object.prototype.toString = function () {
         if (this instanceof Promise) {
-            return '[object Promise]';
+            return PROMISE_OBJECT_TO_STRING;
         }
         return originalObjectToString.apply(this, arguments);
     };
@@ -69675,12 +70751,562 @@ Zone.__load_patch('toString', function (global, Zone, api) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
+/**
+ * @fileoverview
+ * @suppress {missingRequire}
+ */
+var __read$1 = (undefined && undefined.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spread = (undefined && undefined.__spread) || function () {
+    for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read$1(arguments[i]));
+    return ar;
+};
+var TRUE_STR = 'true';
+var FALSE_STR = 'false';
+// an identifier to tell ZoneTask do not create a new invoke closure
+var OPTIMIZED_ZONE_EVENT_TASK_DATA = {
+    isUsingGlobalCallback: true
+};
+var zoneSymbolEventNames$1 = {};
+var globalSources = {};
+var CONSTRUCTOR_NAME = 'name';
+var FUNCTION_TYPE = 'function';
+var OBJECT_TYPE = 'object';
+var ZONE_SYMBOL_PREFIX = '__zone_symbol__';
+var EVENT_NAME_SYMBOL_REGX = /^__zone_symbol__(\w+)(true|false)$/;
+var IMMEDIATE_PROPAGATION_SYMBOL = ('__zone_symbol__propagationStopped');
+function patchEventTarget(_global, apis, patchOptions) {
+    var ADD_EVENT_LISTENER = (patchOptions && patchOptions.addEventListenerFnName) || 'addEventListener';
+    var REMOVE_EVENT_LISTENER = (patchOptions && patchOptions.removeEventListenerFnName) || 'removeEventListener';
+    var LISTENERS_EVENT_LISTENER = (patchOptions && patchOptions.listenersFnName) || 'eventListeners';
+    var REMOVE_ALL_LISTENERS_EVENT_LISTENER = (patchOptions && patchOptions.removeAllFnName) || 'removeAllListeners';
+    var zoneSymbolAddEventListener = zoneSymbol(ADD_EVENT_LISTENER);
+    var ADD_EVENT_LISTENER_SOURCE = '.' + ADD_EVENT_LISTENER + ':';
+    var PREPEND_EVENT_LISTENER = 'prependListener';
+    var PREPEND_EVENT_LISTENER_SOURCE = '.' + PREPEND_EVENT_LISTENER + ':';
+    var invokeTask = function (task, target, event) {
+        // for better performance, check isRemoved which is set
+        // by removeEventListener
+        if (task.isRemoved) {
+            return;
+        }
+        var delegate = task.callback;
+        if (typeof delegate === OBJECT_TYPE && delegate.handleEvent) {
+            // create the bind version of handleEvent when invoke
+            task.callback = function (event) { return delegate.handleEvent(event); };
+            task.originalDelegate = delegate;
+        }
+        // invoke static task.invoke
+        task.invoke(task, target, [event]);
+        var options = task.options;
+        if (options && typeof options === 'object' && options.once) {
+            // if options.once is true, after invoke once remove listener here
+            // only browser need to do this, nodejs eventEmitter will cal removeListener
+            // inside EventEmitter.once
+            var delegate_1 = task.originalDelegate ? task.originalDelegate : task.callback;
+            target[REMOVE_EVENT_LISTENER].apply(target, [event.type, delegate_1, options]);
+        }
+    };
+    // global shared zoneAwareCallback to handle all event callback with capture = false
+    var globalZoneAwareCallback = function (event) {
+        // https://github.com/angular/zone.js/issues/911, in IE, sometimes
+        // event will be undefined, so we need to use window.event
+        event = event || _global.event;
+        if (!event) {
+            return;
+        }
+        // event.target is needed for Samusung TV and SourceBuffer
+        // || global is needed https://github.com/angular/zone.js/issues/190
+        var target = this || event.target || _global;
+        var tasks = target[zoneSymbolEventNames$1[event.type][FALSE_STR]];
+        if (tasks) {
+            // invoke all tasks which attached to current target with given event.type and capture = false
+            // for performance concern, if task.length === 1, just invoke
+            if (tasks.length === 1) {
+                invokeTask(tasks[0], target, event);
+            }
+            else {
+                // https://github.com/angular/zone.js/issues/836
+                // copy the tasks array before invoke, to avoid
+                // the callback will remove itself or other listener
+                var copyTasks = tasks.slice();
+                for (var i = 0; i < copyTasks.length; i++) {
+                    if (event && event[IMMEDIATE_PROPAGATION_SYMBOL] === true) {
+                        break;
+                    }
+                    invokeTask(copyTasks[i], target, event);
+                }
+            }
+        }
+    };
+    // global shared zoneAwareCallback to handle all event callback with capture = true
+    var globalZoneAwareCaptureCallback = function (event) {
+        // https://github.com/angular/zone.js/issues/911, in IE, sometimes
+        // event will be undefined, so we need to use window.event
+        event = event || _global.event;
+        if (!event) {
+            return;
+        }
+        // event.target is needed for Samusung TV and SourceBuffer
+        // || global is needed https://github.com/angular/zone.js/issues/190
+        var target = this || event.target || _global;
+        var tasks = target[zoneSymbolEventNames$1[event.type][TRUE_STR]];
+        if (tasks) {
+            // invoke all tasks which attached to current target with given event.type and capture = false
+            // for performance concern, if task.length === 1, just invoke
+            if (tasks.length === 1) {
+                invokeTask(tasks[0], target, event);
+            }
+            else {
+                // https://github.com/angular/zone.js/issues/836
+                // copy the tasks array before invoke, to avoid
+                // the callback will remove itself or other listener
+                var copyTasks = tasks.slice();
+                for (var i = 0; i < copyTasks.length; i++) {
+                    if (event && event[IMMEDIATE_PROPAGATION_SYMBOL] === true) {
+                        break;
+                    }
+                    invokeTask(copyTasks[i], target, event);
+                }
+            }
+        }
+    };
+    function patchEventTargetMethods(obj, patchOptions) {
+        if (!obj) {
+            return false;
+        }
+        var useGlobalCallback = true;
+        if (patchOptions && patchOptions.useGlobalCallback !== undefined) {
+            useGlobalCallback = patchOptions.useGlobalCallback;
+        }
+        var validateHandler = patchOptions && patchOptions.validateHandler;
+        var checkDuplicate = true;
+        if (patchOptions && patchOptions.checkDuplicate !== undefined) {
+            checkDuplicate = patchOptions.checkDuplicate;
+        }
+        var returnTarget = false;
+        if (patchOptions && patchOptions.returnTarget !== undefined) {
+            returnTarget = patchOptions.returnTarget;
+        }
+        var proto = obj;
+        while (proto && !proto.hasOwnProperty(ADD_EVENT_LISTENER)) {
+            proto = Object.getPrototypeOf(proto);
+        }
+        if (!proto && obj[ADD_EVENT_LISTENER]) {
+            // somehow we did not find it, but we can see it. This happens on IE for Window properties.
+            proto = obj;
+        }
+        if (!proto) {
+            return false;
+        }
+        if (proto[zoneSymbolAddEventListener]) {
+            return false;
+        }
+        // a shared global taskData to pass data for scheduleEventTask
+        // so we do not need to create a new object just for pass some data
+        var taskData = {};
+        var nativeAddEventListener = proto[zoneSymbolAddEventListener] = proto[ADD_EVENT_LISTENER];
+        var nativeRemoveEventListener = proto[zoneSymbol(REMOVE_EVENT_LISTENER)] =
+            proto[REMOVE_EVENT_LISTENER];
+        var nativeListeners = proto[zoneSymbol(LISTENERS_EVENT_LISTENER)] =
+            proto[LISTENERS_EVENT_LISTENER];
+        var nativeRemoveAllListeners = proto[zoneSymbol(REMOVE_ALL_LISTENERS_EVENT_LISTENER)] =
+            proto[REMOVE_ALL_LISTENERS_EVENT_LISTENER];
+        var nativePrependEventListener;
+        if (patchOptions && patchOptions.prependEventListenerFnName) {
+            nativePrependEventListener = proto[zoneSymbol(patchOptions.prependEventListenerFnName)] =
+                proto[patchOptions.prependEventListenerFnName];
+        }
+        var customScheduleGlobal = function (task) {
+            // if there is already a task for the eventName + capture,
+            // just return, because we use the shared globalZoneAwareCallback here.
+            if (taskData.isExisting) {
+                return;
+            }
+            return nativeAddEventListener.apply(taskData.target, [
+                taskData.eventName,
+                taskData.capture ? globalZoneAwareCaptureCallback : globalZoneAwareCallback,
+                taskData.options
+            ]);
+        };
+        var customCancelGlobal = function (task) {
+            // if task is not marked as isRemoved, this call is directly
+            // from Zone.prototype.cancelTask, we should remove the task
+            // from tasksList of target first
+            if (!task.isRemoved) {
+                var symbolEventNames = zoneSymbolEventNames$1[task.eventName];
+                var symbolEventName = void 0;
+                if (symbolEventNames) {
+                    symbolEventName = symbolEventNames[task.capture ? TRUE_STR : FALSE_STR];
+                }
+                var existingTasks = symbolEventName && task.target[symbolEventName];
+                if (existingTasks) {
+                    for (var i = 0; i < existingTasks.length; i++) {
+                        var existingTask = existingTasks[i];
+                        if (existingTask === task) {
+                            existingTasks.splice(i, 1);
+                            // set isRemoved to data for faster invokeTask check
+                            task.isRemoved = true;
+                            if (existingTasks.length === 0) {
+                                // all tasks for the eventName + capture have gone,
+                                // remove globalZoneAwareCallback and remove the task cache from target
+                                task.allRemoved = true;
+                                task.target[symbolEventName] = null;
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            // if all tasks for the eventName + capture have gone,
+            // we will really remove the global event callback,
+            // if not, return
+            if (!task.allRemoved) {
+                return;
+            }
+            return nativeRemoveEventListener.apply(task.target, [
+                task.eventName, task.capture ? globalZoneAwareCaptureCallback : globalZoneAwareCallback,
+                task.options
+            ]);
+        };
+        var customScheduleNonGlobal = function (task) {
+            return nativeAddEventListener.apply(taskData.target, [taskData.eventName, task.invoke, taskData.options]);
+        };
+        var customSchedulePrepend = function (task) {
+            return nativePrependEventListener.apply(taskData.target, [taskData.eventName, task.invoke, taskData.options]);
+        };
+        var customCancelNonGlobal = function (task) {
+            return nativeRemoveEventListener.apply(task.target, [task.eventName, task.invoke, task.options]);
+        };
+        var customSchedule = useGlobalCallback ? customScheduleGlobal : customScheduleNonGlobal;
+        var customCancel = useGlobalCallback ? customCancelGlobal : customCancelNonGlobal;
+        var compareTaskCallbackVsDelegate = function (task, delegate) {
+            var typeOfDelegate = typeof delegate;
+            if ((typeOfDelegate === FUNCTION_TYPE && task.callback === delegate) ||
+                (typeOfDelegate === OBJECT_TYPE && task.originalDelegate === delegate)) {
+                // same callback, same capture, same event name, just return
+                return true;
+            }
+            return false;
+        };
+        var compare = (patchOptions && patchOptions.compareTaskCallbackVsDelegate) ?
+            patchOptions.compareTaskCallbackVsDelegate :
+            compareTaskCallbackVsDelegate;
+        var makeAddListener = function (nativeListener, addSource, customScheduleFn, customCancelFn, returnTarget, prepend) {
+            if (returnTarget === void 0) { returnTarget = false; }
+            if (prepend === void 0) { prepend = false; }
+            return function () {
+                var target = this || _global;
+                var targetZone = Zone.current;
+                var delegate = arguments[1];
+                if (!delegate) {
+                    return nativeListener.apply(this, arguments);
+                }
+                // don't create the bind delegate function for handleEvent
+                // case here to improve addEventListener performance
+                // we will create the bind delegate when invoke
+                var isHandleEvent = false;
+                if (typeof delegate !== FUNCTION_TYPE) {
+                    if (!delegate.handleEvent) {
+                        return nativeListener.apply(this, arguments);
+                    }
+                    isHandleEvent = true;
+                }
+                if (validateHandler && !validateHandler(nativeListener, delegate, target, arguments)) {
+                    return;
+                }
+                var eventName = arguments[0];
+                var options = arguments[2];
+                var capture;
+                var once = false;
+                if (options === undefined) {
+                    capture = false;
+                }
+                else if (options === true) {
+                    capture = true;
+                }
+                else if (options === false) {
+                    capture = false;
+                }
+                else {
+                    capture = options ? !!options.capture : false;
+                    once = options ? !!options.once : false;
+                }
+                var zone = Zone.current;
+                var symbolEventNames = zoneSymbolEventNames$1[eventName];
+                var symbolEventName;
+                if (!symbolEventNames) {
+                    // the code is duplicate, but I just want to get some better performance
+                    var falseEventName = eventName + FALSE_STR;
+                    var trueEventName = eventName + TRUE_STR;
+                    var symbol = ZONE_SYMBOL_PREFIX + falseEventName;
+                    var symbolCapture = ZONE_SYMBOL_PREFIX + trueEventName;
+                    zoneSymbolEventNames$1[eventName] = {};
+                    zoneSymbolEventNames$1[eventName][FALSE_STR] = symbol;
+                    zoneSymbolEventNames$1[eventName][TRUE_STR] = symbolCapture;
+                    symbolEventName = capture ? symbolCapture : symbol;
+                }
+                else {
+                    symbolEventName = symbolEventNames[capture ? TRUE_STR : FALSE_STR];
+                }
+                var existingTasks = target[symbolEventName];
+                var isExisting = false;
+                if (existingTasks) {
+                    // already have task registered
+                    isExisting = true;
+                    if (checkDuplicate) {
+                        for (var i = 0; i < existingTasks.length; i++) {
+                            if (compare(existingTasks[i], delegate)) {
+                                // same callback, same capture, same event name, just return
+                                return;
+                            }
+                        }
+                    }
+                }
+                else {
+                    existingTasks = target[symbolEventName] = [];
+                }
+                var source;
+                var constructorName = target.constructor[CONSTRUCTOR_NAME];
+                var targetSource = globalSources[constructorName];
+                if (targetSource) {
+                    source = targetSource[eventName];
+                }
+                if (!source) {
+                    source = constructorName + addSource + eventName;
+                }
+                // do not create a new object as task.data to pass those things
+                // just use the global shared one
+                taskData.options = options;
+                if (once) {
+                    // if addEventListener with once options, we don't pass it to
+                    // native addEventListener, instead we keep the once setting
+                    // and handle ourselves.
+                    taskData.options.once = false;
+                }
+                taskData.target = target;
+                taskData.capture = capture;
+                taskData.eventName = eventName;
+                taskData.isExisting = isExisting;
+                var data = useGlobalCallback ? OPTIMIZED_ZONE_EVENT_TASK_DATA : null;
+                var task = zone.scheduleEventTask(source, delegate, data, customScheduleFn, customCancelFn);
+                // have to save those information to task in case
+                // application may call task.zone.cancelTask() directly
+                if (once) {
+                    options.once = true;
+                }
+                task.options = options;
+                task.target = target;
+                task.capture = capture;
+                task.eventName = eventName;
+                if (isHandleEvent) {
+                    // save original delegate for compare to check duplicate
+                    task.originalDelegate = delegate;
+                }
+                if (!prepend) {
+                    existingTasks.push(task);
+                }
+                else {
+                    existingTasks.unshift(task);
+                }
+                if (returnTarget) {
+                    return target;
+                }
+            };
+        };
+        proto[ADD_EVENT_LISTENER] = makeAddListener(nativeAddEventListener, ADD_EVENT_LISTENER_SOURCE, customSchedule, customCancel, returnTarget);
+        if (nativePrependEventListener) {
+            proto[PREPEND_EVENT_LISTENER] = makeAddListener(nativePrependEventListener, PREPEND_EVENT_LISTENER_SOURCE, customSchedulePrepend, customCancel, returnTarget, true);
+        }
+        proto[REMOVE_EVENT_LISTENER] = function () {
+            var target = this || _global;
+            var eventName = arguments[0];
+            var options = arguments[2];
+            var capture;
+            if (options === undefined) {
+                capture = false;
+            }
+            else if (options === true) {
+                capture = true;
+            }
+            else if (options === false) {
+                capture = false;
+            }
+            else {
+                capture = options ? !!options.capture : false;
+            }
+            var delegate = arguments[1];
+            if (!delegate) {
+                return nativeRemoveEventListener.apply(this, arguments);
+            }
+            if (validateHandler &&
+                !validateHandler(nativeRemoveEventListener, delegate, target, arguments)) {
+                return;
+            }
+            var symbolEventNames = zoneSymbolEventNames$1[eventName];
+            var symbolEventName;
+            if (symbolEventNames) {
+                symbolEventName = symbolEventNames[capture ? TRUE_STR : FALSE_STR];
+            }
+            var existingTasks = symbolEventName && target[symbolEventName];
+            if (existingTasks) {
+                for (var i = 0; i < existingTasks.length; i++) {
+                    var existingTask = existingTasks[i];
+                    var typeOfDelegate = typeof delegate;
+                    if (compare(existingTask, delegate)) {
+                        existingTasks.splice(i, 1);
+                        // set isRemoved to data for faster invokeTask check
+                        existingTask.isRemoved = true;
+                        if (existingTasks.length === 0) {
+                            // all tasks for the eventName + capture have gone,
+                            // remove globalZoneAwareCallback and remove the task cache from target
+                            existingTask.allRemoved = true;
+                            target[symbolEventName] = null;
+                        }
+                        existingTask.zone.cancelTask(existingTask);
+                        return;
+                    }
+                }
+            }
+        };
+        proto[LISTENERS_EVENT_LISTENER] = function () {
+            var target = this || _global;
+            var eventName = arguments[0];
+            var listeners = [];
+            var tasks = findEventTasks(target, eventName);
+            for (var i = 0; i < tasks.length; i++) {
+                var task = tasks[i];
+                var delegate = task.originalDelegate ? task.originalDelegate : task.callback;
+                listeners.push(delegate);
+            }
+            return listeners;
+        };
+        proto[REMOVE_ALL_LISTENERS_EVENT_LISTENER] = function () {
+            var target = this || _global;
+            var eventName = arguments[0];
+            if (!eventName) {
+                var keys = Object.keys(target);
+                for (var i = 0; i < keys.length; i++) {
+                    var prop = keys[i];
+                    var match = EVENT_NAME_SYMBOL_REGX.exec(prop);
+                    var evtName = match && match[1];
+                    // in nodejs EventEmitter, removeListener event is
+                    // used for monitoring the removeListener call,
+                    // so just keep removeListener eventListener until
+                    // all other eventListeners are removed
+                    if (evtName && evtName !== 'removeListener') {
+                        this[REMOVE_ALL_LISTENERS_EVENT_LISTENER].apply(this, [evtName]);
+                    }
+                }
+                // remove removeListener listener finally
+                this[REMOVE_ALL_LISTENERS_EVENT_LISTENER].apply(this, ['removeListener']);
+            }
+            else {
+                var symbolEventNames = zoneSymbolEventNames$1[eventName];
+                if (symbolEventNames) {
+                    var symbolEventName = symbolEventNames[FALSE_STR];
+                    var symbolCaptureEventName = symbolEventNames[TRUE_STR];
+                    var tasks = target[symbolEventName];
+                    var captureTasks = target[symbolCaptureEventName];
+                    if (tasks) {
+                        var removeTasks = __spread(tasks);
+                        for (var i = 0; i < removeTasks.length; i++) {
+                            var task = removeTasks[i];
+                            var delegate = task.originalDelegate ? task.originalDelegate : task.callback;
+                            this[REMOVE_EVENT_LISTENER].apply(this, [eventName, delegate, task.options]);
+                        }
+                    }
+                    if (captureTasks) {
+                        var removeTasks = __spread(captureTasks);
+                        for (var i = 0; i < removeTasks.length; i++) {
+                            var task = removeTasks[i];
+                            var delegate = task.originalDelegate ? task.originalDelegate : task.callback;
+                            this[REMOVE_EVENT_LISTENER].apply(this, [eventName, delegate, task.options]);
+                        }
+                    }
+                }
+            }
+        };
+        // for native toString patch
+        attachOriginToPatched(proto[ADD_EVENT_LISTENER], nativeAddEventListener);
+        attachOriginToPatched(proto[REMOVE_EVENT_LISTENER], nativeRemoveEventListener);
+        if (nativeRemoveAllListeners) {
+            attachOriginToPatched(proto[REMOVE_ALL_LISTENERS_EVENT_LISTENER], nativeRemoveAllListeners);
+        }
+        if (nativeListeners) {
+            attachOriginToPatched(proto[LISTENERS_EVENT_LISTENER], nativeListeners);
+        }
+        return true;
+    }
+    var results = [];
+    for (var i = 0; i < apis.length; i++) {
+        results[i] = patchEventTargetMethods(apis[i], patchOptions);
+    }
+    return results;
+}
+function findEventTasks(target, eventName) {
+    var foundTasks = [];
+    for (var prop in target) {
+        var match = EVENT_NAME_SYMBOL_REGX.exec(prop);
+        var evtName = match && match[1];
+        if (evtName && (!eventName || evtName === eventName)) {
+            var tasks = target[prop];
+            if (tasks) {
+                for (var i = 0; i < tasks.length; i++) {
+                    foundTasks.push(tasks[i]);
+                }
+            }
+        }
+    }
+    return foundTasks;
+}
+function patchEventPrototype(global, api) {
+    var Event = global['Event'];
+    if (Event && Event.prototype) {
+        api.patchMethod(Event.prototype, 'stopImmediatePropagation', function (delegate) { return function (self, args) {
+            self[IMMEDIATE_PROPAGATION_SYMBOL] = true;
+        }; });
+    }
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @fileoverview
+ * @suppress {missingRequire}
+ */
+var taskSymbol = zoneSymbol('zoneTask');
 function patchTimer(window, setName, cancelName, nameSuffix) {
     var setNative = null;
     var clearNative = null;
     setName += nameSuffix;
     cancelName += nameSuffix;
     var tasksByHandleId = {};
+    var NUMBER = 'number';
+    var STRING = 'string';
+    var FUNCTION = 'function';
+    var INTERVAL = 'Interval';
+    var TIMEOUT = 'Timeout';
+    var NOT_SCHEDULED = 'notScheduled';
     function scheduleTask(task) {
         var data = task.data;
         function timer() {
@@ -69688,37 +71314,33 @@ function patchTimer(window, setName, cancelName, nameSuffix) {
                 task.invoke.apply(this, arguments);
             }
             finally {
-                if (typeof data.handleId === 'number') {
-                    // Node returns complex objects as handleIds
+                if (typeof data.handleId === NUMBER) {
+                    // in non-nodejs env, we remove timerId
+                    // from local cache
                     delete tasksByHandleId[data.handleId];
+                }
+                else if (data.handleId) {
+                    // Node returns complex objects as handleIds
+                    // we remove task reference from timer object
+                    data.handleId[taskSymbol] = null;
                 }
             }
         }
         data.args[0] = timer;
         data.handleId = setNative.apply(window, data.args);
-        if (typeof data.handleId === 'number') {
-            // Node returns complex objects as handleIds -> no need to keep them around. Additionally,
-            // this throws an
-            // exception in older node versions and has no effect there, because of the stringified key.
-            tasksByHandleId[data.handleId] = task;
-        }
         return task;
     }
     function clearTask(task) {
-        if (typeof task.data.handleId === 'number') {
-            // Node returns complex objects as handleIds
-            delete tasksByHandleId[task.data.handleId];
-        }
         return clearNative(task.data.handleId);
     }
     setNative =
         patchMethod(window, setName, function (delegate) { return function (self, args) {
-            if (typeof args[0] === 'function') {
+            if (typeof args[0] === FUNCTION) {
                 var zone = Zone.current;
                 var options = {
                     handleId: null,
-                    isPeriodic: nameSuffix === 'Interval',
-                    delay: (nameSuffix === 'Timeout' || nameSuffix === 'Interval') ? args[1] || 0 : null,
+                    isPeriodic: nameSuffix === INTERVAL,
+                    delay: (nameSuffix === TIMEOUT || nameSuffix === INTERVAL) ? args[1] || 0 : null,
                     args: args
                 };
                 var task = zone.scheduleMacroTask(setName, args[0], options, scheduleTask, clearTask);
@@ -69727,12 +71349,25 @@ function patchTimer(window, setName, cancelName, nameSuffix) {
                 }
                 // Node.js must additionally support the ref and unref functions.
                 var handle = task.data.handleId;
+                if (typeof handle === NUMBER) {
+                    // for non nodejs env, we save handleId: task
+                    // mapping in local cache for clearTimeout
+                    tasksByHandleId[handle] = task;
+                }
+                else if (handle) {
+                    // for nodejs env, we save task
+                    // reference in timerId Object for clearTimeout
+                    handle[taskSymbol] = task;
+                }
                 // check whether handle is null, because some polyfill or browser
                 // may return undefined from setTimeout/setInterval/setImmediate/requestAnimationFrame
-                if (handle && handle.ref && handle.unref && typeof handle.ref === 'function' &&
-                    typeof handle.unref === 'function') {
+                if (handle && handle.ref && handle.unref && typeof handle.ref === FUNCTION &&
+                    typeof handle.unref === FUNCTION) {
                     task.ref = handle.ref.bind(handle);
                     task.unref = handle.unref.bind(handle);
+                }
+                if (typeof handle === NUMBER || handle) {
+                    return handle;
                 }
                 return task;
             }
@@ -69743,10 +71378,29 @@ function patchTimer(window, setName, cancelName, nameSuffix) {
         }; });
     clearNative =
         patchMethod(window, cancelName, function (delegate) { return function (self, args) {
-            var task = typeof args[0] === 'number' ? tasksByHandleId[args[0]] : args[0];
-            if (task && typeof task.type === 'string') {
-                if (task.state !== 'notScheduled' &&
+            var id = args[0];
+            var task;
+            if (typeof id === NUMBER) {
+                // non nodejs env.
+                task = tasksByHandleId[id];
+            }
+            else {
+                // nodejs env.
+                task = id && id[taskSymbol];
+                // other environments.
+                if (!task) {
+                    task = id;
+                }
+            }
+            if (task && typeof task.type === STRING) {
+                if (task.state !== NOT_SCHEDULED &&
                     (task.cancelFn && task.data.isPeriodic || task.runCount === 0)) {
+                    if (typeof id === NUMBER) {
+                        delete tasksByHandleId[id];
+                    }
+                    else if (id) {
+                        id[taskSymbol] = null;
+                    }
                     // Do not cancel already canceled functions
                     task.zone.cancelTask(task);
                 }
@@ -69774,13 +71428,16 @@ var _getOwnPropertyDescriptor = Object[zoneSymbol('getOwnPropertyDescriptor')] =
     Object.getOwnPropertyDescriptor;
 var _create = Object.create;
 var unconfigurablesKey = zoneSymbol('unconfigurables');
+var PROTOTYPE = 'prototype';
+var OBJECT = 'object';
+var UNDEFINED$1 = 'undefined';
 function propertyPatch() {
     Object.defineProperty = function (obj, prop, desc) {
         if (isUnconfigurable(obj, prop)) {
             throw new TypeError('Cannot assign to read only property \'' + prop + '\' of ' + obj);
         }
         var originalConfigurableFlag = desc.configurable;
-        if (prop !== 'prototype') {
+        if (prop !== PROTOTYPE) {
             desc = rewriteDescriptor(obj, prop, desc);
         }
         return _tryDefineProperty(obj, prop, desc, originalConfigurableFlag);
@@ -69792,7 +71449,7 @@ function propertyPatch() {
         return obj;
     };
     Object.create = function (obj, proto) {
-        if (typeof proto === 'object' && !Object.isFrozen(proto)) {
+        if (typeof proto === OBJECT && !Object.isFrozen(proto)) {
             Object.keys(proto).forEach(function (prop) {
                 proto[prop] = rewriteDescriptor(obj, prop, proto[prop]);
             });
@@ -69833,7 +71490,7 @@ function _tryDefineProperty(obj, prop, desc, originalConfigurableFlag) {
         if (desc.configurable) {
             // In case of errors, when the configurable flag was likely set by rewriteDescriptor(), let's
             // retry with the original flag value
-            if (typeof originalConfigurableFlag == 'undefined') {
+            if (typeof originalConfigurableFlag == UNDEFINED$1) {
                 delete desc.configurable;
             }
             else {
@@ -69866,56 +71523,37 @@ function _tryDefineProperty(obj, prop, desc, originalConfigurableFlag) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-var WTF_ISSUE_555 = 'Anchor,Area,Audio,BR,Base,BaseFont,Body,Button,Canvas,Content,DList,Directory,Div,Embed,FieldSet,Font,Form,Frame,FrameSet,HR,Head,Heading,Html,IFrame,Image,Input,Keygen,LI,Label,Legend,Link,Map,Marquee,Media,Menu,Meta,Meter,Mod,OList,Object,OptGroup,Option,Output,Paragraph,Pre,Progress,Quote,Script,Select,Source,Span,Style,TableCaption,TableCell,TableCol,Table,TableRow,TableSection,TextArea,Title,Track,UList,Unknown,Video';
-var NO_EVENT_TARGET = 'ApplicationCache,EventSource,FileReader,InputMethodContext,MediaController,MessagePort,Node,Performance,SVGElementInstance,SharedWorker,TextTrack,TextTrackCue,TextTrackList,WebKitNamedFlow,Window,Worker,WorkerGlobalScope,XMLHttpRequest,XMLHttpRequestEventTarget,XMLHttpRequestUpload,IDBRequest,IDBOpenDBRequest,IDBDatabase,IDBTransaction,IDBCursor,DBIndex,WebSocket'
-    .split(',');
-var EVENT_TARGET = 'EventTarget';
-function eventTargetPatch(_global) {
-    var apis = [];
-    var isWtf = _global['wtf'];
-    if (isWtf) {
-        // Workaround for: https://github.com/google/tracing-framework/issues/555
-        apis = WTF_ISSUE_555.split(',').map(function (v) { return 'HTML' + v + 'Element'; }).concat(NO_EVENT_TARGET);
-    }
-    else if (_global[EVENT_TARGET]) {
-        apis.push(EVENT_TARGET);
-    }
-    else {
-        // Note: EventTarget is not available in all browsers,
-        // if it's not available, we instead patch the APIs in the IDL that inherit from EventTarget
-        apis = NO_EVENT_TARGET;
-    }
-    for (var i = 0; i < apis.length; i++) {
-        var type = _global[apis[i]];
-        patchEventTargetMethods(type && type.prototype);
-    }
-}
-
-/**
- * @license
- * Copyright Google Inc. All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
- */
 // we have to patch the instance since the proto is non-configurable
-function apply(_global) {
+function apply(api, _global) {
     var WS = _global.WebSocket;
     // On Safari window.EventTarget doesn't exist so need to patch WS add/removeEventListener
     // On older Chrome, no need since EventTarget was already patched
     if (!_global.EventTarget) {
-        patchEventTargetMethods(WS.prototype);
+        patchEventTarget(_global, [WS.prototype]);
     }
     _global.WebSocket = function (a, b) {
         var socket = arguments.length > 1 ? new WS(a, b) : new WS(a);
         var proxySocket;
+        var proxySocketProto;
         // Safari 7.0 has non-configurable own 'onmessage' and friends properties on the socket instance
         var onmessageDesc = Object.getOwnPropertyDescriptor(socket, 'onmessage');
         if (onmessageDesc && onmessageDesc.configurable === false) {
             proxySocket = Object.create(socket);
+            // socket have own property descriptor 'onopen', 'onmessage', 'onclose', 'onerror'
+            // but proxySocket not, so we will keep socket as prototype and pass it to
+            // patchOnProperties method
+            proxySocketProto = socket;
             ['addEventListener', 'removeEventListener', 'send', 'close'].forEach(function (propName) {
                 proxySocket[propName] = function () {
-                    return socket[propName].apply(socket, arguments);
+                    var args = Array.prototype.slice.call(arguments);
+                    if (propName === 'addEventListener' || propName === 'removeEventListener') {
+                        var eventName = args.length > 0 ? args[0] : undefined;
+                        if (eventName) {
+                            var propertySymbol = Zone.__symbol__('ON_PROPERTY' + eventName);
+                            socket[propertySymbol] = proxySocket[propertySymbol];
+                        }
+                    }
+                    return socket[propName].apply(socket, args);
                 };
             });
         }
@@ -69923,11 +71561,12 @@ function apply(_global) {
             // we can patch the real socket
             proxySocket = socket;
         }
-        patchOnProperties(proxySocket, ['close', 'error', 'message', 'open']);
+        patchOnProperties(proxySocket, ['close', 'error', 'message', 'open'], proxySocketProto);
         return proxySocket;
     };
+    var globalWebSocket = _global['WebSocket'];
     for (var prop in WS) {
-        _global['WebSocket'][prop] = WS[prop];
+        globalWebSocket[prop] = WS[prop];
     }
 }
 
@@ -69938,34 +71577,285 @@ function apply(_global) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-var eventNames = 'copy cut paste abort blur focus canplay canplaythrough change click contextmenu dblclick drag dragend dragenter dragleave dragover dragstart drop durationchange emptied ended input invalid keydown keypress keyup load loadeddata loadedmetadata loadstart message mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup pause play playing progress ratechange reset scroll seeked seeking select show stalled submit suspend timeupdate volumechange waiting mozfullscreenchange mozfullscreenerror mozpointerlockchange mozpointerlockerror error webglcontextrestored webglcontextlost webglcontextcreationerror'
-    .split(' ');
-function propertyDescriptorPatch(_global) {
+/**
+ * @fileoverview
+ * @suppress {globalThis}
+ */
+var globalEventHandlersEventNames = [
+    'abort',
+    'animationcancel',
+    'animationend',
+    'animationiteration',
+    'auxclick',
+    'beforeinput',
+    'blur',
+    'cancel',
+    'canplay',
+    'canplaythrough',
+    'change',
+    'compositionstart',
+    'compositionupdate',
+    'compositionend',
+    'cuechange',
+    'click',
+    'close',
+    'contextmenu',
+    'curechange',
+    'dblclick',
+    'drag',
+    'dragend',
+    'dragenter',
+    'dragexit',
+    'dragleave',
+    'dragover',
+    'drop',
+    'durationchange',
+    'emptied',
+    'ended',
+    'error',
+    'focus',
+    'focusin',
+    'focusout',
+    'gotpointercapture',
+    'input',
+    'invalid',
+    'keydown',
+    'keypress',
+    'keyup',
+    'load',
+    'loadstart',
+    'loadeddata',
+    'loadedmetadata',
+    'lostpointercapture',
+    'mousedown',
+    'mouseenter',
+    'mouseleave',
+    'mousemove',
+    'mouseout',
+    'mouseover',
+    'mouseup',
+    'mousewheel',
+    'orientationchange',
+    'pause',
+    'play',
+    'playing',
+    'pointercancel',
+    'pointerdown',
+    'pointerenter',
+    'pointerleave',
+    'pointerlockchange',
+    'mozpointerlockchange',
+    'webkitpointerlockerchange',
+    'pointerlockerror',
+    'mozpointerlockerror',
+    'webkitpointerlockerror',
+    'pointermove',
+    'pointout',
+    'pointerover',
+    'pointerup',
+    'progress',
+    'ratechange',
+    'reset',
+    'resize',
+    'scroll',
+    'seeked',
+    'seeking',
+    'select',
+    'selectionchange',
+    'selectstart',
+    'show',
+    'sort',
+    'stalled',
+    'submit',
+    'suspend',
+    'timeupdate',
+    'volumechange',
+    'touchcancel',
+    'touchmove',
+    'touchstart',
+    'touchend',
+    'transitioncancel',
+    'transitionend',
+    'waiting',
+    'wheel'
+];
+var documentEventNames = [
+    'afterscriptexecute', 'beforescriptexecute', 'DOMContentLoaded', 'fullscreenchange',
+    'mozfullscreenchange', 'webkitfullscreenchange', 'msfullscreenchange', 'fullscreenerror',
+    'mozfullscreenerror', 'webkitfullscreenerror', 'msfullscreenerror', 'readystatechange',
+    'visibilitychange'
+];
+var windowEventNames = [
+    'absolutedeviceorientation',
+    'afterinput',
+    'afterprint',
+    'appinstalled',
+    'beforeinstallprompt',
+    'beforeprint',
+    'beforeunload',
+    'devicelight',
+    'devicemotion',
+    'deviceorientation',
+    'deviceorientationabsolute',
+    'deviceproximity',
+    'hashchange',
+    'languagechange',
+    'message',
+    'mozbeforepaint',
+    'offline',
+    'online',
+    'paint',
+    'pageshow',
+    'pagehide',
+    'popstate',
+    'rejectionhandled',
+    'storage',
+    'unhandledrejection',
+    'unload',
+    'userproximity',
+    'vrdisplyconnected',
+    'vrdisplaydisconnected',
+    'vrdisplaypresentchange'
+];
+var htmlElementEventNames = [
+    'beforecopy', 'beforecut', 'beforepaste', 'copy', 'cut', 'paste', 'dragstart', 'loadend',
+    'animationstart', 'search', 'transitionrun', 'transitionstart', 'webkitanimationend',
+    'webkitanimationiteration', 'webkitanimationstart', 'webkittransitionend'
+];
+var mediaElementEventNames = ['encrypted', 'waitingforkey', 'msneedkey', 'mozinterruptbegin', 'mozinterruptend'];
+var ieElementEventNames = [
+    'activate',
+    'afterupdate',
+    'ariarequest',
+    'beforeactivate',
+    'beforedeactivate',
+    'beforeeditfocus',
+    'beforeupdate',
+    'cellchange',
+    'controlselect',
+    'dataavailable',
+    'datasetchanged',
+    'datasetcomplete',
+    'errorupdate',
+    'filterchange',
+    'layoutcomplete',
+    'losecapture',
+    'move',
+    'moveend',
+    'movestart',
+    'propertychange',
+    'resizeend',
+    'resizestart',
+    'rowenter',
+    'rowexit',
+    'rowsdelete',
+    'rowsinserted',
+    'command',
+    'compassneedscalibration',
+    'deactivate',
+    'help',
+    'mscontentzoom',
+    'msmanipulationstatechanged',
+    'msgesturechange',
+    'msgesturedoubletap',
+    'msgestureend',
+    'msgesturehold',
+    'msgesturestart',
+    'msgesturetap',
+    'msgotpointercapture',
+    'msinertiastart',
+    'mslostpointercapture',
+    'mspointercancel',
+    'mspointerdown',
+    'mspointerenter',
+    'mspointerhover',
+    'mspointerleave',
+    'mspointermove',
+    'mspointerout',
+    'mspointerover',
+    'mspointerup',
+    'pointerout',
+    'mssitemodejumplistitemremoved',
+    'msthumbnailclick',
+    'stop',
+    'storagecommit'
+];
+var webglEventNames = ['webglcontextrestored', 'webglcontextlost', 'webglcontextcreationerror'];
+var formEventNames = ['autocomplete', 'autocompleteerror'];
+var detailEventNames = ['toggle'];
+var frameEventNames = ['load'];
+var frameSetEventNames = ['blur', 'error', 'focus', 'load', 'resize', 'scroll', 'messageerror'];
+var marqueeEventNames = ['bounce', 'finish', 'start'];
+var XMLHttpRequestEventNames = [
+    'loadstart', 'progress', 'abort', 'error', 'load', 'progress', 'timeout', 'loadend',
+    'readystatechange'
+];
+var IDBIndexEventNames = ['upgradeneeded', 'complete', 'abort', 'success', 'error', 'blocked', 'versionchange', 'close'];
+var websocketEventNames = ['close', 'error', 'open', 'message'];
+var workerEventNames = ['error', 'message'];
+var eventNames = globalEventHandlersEventNames.concat(webglEventNames, formEventNames, detailEventNames, documentEventNames, windowEventNames, htmlElementEventNames, ieElementEventNames);
+function filterProperties(target, onProperties, ignoreProperties) {
+    if (!ignoreProperties) {
+        return onProperties;
+    }
+    var tip = ignoreProperties.filter(function (ip) { return ip.target === target; });
+    if (!tip || tip.length === 0) {
+        return onProperties;
+    }
+    var targetIgnoreProperties = tip[0].ignoreProperties;
+    return onProperties.filter(function (op) { return targetIgnoreProperties.indexOf(op) === -1; });
+}
+function patchFilteredProperties(target, onProperties, ignoreProperties, prototype) {
+    var filteredProperties = filterProperties(target, onProperties, ignoreProperties);
+    patchOnProperties(target, filteredProperties, prototype);
+}
+function propertyDescriptorPatch(api, _global) {
     if (isNode && !isMix) {
         return;
     }
     var supportsWebSocket = typeof WebSocket !== 'undefined';
     if (canPatchViaPropertyDescriptor()) {
+        var ignoreProperties = _global.__Zone_ignore_on_properties;
         // for browsers that we can patch the descriptor:  Chrome & Firefox
         if (isBrowser) {
-            patchOnProperties(window, eventNames.concat(['resize']));
-            patchOnProperties(Document.prototype, eventNames);
+            // in IE/Edge, onProp not exist in window object, but in WindowPrototype
+            // so we need to pass WindowPrototype to check onProp exist or not
+            patchFilteredProperties(window, eventNames.concat(['messageerror']), ignoreProperties, Object.getPrototypeOf(window));
+            patchFilteredProperties(Document.prototype, eventNames, ignoreProperties);
             if (typeof window['SVGElement'] !== 'undefined') {
-                patchOnProperties(window['SVGElement'].prototype, eventNames);
+                patchFilteredProperties(window['SVGElement'].prototype, eventNames, ignoreProperties);
             }
-            patchOnProperties(HTMLElement.prototype, eventNames);
+            patchFilteredProperties(Element.prototype, eventNames, ignoreProperties);
+            patchFilteredProperties(HTMLElement.prototype, eventNames, ignoreProperties);
+            patchFilteredProperties(HTMLMediaElement.prototype, mediaElementEventNames, ignoreProperties);
+            patchFilteredProperties(HTMLFrameSetElement.prototype, windowEventNames.concat(frameSetEventNames), ignoreProperties);
+            patchFilteredProperties(HTMLBodyElement.prototype, windowEventNames.concat(frameSetEventNames), ignoreProperties);
+            patchFilteredProperties(HTMLFrameElement.prototype, frameEventNames, ignoreProperties);
+            patchFilteredProperties(HTMLIFrameElement.prototype, frameEventNames, ignoreProperties);
+            var HTMLMarqueeElement_1 = window['HTMLMarqueeElement'];
+            if (HTMLMarqueeElement_1) {
+                patchFilteredProperties(HTMLMarqueeElement_1.prototype, marqueeEventNames, ignoreProperties);
+            }
+            var Worker_1 = window['Worker'];
+            if (Worker_1) {
+                patchFilteredProperties(Worker_1.prototype, workerEventNames, ignoreProperties);
+            }
         }
-        patchOnProperties(XMLHttpRequest.prototype, null);
+        patchFilteredProperties(XMLHttpRequest.prototype, XMLHttpRequestEventNames, ignoreProperties);
+        var XMLHttpRequestEventTarget = _global['XMLHttpRequestEventTarget'];
+        if (XMLHttpRequestEventTarget) {
+            patchFilteredProperties(XMLHttpRequestEventTarget && XMLHttpRequestEventTarget.prototype, XMLHttpRequestEventNames, ignoreProperties);
+        }
         if (typeof IDBIndex !== 'undefined') {
-            patchOnProperties(IDBIndex.prototype, null);
-            patchOnProperties(IDBRequest.prototype, null);
-            patchOnProperties(IDBOpenDBRequest.prototype, null);
-            patchOnProperties(IDBDatabase.prototype, null);
-            patchOnProperties(IDBTransaction.prototype, null);
-            patchOnProperties(IDBCursor.prototype, null);
+            patchFilteredProperties(IDBIndex.prototype, IDBIndexEventNames, ignoreProperties);
+            patchFilteredProperties(IDBRequest.prototype, IDBIndexEventNames, ignoreProperties);
+            patchFilteredProperties(IDBOpenDBRequest.prototype, IDBIndexEventNames, ignoreProperties);
+            patchFilteredProperties(IDBDatabase.prototype, IDBIndexEventNames, ignoreProperties);
+            patchFilteredProperties(IDBTransaction.prototype, IDBIndexEventNames, ignoreProperties);
+            patchFilteredProperties(IDBCursor.prototype, IDBIndexEventNames, ignoreProperties);
         }
         if (supportsWebSocket) {
-            patchOnProperties(WebSocket.prototype, null);
+            patchFilteredProperties(WebSocket.prototype, websocketEventNames, ignoreProperties);
         }
     }
     else {
@@ -69973,7 +71863,7 @@ function propertyDescriptorPatch(_global) {
         patchViaCapturingAllTheEvents();
         patchClass('XMLHttpRequest');
         if (supportsWebSocket) {
-            apply(_global);
+            apply(api, _global);
         }
     }
 }
@@ -70008,20 +71898,21 @@ function canPatchViaPropertyDescriptor() {
         return result;
     }
     else {
+        var SYMBOL_FAKE_ONREADYSTATECHANGE_1 = zoneSymbol('fakeonreadystatechange');
         Object.defineProperty(XMLHttpRequest.prototype, 'onreadystatechange', {
             enumerable: true,
             configurable: true,
             get: function () {
-                return this[zoneSymbol('fakeonreadystatechange')];
+                return this[SYMBOL_FAKE_ONREADYSTATECHANGE_1];
             },
             set: function (value) {
-                this[zoneSymbol('fakeonreadystatechange')] = value;
+                this[SYMBOL_FAKE_ONREADYSTATECHANGE_1] = value;
             }
         });
         var req = new XMLHttpRequest();
         var detectFunc = function () { };
         req.onreadystatechange = detectFunc;
-        var result = req[zoneSymbol('fakeonreadystatechange')] === detectFunc;
+        var result = req[SYMBOL_FAKE_ONREADYSTATECHANGE_1] === detectFunc;
         req.onreadystatechange = null;
         return result;
     }
@@ -70056,6 +71947,106 @@ function patchViaCapturingAllTheEvents() {
     for (var i = 0; i < eventNames.length; i++) {
         _loop_1(i);
     }
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+function eventTargetPatch(_global, api) {
+    var WTF_ISSUE_555 = 'Anchor,Area,Audio,BR,Base,BaseFont,Body,Button,Canvas,Content,DList,Directory,Div,Embed,FieldSet,Font,Form,Frame,FrameSet,HR,Head,Heading,Html,IFrame,Image,Input,Keygen,LI,Label,Legend,Link,Map,Marquee,Media,Menu,Meta,Meter,Mod,OList,Object,OptGroup,Option,Output,Paragraph,Pre,Progress,Quote,Script,Select,Source,Span,Style,TableCaption,TableCell,TableCol,Table,TableRow,TableSection,TextArea,Title,Track,UList,Unknown,Video';
+    var NO_EVENT_TARGET = 'ApplicationCache,EventSource,FileReader,InputMethodContext,MediaController,MessagePort,Node,Performance,SVGElementInstance,SharedWorker,TextTrack,TextTrackCue,TextTrackList,WebKitNamedFlow,Window,Worker,WorkerGlobalScope,XMLHttpRequest,XMLHttpRequestEventTarget,XMLHttpRequestUpload,IDBRequest,IDBOpenDBRequest,IDBDatabase,IDBTransaction,IDBCursor,DBIndex,WebSocket'
+        .split(',');
+    var EVENT_TARGET = 'EventTarget';
+    var apis = [];
+    var isWtf = _global['wtf'];
+    var WTF_ISSUE_555_ARRAY = WTF_ISSUE_555.split(',');
+    if (isWtf) {
+        // Workaround for: https://github.com/google/tracing-framework/issues/555
+        apis = WTF_ISSUE_555_ARRAY.map(function (v) { return 'HTML' + v + 'Element'; }).concat(NO_EVENT_TARGET);
+    }
+    else if (_global[EVENT_TARGET]) {
+        apis.push(EVENT_TARGET);
+    }
+    else {
+        // Note: EventTarget is not available in all browsers,
+        // if it's not available, we instead patch the APIs in the IDL that inherit from EventTarget
+        apis = NO_EVENT_TARGET;
+    }
+    var isDisableIECheck = _global['__Zone_disable_IE_check'] || false;
+    var isEnableCrossContextCheck = _global['__Zone_enable_cross_context_check'] || false;
+    var ieOrEdge = isIEOrEdge();
+    var ADD_EVENT_LISTENER_SOURCE = '.addEventListener:';
+    var FUNCTION_WRAPPER = '[object FunctionWrapper]';
+    var BROWSER_TOOLS = 'function __BROWSERTOOLS_CONSOLE_SAFEFUNC() { [native code] }';
+    //  predefine all __zone_symbol__ + eventName + true/false string
+    for (var i = 0; i < eventNames.length; i++) {
+        var eventName = eventNames[i];
+        var falseEventName = eventName + FALSE_STR;
+        var trueEventName = eventName + TRUE_STR;
+        var symbol = ZONE_SYMBOL_PREFIX + falseEventName;
+        var symbolCapture = ZONE_SYMBOL_PREFIX + trueEventName;
+        zoneSymbolEventNames$1[eventName] = {};
+        zoneSymbolEventNames$1[eventName][FALSE_STR] = symbol;
+        zoneSymbolEventNames$1[eventName][TRUE_STR] = symbolCapture;
+    }
+    //  predefine all task.source string
+    for (var i = 0; i < WTF_ISSUE_555.length; i++) {
+        var target = WTF_ISSUE_555_ARRAY[i];
+        var targets = globalSources[target] = {};
+        for (var j = 0; j < eventNames.length; j++) {
+            var eventName = eventNames[j];
+            targets[eventName] = target + ADD_EVENT_LISTENER_SOURCE + eventName;
+        }
+    }
+    var checkIEAndCrossContext = function (nativeDelegate, delegate, target, args) {
+        if (!isDisableIECheck && ieOrEdge) {
+            if (isEnableCrossContextCheck) {
+                try {
+                    var testString = delegate.toString();
+                    if ((testString === FUNCTION_WRAPPER || testString == BROWSER_TOOLS)) {
+                        nativeDelegate.apply(target, args);
+                        return false;
+                    }
+                }
+                catch (error) {
+                    nativeDelegate.apply(target, args);
+                    return false;
+                }
+            }
+            else {
+                var testString = delegate.toString();
+                if ((testString === FUNCTION_WRAPPER || testString == BROWSER_TOOLS)) {
+                    nativeDelegate.apply(target, args);
+                    return false;
+                }
+            }
+        }
+        else if (isEnableCrossContextCheck) {
+            try {
+                delegate.toString();
+            }
+            catch (error) {
+                nativeDelegate.apply(target, args);
+                return false;
+            }
+        }
+        return true;
+    };
+    var apiTypes = [];
+    for (var i = 0; i < apis.length; i++) {
+        var type = _global[apis[i]];
+        apiTypes.push(type && type.prototype);
+    }
+    patchEventTarget(_global, apiTypes, { validateHandler: checkIEAndCrossContext });
+    api.patchEventTarget = patchEventTarget;
+    return true;
+}
+function patchEvent(global, api) {
+    patchEventPrototype(global, api);
 }
 
 /**
@@ -70102,12 +72093,22 @@ function registerElementPatch(_global) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
+/**
+ * @fileoverview
+ * @suppress {missingRequire}
+ */
+Zone.__load_patch('util', function (global, Zone, api) {
+    api.patchOnProperties = patchOnProperties;
+    api.patchMethod = patchMethod;
+});
 Zone.__load_patch('timers', function (global, Zone, api) {
     var set = 'set';
     var clear = 'clear';
     patchTimer(global, set, clear, 'Timeout');
     patchTimer(global, set, clear, 'Interval');
     patchTimer(global, set, clear, 'Immediate');
+});
+Zone.__load_patch('requestAnimationFrame', function (global, Zone, api) {
     patchTimer(global, 'request', 'cancel', 'AnimationFrame');
     patchTimer(global, 'mozRequest', 'mozCancel', 'AnimationFrame');
     patchTimer(global, 'webkitRequest', 'webkitCancel', 'AnimationFrame');
@@ -70124,20 +72125,31 @@ Zone.__load_patch('blocking', function (global, Zone, api) {
     }
 });
 Zone.__load_patch('EventTarget', function (global, Zone, api) {
-    eventTargetPatch(global);
+    patchEvent(global, api);
+    eventTargetPatch(global, api);
     // patch XMLHttpRequestEventTarget's addEventListener/removeEventListener
     var XMLHttpRequestEventTarget = global['XMLHttpRequestEventTarget'];
     if (XMLHttpRequestEventTarget && XMLHttpRequestEventTarget.prototype) {
-        patchEventTargetMethods(XMLHttpRequestEventTarget.prototype);
+        api.patchEventTarget(global, [XMLHttpRequestEventTarget.prototype]);
     }
     patchClass('MutationObserver');
     patchClass('WebKitMutationObserver');
+    patchClass('IntersectionObserver');
     patchClass('FileReader');
 });
 Zone.__load_patch('on_property', function (global, Zone, api) {
-    propertyDescriptorPatch(global);
+    propertyDescriptorPatch(api, global);
     propertyPatch();
     registerElementPatch(global);
+});
+Zone.__load_patch('canvas', function (global, Zone, api) {
+    var HTMLCanvasElement = global['HTMLCanvasElement'];
+    if (typeof HTMLCanvasElement !== 'undefined' && HTMLCanvasElement.prototype &&
+        HTMLCanvasElement.prototype.toBlob) {
+        patchMacroTask(HTMLCanvasElement.prototype, 'toBlob', function (self, args) {
+            return { name: 'HTMLCanvasElement.toBlob', target: self, callbackIndex: 0, args: args };
+        });
+    }
 });
 Zone.__load_patch('XHR', function (global, Zone, api) {
     // Treat XMLHTTPRequest as a macrotask.
@@ -70146,35 +72158,53 @@ Zone.__load_patch('XHR', function (global, Zone, api) {
     var XHR_SYNC = zoneSymbol('xhrSync');
     var XHR_LISTENER = zoneSymbol('xhrListener');
     var XHR_SCHEDULED = zoneSymbol('xhrScheduled');
+    var XHR_URL = zoneSymbol('xhrURL');
     function patchXHR(window) {
         function findPendingTask(target) {
             var pendingTask = target[XHR_TASK];
             return pendingTask;
         }
+        var SYMBOL_ADDEVENTLISTENER = zoneSymbol('addEventListener');
+        var SYMBOL_REMOVEEVENTLISTENER = zoneSymbol('removeEventListener');
+        var oriAddListener = XMLHttpRequest.prototype[SYMBOL_ADDEVENTLISTENER];
+        var oriRemoveListener = XMLHttpRequest.prototype[SYMBOL_REMOVEEVENTLISTENER];
+        if (!oriAddListener) {
+            var XMLHttpRequestEventTarget = window['XMLHttpRequestEventTarget'];
+            if (XMLHttpRequestEventTarget) {
+                oriAddListener = XMLHttpRequestEventTarget.prototype[SYMBOL_ADDEVENTLISTENER];
+                oriRemoveListener = XMLHttpRequestEventTarget.prototype[SYMBOL_REMOVEEVENTLISTENER];
+            }
+        }
+        var READY_STATE_CHANGE = 'readystatechange';
+        var SCHEDULED = 'scheduled';
         function scheduleTask(task) {
             XMLHttpRequest[XHR_SCHEDULED] = false;
             var data = task.data;
+            var target = data.target;
             // remove existing event listener
-            var listener = data.target[XHR_LISTENER];
-            if (listener) {
-                data.target.removeEventListener('readystatechange', listener);
+            var listener = target[XHR_LISTENER];
+            if (!oriAddListener) {
+                oriAddListener = target[SYMBOL_ADDEVENTLISTENER];
+                oriRemoveListener = target[SYMBOL_REMOVEEVENTLISTENER];
             }
-            var newListener = data.target[XHR_LISTENER] = function () {
-                if (data.target.readyState === data.target.DONE) {
+            if (listener) {
+                oriRemoveListener.apply(target, [READY_STATE_CHANGE, listener]);
+            }
+            var newListener = target[XHR_LISTENER] = function () {
+                if (target.readyState === target.DONE) {
                     // sometimes on some browsers XMLHttpRequest will fire onreadystatechange with
                     // readyState=4 multiple times, so we need to check task state here
-                    if (!data.aborted && XMLHttpRequest[XHR_SCHEDULED] &&
-                        task.state === 'scheduled') {
+                    if (!data.aborted && XMLHttpRequest[XHR_SCHEDULED] && task.state === SCHEDULED) {
                         task.invoke();
                     }
                 }
             };
-            data.target.addEventListener('readystatechange', newListener);
-            var storedTask = data.target[XHR_TASK];
+            oriAddListener.apply(target, [READY_STATE_CHANGE, newListener]);
+            var storedTask = target[XHR_TASK];
             if (!storedTask) {
-                data.target[XHR_TASK] = task;
+                target[XHR_TASK] = task;
             }
-            sendNative.apply(data.target, data.args);
+            sendNative.apply(target, data.args);
             XMLHttpRequest[XHR_SCHEDULED] = true;
             return task;
         }
@@ -70188,8 +72218,10 @@ Zone.__load_patch('XHR', function (global, Zone, api) {
         }
         var openNative = patchMethod(window.XMLHttpRequest.prototype, 'open', function () { return function (self, args) {
             self[XHR_SYNC] = args[2] == false;
+            self[XHR_URL] = args[1];
             return openNative.apply(self, args);
         }; });
+        var XMLHTTPREQUEST_SOURCE = 'XMLHttpRequest.send';
         var sendNative = patchMethod(window.XMLHttpRequest.prototype, 'send', function () { return function (self, args) {
             var zone = Zone.current;
             if (self[XHR_SYNC]) {
@@ -70197,13 +72229,21 @@ Zone.__load_patch('XHR', function (global, Zone, api) {
                 return sendNative.apply(self, args);
             }
             else {
-                var options = { target: self, isPeriodic: false, delay: null, args: args, aborted: false };
-                return zone.scheduleMacroTask('XMLHttpRequest.send', placeholderCallback, options, scheduleTask, clearTask);
+                var options = {
+                    target: self,
+                    url: self[XHR_URL],
+                    isPeriodic: false,
+                    delay: null,
+                    args: args,
+                    aborted: false
+                };
+                return zone.scheduleMacroTask(XMLHTTPREQUEST_SOURCE, placeholderCallback, options, scheduleTask, clearTask);
             }
         }; });
+        var STRING_TYPE = 'string';
         var abortNative = patchMethod(window.XMLHttpRequest.prototype, 'abort', function (delegate) { return function (self, args) {
             var task = findPendingTask(self);
-            if (task && typeof task.type == 'string') {
+            if (task && typeof task.type == STRING_TYPE) {
                 // If the XHR has already completed, do nothing.
                 // If the XHR has already been aborted, do nothing.
                 // Fix #569, call abort multiple times before done will cause
@@ -70229,7 +72269,7 @@ Zone.__load_patch('PromiseRejectionEvent', function (global, Zone, api) {
     // handle unhandled promise rejection
     function findPromiseRejectionHandler(evtName) {
         return function (e) {
-            var eventTasks = findEventTask(global, evtName);
+            var eventTasks = findEventTasks(global, evtName);
             eventTasks.forEach(function (eventTask) {
                 // windows has added unhandledrejection event listener
                 // trigger the event listener
@@ -70259,8 +72299,8 @@ Zone.__load_patch('PromiseRejectionEvent', function (global, Zone, api) {
 
 })));
 
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":93}],137:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],140:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -70273,7 +72313,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var FocusDirective = (function () {
+var FocusDirective = /** @class */ (function () {
     function FocusDirective($element) {
         this.hasFocused = false;
         this.element = $element.nativeElement;
@@ -70287,21 +72327,21 @@ var FocusDirective = (function () {
             this.hasFocused = true;
         }
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], FocusDirective.prototype, "focus", void 0);
+    FocusDirective = __decorate([
+        core_1.Directive({
+            selector: '[focus]'
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef])
+    ], FocusDirective);
     return FocusDirective;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], FocusDirective.prototype, "focus", void 0);
-FocusDirective = __decorate([
-    core_1.Directive({
-        selector: '[focus]'
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef])
-], FocusDirective);
 exports.FocusDirective = FocusDirective;
 
-},{"@angular/core":7}],138:[function(require,module,exports){
+},{"@angular/core":7}],141:[function(require,module,exports){
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -70312,23 +72352,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var focus_directive_1 = require("./focus.directive");
-var FocusModule = FocusModule_1 = (function () {
+var FocusModule = /** @class */ (function () {
     function FocusModule() {
     }
+    FocusModule_1 = FocusModule;
     FocusModule.forRoot = function () {
         return {
             ngModule: FocusModule_1
         };
     };
+    FocusModule = FocusModule_1 = __decorate([
+        core_1.NgModule({
+            declarations: [focus_directive_1.FocusDirective],
+            exports: [focus_directive_1.FocusDirective]
+        })
+    ], FocusModule);
     return FocusModule;
+    var FocusModule_1;
 }());
-FocusModule = FocusModule_1 = __decorate([
-    core_1.NgModule({
-        declarations: [focus_directive_1.FocusDirective],
-        exports: [focus_directive_1.FocusDirective]
-    })
-], FocusModule);
 exports.FocusModule = FocusModule;
-var FocusModule_1;
 
-},{"./focus.directive":137,"@angular/core":7}]},{},[3]);
+},{"./focus.directive":140,"@angular/core":7}]},{},[3]);

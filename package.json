@@ -57,11 +57,11 @@
     "null-loader": "^0.1.1",
     "prettier": "^1.4.2",
     "rxjs": "^5.4.0",
-    "semantic-release": "^7.0.1",
+    "semantic-release": "8.0.3",
     "tsify": "^3.0.1",
     "tslint": "^5.0.0",
     "typescript": "^2.3.2",
-    "wallaby-webpack": "^0.0.39",
+    "wallaby-webpack": "0.0.42",
     "watchify": "^3.7.0",
     "webpack": "^3.0.0",
     "zone.js": "^0.8.10"
@@ -77,8 +77,8 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "--single-quote --list-different --write \"{src,docs}/**/*.ts\"",
+    "*.ts": [
+      "prettier --single-quote --write",
       "git add"
     ]
   }
