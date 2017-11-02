@@ -33,7 +33,7 @@
     "@angular/compiler-cli": "^4.4.1",
     "@angular/forms": "^4.4.1",
     "@angular/platform-browser": "^4.4.1",
-    "@angular/platform-browser-dynamic": "^4.4.1",
+    "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/platform-server": "^4.4.1",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.26",
     "@types/core-js": "^0.9.41",
