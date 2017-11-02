@@ -34,7 +34,7 @@
     "@angular/forms": "^4.4.1",
     "@angular/platform-browser": "^4.4.1",
     "@angular/platform-browser-dynamic": "^4.4.1",
-    "@angular/platform-server": "^4.4.1",
+    "@angular/platform-server": "^5.0.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.26",
     "@types/core-js": "^0.9.41",
     "@types/jasmine": "^2.5.47",
