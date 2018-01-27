@@ -2,19 +2,23 @@
   "name": "angular2-focus",
   "version": "0.0.0-development",
   "description": "Angular attribute directive that gives focus on an element depending on a given expression",
-  "main": "index.js",
-  "module": "index.js",
+  "main": "dist/bundles/angular2-focus.umd.js",
+  "module": "dist/angular2-focus.es5.js",
+  "es2015": "dist/angular2-focus.js",
+  "typings": "dist/angular2-focus.d.ts",
   "scripts": {
     "test": "karma start",
     "lint": "tslint -c tslint.json 'index.ts src/**/*.ts docs/**/*.ts'",
     "start": "ngc",
-    "prepublish": "ngc",
+    "build": "ng-packagr -p package.json",
+    "prepare": "yarn build",
     "docs": "concurrently \"watchify docs/main.ts -p [ tsify ] -o docs/bundle.js\" \"lite-server\"",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "semantic-release": "semantic-release",
     "commit": "git-cz",
     "add-contributor": "all-contributors add",
     "generate-contributors": "all-contributors generate",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "travis-deploy-once": "travis-deploy-once"
   },
   "keywords": [
     "angular",
@@ -28,6 +32,7 @@
     "@angular/core": "^5.0.1"
   },
   "devDependencies": {
+    "@angular/animations": "^5.0.1",
     "@angular/common": "^5.0.1",
     "@angular/compiler": "^5.0.1",
     "@angular/compiler-cli": "^5.0.1",
@@ -53,21 +58,22 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^2.0.3",
-    "lint-staged": "^4.0.0",
+    "lint-staged": "^6.1.0",
     "lite-server": "^2.3.0",
+    "ng-packagr": "^1.6.0",
     "null-loader": "^0.1.1",
     "prettier": "^1.4.2",
     "rxjs": "^5.5.2",
-    "semantic-release": "8.2.0",
+    "semantic-release": "^12.2.5",
+    "travis-deploy-once": "^4.3.3",
     "tsify": "^3.0.1",
     "tslint": "^5.0.0",
     "typescript": "^2.6.1",
-    "wallaby-webpack": "0.0.42",
+    "wallaby-webpack": "^3.9.4",
     "watchify": "^3.7.0",
     "webpack": "^3.0.0",
     "zone.js": "^0.8.10"
   },
-  "typings": "./index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/spirosikmd/angular2-focus"
@@ -82,5 +88,10 @@
       "prettier --single-quote --write",
       "git add"
     ]
+  },
+  "ngPackage": {
+    "lib": {
+      "entryFile": "index.ts"
+    }
   }
 }

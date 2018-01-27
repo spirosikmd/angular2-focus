@@ -51,3 +51,6 @@ src/*.js.map
 
 # Exclude the bundle demo file
 !docs/bundle.js
+
+# Generated build
+dist
