@@ -27,4 +27,8 @@ export class AppComponent {
       }
     );
   }
+
+  onFocusToggle() {
+    this.isFocused = !this.isFocused;
+  }
 }

@@ -11,6 +11,7 @@
                 Name
                 <input type="text" [focus]="!isFocused" formControlName="name">
             </label>
+            <button (click)="onFocusToggle()">toggle focus</button>
         </form>
 
         <div>Form value: {{ form.value | json }}</div>
