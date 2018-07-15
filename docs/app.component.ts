@@ -28,7 +28,7 @@ export class AppComponent {
     );
   }
 
-  onFocusToggle() {
+  toggleFocus() {
     this.isFocused = !this.isFocused;
   }
 }

@@ -20,7 +20,7 @@ var AppComponent = /** @class */ (function () {
         this.sins = ['gluttony', 'greed', 'sloth', 'envy', 'wrath', 'pride', 'lust'];
         this.form = new forms_1.FormGroup({
             sin: new forms_1.FormControl(),
-            name: new forms_1.FormControl(),
+            name: new forms_1.FormControl()
         });
     }
     AppComponent.prototype.open = function (content) {
@@ -30,13 +30,13 @@ var AppComponent = /** @class */ (function () {
             console.log("Dismissed " + reason);
         });
     };
-    AppComponent.prototype.onFocusToggle = function () {
+    AppComponent.prototype.toggleFocus = function () {
         this.isFocused = !this.isFocused;
     };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'app',
-            templateUrl: 'app.html',
+            templateUrl: 'app.html'
         }),
         __metadata("design:paramtypes", [ng_bootstrap_1.NgbModal])
     ], AppComponent);
@@ -91275,7 +91275,7 @@ var FocusDirective = /** @class */ (function () {
     ], FocusDirective.prototype, "focus", void 0);
     FocusDirective = __decorate([
         core_1.Directive({
-            selector: '[focus]',
+            selector: '[focus]'
         }),
         __metadata("design:paramtypes", [core_1.ElementRef])
     ], FocusDirective);
