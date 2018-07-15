@@ -1,25 +1,40 @@
-import { Directive, ElementRef, Input } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  Input,
+  SimpleChanges,
+  OnInit,
+  OnChanges
+} from '@angular/core';
 
 @Directive({
   selector: '[focus]'
 })
-export class FocusDirective {
+export class FocusDirective implements OnInit, OnChanges {
   @Input() focus: boolean;
   private element: HTMLElement;
-  private hasFocused = false;
 
   constructor($element: ElementRef) {
     this.element = $element.nativeElement;
   }
 
-  ngAfterContentChecked() {
-    this.giveFocus();
+  ngOnInit(): void {
+    if (this.focus) {
+      this.focusElement();
+    }
   }
 
-  giveFocus() {
-    if (this.focus && !this.hasFocused) {
-      this.element.focus();
-      this.hasFocused = true;
+  ngOnChanges(changes: SimpleChanges): void {
+    const focus = changes.focus;
+    if (
+      focus.currentValue !== focus.previousValue &&
+      focus.currentValue === true
+    ) {
+      this.focusElement();
     }
+  }
+
+  focusElement(): void {
+    this.element.focus();
   }
 }
