@@ -71,7 +71,7 @@
     "typescript": "^2.6.1",
     "wallaby-webpack": "^3.9.4",
     "watchify": "^3.7.0",
-    "webpack": "^3.0.0",
+    "webpack": "^4.0.0",
     "zone.js": "^0.8.10"
   },
   "repository": {
