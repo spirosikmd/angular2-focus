@@ -57,7 +57,7 @@
     "karma-webpack": "^2.0.3",
     "lint-staged": "^7.2.0",
     "lite-server": "^2.3.0",
-    "ng-packagr": "^1.6.0",
+    "ng-packagr": "^10.1.1",
     "null-loader": "^0.1.1",
     "prettier": "^1.4.2",
     "rxjs": "^6.2.2",
